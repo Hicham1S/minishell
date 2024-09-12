@@ -12,10 +12,14 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/libft/ft_strlcpy.c \
 		$(SRCDIR)/libft/ft_strlen.c \
 		$(SRCDIR)/libft/ft_strncmp.c \
+		$(SRCDIR)/libft/ft_strcmp.c \
+		$(SRCDIR)/libft/ft_strjoin.c \
+		$(SRCDIR)/libft/ft_substr.c \
 		$(SRCDIR)/tokenization/tokens.c \
 		$(SRCDIR)/tokenization/t_tokens.c \
 		$(SRCDIR)/tokenization/quotation.c \
-		$(SRCDIR)/cmd/env.c 
+		$(SRCDIR)/cmd/env.c \
+		$(SRCDIR)/cmd/exp.c
 
 # Object files
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

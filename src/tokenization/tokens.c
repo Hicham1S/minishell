@@ -143,6 +143,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.our_env = enlist_env(envp);
+	shell.our_exp = env_to_exp(shell.our_env);
 
 	while (1)
 	{
@@ -190,7 +191,17 @@ int	main(int argc, char **argv, char **envp)
 				env_current = env_current->next;
 			}
 		}
-
+		if (ft_strncmp(shell.tokens->txt, "exp", 3) == 0)
+		{
+			t_exp *exp_current = shell.our_exp;
+			while (exp_current)
+			{
+				printf("NODE: %s\n\n\n", exp_current->val);
+				exp_current = exp_current->next;
+			}
+		}
+		if (ft_strncmp(shell.tokens->txt, "$HOME", 5) == 0)
+			ft_printf("%s\n", get_env_clone("HOME", shell.our_env));
 		// Free tokens and input
 		free_tokens(&shell.tokens);
 		free(input);
@@ -198,6 +209,7 @@ int	main(int argc, char **argv, char **envp)
 
 	// Free the environment list
 	free_env(&shell.our_env);
+	free_exp(&shell.our_exp);
 
 	return 0;
 }

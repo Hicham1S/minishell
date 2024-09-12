@@ -62,16 +62,35 @@ t_env	*enlist_env(char **envp)
 	return (env_clone);
 }
 
-void    print_env_list(t_env *head)
+char *get_env_clone(char *name, t_env *head)
 {
-    t_env *current = head;
+	int j;
+	char *substr;
 
-    while (current != NULL)
-    {
-        printf("NODE: %s\n\n\n", current->val);
-        current = current->next;
-    }
+	while (head)
+	{
+		j = 0;
+		while (head->val[j] && head->val[j] != '=')
+			j++;
+		substr = ft_substr(head->val, 0, j);
+		if (ft_strcmp(substr, name) == 0)
+			return (free(substr), (head->val + j + 1));
+		free(substr);
+		head = head->next;
+	}
+	return (NULL);
 }
+
+// void    print_env_list(t_env *head)
+// {
+//     t_env *current = head;
+
+//     while (current != NULL)
+//     {
+//         printf("NODE: %s\n\n\n", current->val);
+//         current = current->next;
+//     }
+// }
 
 // int main(int argc, char **argv, char **envp)
 // {
