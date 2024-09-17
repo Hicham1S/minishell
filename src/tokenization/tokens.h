@@ -7,6 +7,7 @@
 # include "../libft/libft.h"
 # include "../ft_printf/ft_printf.h"
 # include "../cmd/cmd.h"
+# include "../utils/utils.h"
 
 typedef enum e_qtype
 {
@@ -23,13 +24,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_minishell
-{
-	t_token	*tokens;
-	t_env	*our_env;
-	t_exp	*our_exp;
-}	t_minishell;
-
 // quotation.c
 int		check_quotation(char *str);
 
@@ -40,5 +34,7 @@ void	free_tokens(t_token **head);
 char	*trim_str(char *mainstr, int i, int j);
 void	enlist_tokens_helper(char *str, int *i, t_token **tokens, char quote);
 t_token	*enlist_tokens(char *str);
+t_token	*tokenize(char *str);
+const char *qtype_to_string(t_qtype qtype);
 
 #endif

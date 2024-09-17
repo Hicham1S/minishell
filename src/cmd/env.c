@@ -86,7 +86,7 @@ char *get_env_clone(char *name, t_env *head)
 		while (head->val[j] && head->val[j] != '=')
 			j++;
 		substr = ft_substr(head->val, 0, j);
-		if(!substr) //Memory allocation failure by Hicham
+		if(!substr) `//Memory allocation failure by Hicham
 			return (NULL);
 		if (ft_strcmp(substr, name) == 0)
 			return (free(substr), (head->val + j + 1));
@@ -94,4 +94,31 @@ char *get_env_clone(char *name, t_env *head)
 		head = head->next;
 	}
 	return (NULL);
+}
+
+int env_exists(char *name, t_env *head)
+{
+	if (get_env_clone(name, head) != NULL)
+		return 1;
+	return 0;
+}
+
+int modify_env_clone(char *name, t_env *head, char *new)
+{
+	char *entry;
+	char *new_val;
+	char *temp_val;
+
+	entry = get_env_clone(name, head);
+	if (!entry)
+		return (-1);
+
+	temp_val = ft_strjoin("=", new);
+	if (!temp_val || !(new_val = ft_strjoin(name, temp_val)))
+		return (-1);
+
+	free(temp_val);
+	free(entry);
+	entry = new_val;
+	return (0);
 }
