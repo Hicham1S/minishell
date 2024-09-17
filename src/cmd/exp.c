@@ -8,6 +8,11 @@ t_exp *create_exp(char *txt)
 	if (!new)
 		return (NULL);
 	new->val = ft_strdup(txt);
+	if(!new->val) //check if strdup work by Hicham
+	{
+		free(new);
+		return (NULL);
+	}
 	new->next = NULL;
 	return (new);
 }
@@ -47,15 +52,6 @@ void free_exp(t_exp **head)
 	*head = NULL;
 }
 
-// void print_exp_list(t_exp *head)
-// {
-// 	while (head != NULL)
-// 	{
-// 		printf("%s\n", head->val);
-// 		head = head->next;
-// 	}
-// }
-
 void	swap_env(t_env *env1, t_env *env2)
 {
 	char *temp;
@@ -84,6 +80,8 @@ t_env	*sort_env(t_env *env_clone)
 				min = temp;
 			temp = temp->next;
 		}
+		if(min != current)
+			swap_env(min, current); // to swap if smaller element if found by Hicham
 		current = current->next;
 	}
 	return (env_clone);
@@ -101,6 +99,8 @@ t_exp	*env_to_exp(t_env *env_clone)
 	{
 		joined = ft_strjoin("declare -x ", sorted_env->val);
 		if (!joined)
+		{
+			free_exp(&exp_clone); //free the previously alloc on memory error by Hicham
 			return (NULL);
 		add_exp(&exp_clone, create_exp(joined));
 		free(joined);
