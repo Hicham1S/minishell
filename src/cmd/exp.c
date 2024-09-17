@@ -107,6 +107,7 @@ t_exp	*env_to_exp(t_env *env_clone)
 		sorted_env = sorted_env->next;
 	}
 	return (exp_clone);
+	}
 }
 
 void    new_exp(t_exp **head, char *txt)
@@ -133,7 +134,7 @@ int modify_exp_clone(char *name, t_exp *head, char *new)
 
 	while (head)
 	{
-		j = 11; // Start after "declare -x "
+		j = 11; // Start after "declare -x"
 		while (head->val[j] && head->val[j] != '=')
 			j++;
 		substr = ft_substr(head->val, 11, j - 11);

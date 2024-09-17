@@ -86,7 +86,7 @@ char *get_env_clone(char *name, t_env *head)
 		while (head->val[j] && head->val[j] != '=')
 			j++;
 		substr = ft_substr(head->val, 0, j);
-		if(!substr) `//Memory allocation failure by Hicham
+		if(!substr) //Memory allocation failure by Hicham
 			return (NULL);
 		if (ft_strcmp(substr, name) == 0)
 			return (free(substr), (head->val + j + 1));
