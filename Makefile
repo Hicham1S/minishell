@@ -19,7 +19,10 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/tokenization/t_tokens.c \
 		$(SRCDIR)/tokenization/quotation.c \
 		$(SRCDIR)/cmd/env.c \
-		$(SRCDIR)/cmd/exp.c
+		$(SRCDIR)/cmd/exp.c \
+		$(SRCDIR)/cmd/pwd.c\
+		$(SRCDIR)/utils/ragequit.c \
+		$(SRCDIR)/main/main.c
 
 # Object files
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -34,7 +37,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS) -lreadline
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/cmd
+	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/cmd $(OBJDIR)/utils $(OBJDIR)/main
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

@@ -81,6 +81,33 @@ char *get_env_clone(char *name, t_env *head)
 	return (NULL);
 }
 
+int env_exists(char *name, t_env *head)
+{
+	if (get_env_clone(name, head) != NULL)
+		return 1;
+	return 0;
+}
+
+int modify_env_clone(char *name, t_env *head, char *new)
+{
+	char *entry;
+	char *new_val;
+	char *temp_val;
+
+	entry = get_env_clone(name, head);
+	if (!entry)
+		return (-1);
+
+	temp_val = ft_strjoin("=", new);
+	if (!temp_val || !(new_val = ft_strjoin(name, temp_val)))
+		return (-1);
+
+	free(temp_val);
+	free(entry);
+	entry = new_val;
+	return (0);
+}
+
 // void    print_env_list(t_env *head)
 // {
 //     t_env *current = head;

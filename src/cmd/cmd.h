@@ -16,6 +16,7 @@ typedef struct s_exp
 # include <stdio.h>
 # include <stdlib.h>
 # include "../libft/libft.h"
+# include "../ft_printf/ft_printf.h"
 
 // env.c
 t_env	*create_env(char *txt);
@@ -23,6 +24,7 @@ void	add_env(t_env **head, t_env *new);
 void	free_env(t_env **head);
 t_env	*enlist_env(char **envp);
 char *get_env_clone(char *name, t_env *head);
+int modify_env_clone(char *name, t_env *head, char *new);
 
 // exp.c
 t_exp *create_exp(char *txt);
@@ -31,6 +33,10 @@ void free_exp(t_exp **head);
 void	swap_env(t_env *env1, t_env *env2);
 t_env	*sort_env(t_env *env_clone);
 t_exp	*env_to_exp(t_env *env_clone);
+void    new_exp(t_exp **head, char *txt);
+int		modify_exp_clone(char *name, t_exp *head, char *new);
 
+//pwd
+int	pwd(t_env *env_clone);
 
 #endif

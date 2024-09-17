@@ -125,3 +125,32 @@ void    new_exp(t_exp **head, char *txt)
 	}
 }
 
+int modify_exp_clone(char *name, t_exp *head, char *new)
+{
+	int j;
+	char *substr;
+	char *new_val;
+
+	while (head)
+	{
+		j = 11; // Start after "declare -x "
+		while (head->val[j] && head->val[j] != '=')
+			j++;
+		substr = ft_substr(head->val, 11, j - 11);
+		if (!substr)
+			return (-1);
+		if (ft_strcmp(substr, name) == 0)
+		{
+			new_val = ft_strjoin("declare -x ", ft_strjoin(name, new));
+			if (!new_val)
+				return (-1);
+			free(head->val);
+			head->val = new_val;
+			free(substr);
+			return (0);
+		}
+		free(substr);
+		head = head->next;
+	}
+	return (-1);
+}
