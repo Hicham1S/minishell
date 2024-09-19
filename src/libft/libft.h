@@ -12,5 +12,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int     ft_isalnum(int c);
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
+void	*ft_memset(void *s, int c, size_t n);
 
 #endif

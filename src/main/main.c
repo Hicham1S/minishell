@@ -38,17 +38,23 @@ int	main(int argc, char **argv, char **envp)
 
 		// Tokenize the input
 		shell.tokens = tokenize(input);
+		if (!shell.tokens) // In case tokenization fails
+		{
+			free(input);
+			continue;
+		}
+
 		current_token = shell.tokens;
 
-		// Print tokens
+		// Print tokens for debugging
 		while (current_token)
 		{
-			printf("Token: %s, Quote Type: %s\n", current_token->txt, qtype_to_string(current_token->qtype));
+			printf("Token: '%s', Quote Type: '%s'\n", current_token->txt, qtype_to_string(current_token->qtype));
 			current_token = current_token->next;
 		}
 
-		// Print environment variables (when using 'env' command)
-		if (ft_strncmp(shell.tokens->txt, "env", 3) == 0)
+		// Handle 'env' command
+		if (ft_strncmp(shell.tokens->txt, "env", 3) == 0 && ft_strlen(shell.tokens->txt) == 3)
 		{
 			t_env *env_current = shell.our_env;
 			while (env_current)
@@ -57,27 +63,50 @@ int	main(int argc, char **argv, char **envp)
 				env_current = env_current->next;
 			}
 		}
-		if (ft_strncmp(shell.tokens->txt, "exp", 3) == 0)
+
+		// Handle 'exp' command
+		if (ft_strncmp(shell.tokens->txt, "exp", 3) == 0 && ft_strlen(shell.tokens->txt) == 3)
 		{
 			t_exp *exp_current = shell.our_exp;
 			while (exp_current)
 			{
-				printf("NODE: %s\n\n\n", exp_current->val);
+				printf("NODE: %s\n", exp_current->val);
 				exp_current = exp_current->next;
 			}
 		}
-		if (ft_strncmp(shell.tokens->txt, "pwd", 3) == 0)
-		{
-			pwd(shell.our_env);
-		}
-		if (ft_strncmp(shell.tokens->txt, "$HOME", 5) == 0)
+
+		// Handle '$HOME' variable
+		if (ft_strncmp(shell.tokens->txt, "$HOME", 5) == 0 && ft_strlen(shell.tokens->txt) == 5)
 			ft_printf("%s\n", get_env_clone("HOME", shell.our_env));
+
+		// Handle 'export' command
+		if (ft_strncmp(shell.tokens->txt, "export", 6) == 0 && ft_strlen(shell.tokens->txt) == 6)
+		{
+			if (shell.tokens->next) // Check if there's something after 'export'
+			{
+				// Debug print to check what is after 'export'
+				printf("Registering export for: '%s'\n", shell.tokens->next->txt);
+
+				// Call register_env_exp with the rest of the command
+				register_env_exp(shell.tokens->next->txt, shell.our_env, shell.our_exp);
+			}
+			else // If 'export' is standalone, print current export list
+			{
+				t_exp *exp_current = shell.our_exp;
+				while (exp_current)
+				{
+					printf("NODE: %s\n", exp_current->val);
+					exp_current = exp_current->next;
+				}
+			}
+		}
+
 		// Free tokens and input
 		free_tokens(&shell.tokens);
 		free(input);
 	}
 
-	// Free the environment list
+	// Free environment and export lists
 	free_env(&shell.our_env);
 	free_exp(&shell.our_exp);
 

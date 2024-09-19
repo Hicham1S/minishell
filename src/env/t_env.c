@@ -1,24 +1,26 @@
-#include "tokens.h"
+#include "env.h"
 
-t_token	*create_token(char *txt, t_qtype qtype)
+t_env	*create_env(char *txt)
 {
-	t_token	*new;
+	t_env	*new;
 
-	new = (t_token *)malloc(sizeof(t_token));
+	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->txt = ft_strdup(txt);
-	if (!new->txt)
-		return (free(new), NULL);
-	new->qtype = qtype;
-	new->prev = NULL;
+	new->val = ft_strdup(txt);
+	//update part to make sure there aren't any leaks from Hicham
+	if(!new->val)
+	{
+		free(new);
+		return (NULL);
+	}
 	new->next = NULL;
 	return (new);
 }
 
-void	add_token(t_token **head, t_token *new)
+void	add_env(t_env **head, t_env *new)
 {
-	t_token	*current;
+	t_env	*current;
 
 	if (!head || !new)
 		return ;
@@ -30,14 +32,13 @@ void	add_token(t_token **head, t_token *new)
 		while (current->next != NULL)
 			current = current->next;
 		current->next = new;
-		new->prev = current;
 	}
 }
 
-void	free_tokens(t_token **head)
+void	free_env(t_env **head)
 {
-	t_token	*current;
-	t_token	*next;
+	t_env	*current;
+	t_env	*next;
 
 	if (!head || !*head)
 		return ;
@@ -45,7 +46,7 @@ void	free_tokens(t_token **head)
 	while (current)
 	{
 		next = current->next;
-		free(current->txt);
+		free (current->val);
 		free(current);
 		current = next;
 	}
