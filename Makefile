@@ -26,6 +26,7 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/env/env.c \
 		$(SRCDIR)/env/exp.c \
 		$(SRCDIR)/env/export_command.c \
+		$(SRCDIR)/env/unset_command.c \
 		$(SRCDIR)/env/t_env.c \
 		$(SRCDIR)/env/t_exp.c \
 		$(SRCDIR)/utils/ragequit.c \

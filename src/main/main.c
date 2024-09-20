@@ -101,6 +101,20 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 
+		// Handle 'unset' command
+		if (ft_strncmp(shell.tokens->txt, "unset", 5) == 0 && ft_strlen(shell.tokens->txt) == 5)
+		{
+			if (shell.tokens->next) // Check if there's something after 'unset'
+			{
+				// Call ft_unset with the variable to unset
+				ft_unset(shell.our_env, shell.our_exp, shell.tokens->next->txt);
+			}
+			else
+			{
+				printf("unset: not enough arguments\n");
+			}
+		}
+
 		// Free tokens and input
 		free_tokens(&shell.tokens);
 		free(input);

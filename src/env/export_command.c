@@ -40,7 +40,7 @@ int handle_export_errors(char *str)
 	if (str[0] == '-')
 	{
 		ft_printf("bash: export: -%c: invalid option\n", str[1]);
-		return (1);
+		return (2);
 	}
 	else
 	{

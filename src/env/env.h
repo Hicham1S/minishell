@@ -62,4 +62,10 @@ int *new_env_status(t_env *env_clone, t_exp *exp_clone, char *str);
 int handle_export_errors(char *str);
 int	register_env_exp(char *str ,t_env *env_clone, t_exp *exp_clone);
 
+// unset_command.c
+int	del_env(t_env *env_clone, char *env_name);
+int	del_exp(t_exp *exp_clone, char *exp_name);
+int handle_unset_errors(char *str);
+int	ft_unset(t_env *env_clone, t_exp *exp_clone, char *env_name);
+
 #endif
