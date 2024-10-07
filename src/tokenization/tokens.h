@@ -22,6 +22,7 @@ typedef struct s_token
 	t_qtype			qtype;
 	struct s_token	*prev;
 	struct s_token	*next;
+	int				space;
 }	t_token;
 
 // quotation.c

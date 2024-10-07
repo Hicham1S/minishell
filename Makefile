@@ -18,6 +18,7 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/libft/ft_substr.c \
 		$(SRCDIR)/libft/ft_isalnum.c \
 		$(SRCDIR)/libft/ft_memset.c \
+		$(SRCDIR)/libft/ft_itoa.c \
 		$(SRCDIR)/tokenization/tokens.c \
 		$(SRCDIR)/tokenization/t_tokens.c \
 		$(SRCDIR)/tokenization/quotation.c \
@@ -30,6 +31,7 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/env/t_env.c \
 		$(SRCDIR)/env/t_exp.c \
 		$(SRCDIR)/utils/ragequit.c \
+		$(SRCDIR)/parsing2/dollar.c \
 		$(SRCDIR)/build_in_function/pwd_cd.c \
 		$(SRCDIR)/main/main.c
 
@@ -46,7 +48,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS) -lreadline
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/env $(OBJDIR)/utils $(OBJDIR)/main $(OBJDIR)/build_in_function
+	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/env $(OBJDIR)/utils $(OBJDIR)/main $(OBJDIR)/build_in_function $(OBJDIR)/parsing2
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

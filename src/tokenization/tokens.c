@@ -68,6 +68,29 @@ void	handle_no_quote(char *str, int *i, t_token **tokens)
 	*i = j;
 }
 
+void set_token_spaces(char *str, t_token *tokens)
+{
+	t_token *current = tokens;
+	int i = 0;
+
+	while (current)
+	{
+		while (str[i] && !is_space(str[i]) && str[i] != '\'' && str[i] != '\"')
+			i++;
+		if (is_space(str[i]))
+		{
+			current->space = 1;
+			while (is_space(str[i]))
+				i++;
+		}
+		else
+			current->space = 0;
+		current = current->next;
+		while (str[i] && (str[i] == '\'' || str[i] == '\"'))
+			i++;
+	}
+}
+
 t_token	*tokenize(char *str)
 {
 	int		i;
@@ -86,6 +109,7 @@ t_token	*tokenize(char *str)
 		else
 			handle_no_quote(str, &i, &tokens);
 	}
+	set_token_spaces(str, tokens);
 	return (tokens);
 }
 

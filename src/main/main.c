@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 
 		// Tokenize the input
 		shell.tokens = tokenize(input);
+		do_handle_dollar(shell.tokens, shell.our_env);
 		if (!shell.tokens) // In case tokenization fails
 		{
 			free(input);
@@ -45,11 +46,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 		current_token = shell.tokens;
-
 		// Print tokens for debugging
 		while (current_token)
 		{
-			printf("Token: '%s', Quote Type: '%s'\n", current_token->txt, qtype_to_string(current_token->qtype));
+			printf("Token: '%s', Quote Type: '%s', Space: %d\n", current_token->txt, qtype_to_string(current_token->qtype), current_token->space);
 			current_token = current_token->next;
 		}
 

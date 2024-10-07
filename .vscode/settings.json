@@ -3,6 +3,8 @@
 		".php_cs": "php",
 		".php_cs.dist": "php",
 		"libft.h": "c",
-		"cmd.h": "c"
+		"cmd.h": "c",
+		"utils.h": "c",
+		"tokens.h": "c"
 	}
 }
