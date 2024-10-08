@@ -8,8 +8,22 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	
+	// Initialize environment and export lists
 	shell.our_env = enlist_env(envp);
+	if (!shell.our_env)
+	{
+		printf("Error initializing environment.\n");
+		return 1;
+	}
+
 	shell.our_exp = env_to_exp(shell.our_env);
+	if (!shell.our_exp)
+	{
+		printf("Error initializing export list.\n");
+		free_env(&shell.our_env);
+		return 1;
+	}
 
 	while (1)
 	{
@@ -38,15 +52,17 @@ int	main(int argc, char **argv, char **envp)
 
 		// Tokenize the input
 		shell.tokens = tokenize(input);
-		do_handle_dollar(shell.tokens, shell.our_env);
-		if (!shell.tokens) // In case tokenization fails
+		if (!shell.tokens) // Tokenization error handling
 		{
 			free(input);
 			continue;
 		}
 
+		// Finalize tokens (variable substitution, etc.)
+		finalize_tokens(shell.tokens, shell.our_env);
+
+		// Debug: Print tokens
 		current_token = shell.tokens;
-		// Print tokens for debugging
 		while (current_token)
 		{
 			printf("Token: '%s', Quote Type: '%s', Space: %d\n", current_token->txt, qtype_to_string(current_token->qtype), current_token->space);
@@ -54,18 +70,18 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 		// Handle 'env' command
-		if (ft_strncmp(shell.tokens->txt, "env", 3) == 0 && ft_strlen(shell.tokens->txt) == 3)
+		if (ft_strcmp(shell.tokens->txt, "env") == 0)
 		{
 			t_env *env_current = shell.our_env;
 			while (env_current)
 			{
-				printf("NODE: %s\n\n\n", env_current->val);
+				printf("NODE: %s\n", env_current->val);
 				env_current = env_current->next;
 			}
 		}
 
 		// Handle 'exp' command
-		if (ft_strncmp(shell.tokens->txt, "exp", 3) == 0 && ft_strlen(shell.tokens->txt) == 3)
+		else if (ft_strcmp(shell.tokens->txt, "exp") == 0)
 		{
 			t_exp *exp_current = shell.our_exp;
 			while (exp_current)
@@ -75,14 +91,10 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 
-		// Handle '$HOME' variable
-		if (ft_strncmp(shell.tokens->txt, "$HOME", 5) == 0 && ft_strlen(shell.tokens->txt) == 5)
-			ft_printf("%s\n", get_env_clone("HOME", shell.our_env));
-
 		// Handle 'export' command
-		if (ft_strncmp(shell.tokens->txt, "export", 6) == 0 && ft_strlen(shell.tokens->txt) == 6)
+		else if (ft_strcmp(shell.tokens->txt, "export") == 0)
 		{
-			if (shell.tokens->next) // Check if there's something after 'export'
+			if (shell.tokens->next)
 			{
 				// Debug print to check what is after 'export'
 				printf("Registering export for: '%s'\n", shell.tokens->next->txt);
@@ -102,9 +114,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 		// Handle 'unset' command
-		if (ft_strncmp(shell.tokens->txt, "unset", 5) == 0 && ft_strlen(shell.tokens->txt) == 5)
+		else if (ft_strcmp(shell.tokens->txt, "unset") == 0)
 		{
-			if (shell.tokens->next) // Check if there's something after 'unset'
+			if (shell.tokens->next)
 			{
 				// Call ft_unset with the variable to unset
 				ft_unset(shell.our_env, shell.our_exp, shell.tokens->next->txt);

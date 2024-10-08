@@ -14,4 +14,7 @@ char	*expand_env_var(char *res, char *txt, int *i, t_env *env);
 void	handle_dollar(t_token *original, t_env *env);
 void	do_handle_dollar(t_token *tokens, t_env *env);
 
+void	merge_tokens(t_token *tokens);
+void	finalize_tokens(t_token *tokens, t_env *env_clone);
+
 #endif

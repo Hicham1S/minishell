@@ -64,6 +64,12 @@ char	*expand_env_var(char *res, char *txt, int *i, t_env *env)
 		{
 			new_res = ft_strjoin(res, env_value);
 			free(res);
+			// if (txt[*i] == ' ')
+			// {
+			// 	char *temp_res = ft_strjoin(new_res, " ");
+			// 	free(new_res);
+			// 	return temp_res;
+			// }
 			return new_res;
 		}
 	}
@@ -80,7 +86,10 @@ void	handle_dollar(t_token *original, t_env *env)
 	res = ft_strdup("");
 	while (original->txt[i])
 	{
+		// Append text before the next dollar sign
 		res = append_text_before_dollar(res, original->txt, &i);
+
+		// Handle dollar expansion
 		if (original->txt[i] == '$')
 			res = expand_env_var(res, original->txt, &i, env);
 	}
