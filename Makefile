@@ -32,6 +32,7 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/env/t_exp.c \
 		$(SRCDIR)/utils/ragequit.c \
 		$(SRCDIR)/parsing2/dollar.c \
+		$(SRCDIR)/parsing2/merge.c \
 		$(SRCDIR)/build_in_function/pwd_cd.c \
 		$(SRCDIR)/main/main.c
 

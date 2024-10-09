@@ -20,19 +20,47 @@ int	is_space(char c)
 	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
+void	handle_no_quote(char *str, int *i, t_token **tokens)
+{
+	int		j;
+	char	*substr;
+	t_token	*token;
+
+	token = NULL;
+	j = *i;
+	while (str[j] && !is_space(str[j]) && str[j] != '\'' && str[j] != '\"')
+		j++;
+	substr = trim_str(str, *i, j);
+	token = create_token(substr, NO);
+	if (str[j] && is_space(str[j]))
+		token->space = 1;
+	else
+		token->space = 0;
+	add_token(tokens, token);
+	free(substr);
+	*i = j;
+}
+
 void	handle_single_quote(char *str, int *i, t_token **tokens)
 {
 	int		j;
 	t_qtype	qtype;
 	char	*substr;
+	t_token	*token;
 
+	token = NULL;
 	qtype = SINGLE;
 	(*i)++;
 	j = *i;
 	while (str[j] && str[j] != '\'')
 		j++;
 	substr = trim_str(str, *i, j);
-	add_token(tokens, create_token(substr, qtype));
+	token = create_token(substr, qtype);
+	if (str[j + 1] && is_space(str[j + 1]))
+		token->space = 1;
+	else
+		token->space = 0;
+	add_token(tokens, token);
 	free(substr);
 	*i = j + 1;
 }
@@ -42,53 +70,23 @@ void	handle_double_quote(char *str, int *i, t_token **tokens)
 	int		j;
 	t_qtype	qtype;
 	char	*substr;
+	t_token	*token;
 
+	token = NULL;
 	qtype = DOUBLE;
 	(*i)++;
 	j = *i;
 	while (str[j] && str[j] != '\"')
 		j++;
 	substr = trim_str(str, *i, j);
-	add_token(tokens, create_token(substr, qtype));
+	token = create_token(substr, qtype);
+	if (str[j + 1] && is_space(str[j + 1]))
+		token->space = 1;
+	else
+		token->space = 0;
+	add_token(tokens, token);
 	free(substr);
 	*i = j + 1;
-}
-
-void	handle_no_quote(char *str, int *i, t_token **tokens)
-{
-	int		j;
-	char	*substr;
-
-	j = *i;
-	while (str[j] && !is_space(str[j]) && str[j] != '\'' && str[j] != '\"')
-		j++;
-	substr = trim_str(str, *i, j);
-	add_token(tokens, create_token(substr, NO));
-	free(substr);
-	*i = j;
-}
-
-void set_token_spaces(char *str, t_token *tokens)
-{
-	t_token *current = tokens;
-	int i = 0;
-
-	while (current)
-	{
-		while (str[i] && !is_space(str[i]) && str[i] != '\'' && str[i] != '\"')
-			i++;
-		if (is_space(str[i]))
-		{
-			current->space = 1;
-			while (is_space(str[i]))
-				i++;
-		}
-		else
-			current->space = 0;
-		current = current->next;
-		while (str[i] && (str[i] == '\'' || str[i] == '\"'))
-			i++;
-	}
 }
 
 t_token	*tokenize(char *str)
@@ -109,7 +107,6 @@ t_token	*tokenize(char *str)
 		else
 			handle_no_quote(str, &i, &tokens);
 	}
-	set_token_spaces(str, tokens);
 	return (tokens);
 }
 
