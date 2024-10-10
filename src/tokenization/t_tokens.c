@@ -13,6 +13,7 @@ t_token	*create_token(char *txt, t_qtype qtype)
 	new->qtype = qtype;
 	new->prev = NULL;
 	new->next = NULL;
+	new->space = 0;
 	return (new);
 }
 
