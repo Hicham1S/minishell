@@ -110,6 +110,57 @@ void	do_handle_dollar(t_token *tokens, t_env *env)
 	}
 }
 
+//doing by hicham
+char *dollar_dollar(t_token *token, int i)
+{
+    char *new_str;
+    char *temp;
+    char *pid_str;
+    pid_t pid;
+    int dollar_count = 0;
+
+    pid = getpid();
+    pid_str = ft_itoa(pid);
+    while (token->txt[i + dollar_count] == '$')
+        dollar_count++;
+    if (dollar_count > 1)
+    {
+        new_str = ft_strjoin(ft_substr(token->txt, 0, i), pid_str);
+        while (dollar_count-- > 2)
+        {
+            temp = ft_strjoin(new_str, pid_str);
+            free(new_str);
+            new_str = temp;
+        }
+        temp = ft_strjoin(new_str, &token->txt[i + dollar_count]);
+        free(new_str);
+        free(token->txt);
+        token->txt = temp;
+    }
+    free(pid_str);
+    return (token->tx)t;
+}
+
+char *dollar_exit_status(t_token *token, int i, int last_exit_status)
+{
+    char *new_str;
+    char *status_str;
+    char *temp;
+	char *sub_str;
+
+    status_str = ft_itoa(last_exit_status);
+	*sub_str = ft_substr(token->txt, 0, i);
+    new_str = ft_strjoin(sub_str, status_str);
+    free(sub_str);
+    temp = ft_strjoin(new_str, &token->txt[i + 2]);
+    free(new_str);
+    free(status_str);
+    free(token->txt);
+    token->txt = temp;
+    return (token->txt);
+}
+
+
 
 
 // int	main(int argc, char **argv, char **envp)
