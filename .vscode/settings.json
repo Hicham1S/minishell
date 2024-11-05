@@ -5,6 +5,7 @@
 		"libft.h": "c",
 		"cmd.h": "c",
 		"utils.h": "c",
-		"tokens.h": "c"
+		"tokens.h": "c",
+		"builtins.h": "c"
 	}
 }

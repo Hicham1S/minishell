@@ -1,5 +1,19 @@
 #include "main.h"
 
+void	init_shell(t_minishell *shell, char **envp)
+{
+	shell->our_env = enlist_env(envp);
+	shell->our_exp = env_to_exp(shell->our_env);
+}
+
+void	free_shell(t_minishell *shell)
+{
+	if (shell->our_env)
+		free_env(&shell->our_env);
+	if (shell->our_exp)
+		free_exp(&shell->our_exp);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
@@ -10,14 +24,18 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	
 	// Initialize environment and export lists
-	shell.our_env = enlist_env(envp);
+	// shell.our_env = enlist_env(envp);
+	// shell.pwd = get_env_clone("PWD", shell.our_env);
+	// printf("Initial PWD: %s\n", shell.pwd ? shell.pwd : "NULL");
+
+	init_shell(&shell, envp);
 	if (!shell.our_env)
 	{
 		printf("Error initializing environment.\n");
 		return 1;
 	}
 
-	shell.our_exp = env_to_exp(shell.our_env);
+	// shell.our_exp = env_to_exp(shell.our_env);
 	if (!shell.our_exp)
 	{
 		printf("Error initializing export list.\n");
@@ -69,8 +87,27 @@ int	main(int argc, char **argv, char **envp)
 			current_token = current_token->next;
 		}
 
+		// Handle 'pwd' command
+		if (ft_strcmp(shell.tokens->txt, "pwd") == 0)
+		{
+			ft_pwd(&shell); // Call the ft_pwd function
+		}
+
+		// Handle 'cd' command
+		else if (ft_strcmp(shell.tokens->txt, "cd") == 0)
+		{
+			if (!shell.tokens->next) // No argument provided
+			{
+				cd_noarg(&shell); // Call cd_noarg if 'cd' is typed alone
+			}
+			else // Argument provided
+			{
+				do_cd(&shell, shell.tokens->next->txt); // Call do_cd with the argument
+			}
+		}
+
 		// Handle 'env' command
-		if (ft_strcmp(shell.tokens->txt, "env") == 0)
+		else if (ft_strcmp(shell.tokens->txt, "env") == 0)
 		{
 			t_env *env_current = shell.our_env;
 			while (env_current)
@@ -133,8 +170,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 
 	// Free environment and export lists
-	free_env(&shell.our_env);
-	free_exp(&shell.our_exp);
-
+	free_shell(&shell);
 	return 0;
 }

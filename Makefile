@@ -34,6 +34,7 @@ SRCS =	$(SRCDIR)/libft/ft_strdup.c \
 		$(SRCDIR)/parsing2/dollar.c \
 		$(SRCDIR)/parsing2/merge.c \
 		$(SRCDIR)/build_in_function/pwd_cd.c \
+		$(SRCDIR)/main/init_shell.c \
 		$(SRCDIR)/main/main.c
 
 # Object files
@@ -49,7 +50,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS) -lreadline
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/env $(OBJDIR)/utils $(OBJDIR)/main $(OBJDIR)/build_in_function $(OBJDIR)/parsing2
+	@mkdir -p $(OBJDIR)/$(dir $<) $(OBJDIR)/libft $(OBJDIR)/tokenization $(OBJDIR)/env $(OBJDIR)/utils $(OBJDIR)/main $(OBJDIR)/build_in_function $(OBJDIR)/parsing2 $(OBJDIR)/shell
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

@@ -2,8 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #include "../libft/libft.h"
 #include "../parsing/parsing.h"
+#include "../env/env.h"
+#include "../main/main.h"
 
 
 int is_valid_n_flag(char *arg) {

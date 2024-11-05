@@ -1,11 +1,13 @@
-#include "../env/env.h"
-#include "../main/main.h"
+#include "builtins.h"
 
 int ft_pwd(t_minishell *shell)
 {
-	if (shell->pwd)
+	char	*pwd;
+
+	pwd = get_env_clone("PWD", shell->our_env);
+	if (pwd)
 	{
-		ft_printf("%s\n", shell->pwd);
+		ft_printf("%s\n", pwd);
 		return (0);
 	}
 	else
@@ -36,7 +38,6 @@ int update_oldpwd(t_minishell *shell, char *oldpath)
 int update_pwd(t_minishell *shell, char *path)
 {
 	char *fullstr;
-	char *pwd;
 
 	if (path)
 	{
@@ -45,9 +46,6 @@ int update_pwd(t_minishell *shell, char *path)
 		{
 			register_env_exp(fullstr, shell->our_env, shell->our_exp);
 			free(fullstr);
-			pwd = ft_strdup(path);
-			free(shell->pwd);
-			shell->pwd = pwd;
 			return (0);
 		}
 		return (1);
@@ -72,12 +70,10 @@ int do_cd(t_minishell *shell, char *path)
 {
 	char	*oldpath;
 	char	*newpath;
-	int		error;
 
-	oldpath = shell->pwd;
-	error = check_cd_errors(path);
-	if (error)
-		return (error);
+	oldpath = get_env_clone("PWD", shell->our_env);
+	if (check_cd_errors(path))
+		return (check_cd_errors(path));
 	if (chdir(path) == 0)
 	{
 		newpath = getcwd(NULL, 0);
@@ -88,11 +84,11 @@ int do_cd(t_minishell *shell, char *path)
 		}
 		update_oldpwd(shell, oldpath);
 		update_pwd(shell, newpath);    
-		return (free(oldpath), free(newpath), free(path), 0);
+		return (free(newpath), 0);
 	}
 	else
 	{
-		ft_printf("bash: cd: %s: No such file or directory", path);
+		ft_printf("bash: cd: %s: No such file or directory\n", path);
 		return (1);
 	}
 }
