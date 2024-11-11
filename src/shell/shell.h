@@ -15,7 +15,6 @@ typedef struct s_minishell
 	t_token	*tokens;
 	t_env	*our_env;
 	t_exp	*our_exp;
-	// char	*pwd;
 }	t_minishell;
 
 #endif

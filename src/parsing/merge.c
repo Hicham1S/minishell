@@ -31,4 +31,5 @@ void	finalize_tokens(t_token *tokens, t_env *env_clone)
 {
 	do_handle_dollar(tokens, env_clone);
 	merge_tokens(tokens);
+	separate_redirections(tokens);
 }

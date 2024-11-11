@@ -64,18 +64,11 @@ char	*expand_env_var(char *res, char *txt, int *i, t_env *env)
 		{
 			new_res = ft_strjoin(res, env_value);
 			free(res);
-			// if (txt[*i] == ' ')
-			// {
-			// 	char *temp_res = ft_strjoin(new_res, " ");
-			// 	free(new_res);
-			// 	return temp_res;
-			// }
 			return new_res;
 		}
 	}
 	return res;
 }
-
 
 void	handle_dollar(t_token *original, t_env *env)
 {
