@@ -71,3 +71,5 @@ int exec_relative(t_cmd *cmd, t_env **envs)
 	free(envp);
 	return (EXIT_FAILURE);
 }
+
+int exec_cmd ( )
