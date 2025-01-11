@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_env	*get_env(t_env *env, char *key)
 {
@@ -103,7 +103,6 @@ void	del_env(t_env **env, char *key)
 		current = current->next;
 	}
 }
-
 
 t_env	*init_env(char **envp)
 {

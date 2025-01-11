@@ -2,9 +2,8 @@
 # define MINISHELL_H
 
 # include "types.h"
-# include "utils.h"
 # include "builtins.h"
-# include "libft.h"
+# include "../libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
