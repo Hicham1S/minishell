@@ -25,4 +25,12 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+t_env	*get_env(t_env *env, char *key);
+t_env	*init_env(char **envp);
+void	free_env(t_env *env);
+
+t_token *init_tokens(char *str);
+void	free_tokens(t_token **tokens);
+
+
 #endif

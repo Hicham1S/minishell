@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 t_env	*get_env(t_env *env, char *key)
 {
@@ -128,28 +128,28 @@ t_env	*init_env(char **envp)
 }
 
 
-int main(int argc, char **argv, char **envp)
-{
-	t_env *env = init_env(envp);
+// int main(int argc, char **argv, char **envp)
+// {
+// 	t_env *env = init_env(envp);
 
-	t_env *current = env;
+// 	t_env *current = env;
 
-	while (current)
-	{
-		printf("%s=%s\n", current->key, current->value);
-		current = current->next;
-	}
+// 	while (current)
+// 	{
+// 		printf("%s=%s\n", current->key, current->value);
+// 		current = current->next;
+// 	}
 
-	current = env;
-	del_env(&env, "PATH");
-	del_env(&env, "OLDPWD");
-	del_env(&env, "LS_COLORS");
-	printf("\n\n\n/////////////////////////////////\n\n\n");
-	while (current)
-	{
-		printf("%s=%s\n", current->key, current->value);
-		current = current->next;
-	}
-	free_env(env);
-	return (0);
-}
+// 	current = env;
+// 	del_env(&env, "PATH");
+// 	del_env(&env, "OLDPWD");
+// 	del_env(&env, "LS_COLORS");
+// 	printf("\n\n\n/////////////////////////////////\n\n\n");
+// 	while (current)
+// 	{
+// 		printf("%s=%s\n", current->key, current->value);
+// 		current = current->next;
+// 	}
+// 	free_env(env);
+// 	return (0);
+// }

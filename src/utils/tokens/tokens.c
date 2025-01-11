@@ -180,7 +180,7 @@ t_token *init_tokens(char *str)
 	return (token);
 }
 
-void	print_tokens(t_token *token)
+static void	print_tokens(t_token *token)
 {
 	while (token)
 	{
@@ -189,34 +189,34 @@ void	print_tokens(t_token *token)
 	}
 }
 
-#include <readline/readline.h>
-#include <readline/history.h>
+// #include <readline/readline.h>
+// #include <readline/history.h>
 
-int main(void)
-{
-	char *input;
-	t_token *tokens;
+// int main(void)
+// {
+// 	char *input;
+// 	t_token *tokens;
 
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (!input) // Exit on EOF (Ctrl+D)
-		{
-			printf("exit\n");
-			break;
-		}
+// 	while (1)
+// 	{
+// 		input = readline("minishell> ");
+// 		if (!input) // Exit on EOF (Ctrl+D)
+// 		{
+// 			printf("exit\n");
+// 			break;
+// 		}
 
-		if (*input) // Add non-empty input to history
-			add_history(input);
+// 		if (*input) // Add non-empty input to history
+// 			add_history(input);
 
-		tokens = init_tokens(input);
+// 		tokens = init_tokens(input);
 
-		printf("Parsed Tokens:\n");
-		print_tokens(tokens);
+// 		printf("Parsed Tokens:\n");
+// 		print_tokens(tokens);
 
-		free_tokens(&tokens);
-		free(input);
-	}
+// 		free_tokens(&tokens);
+// 		free(input);
+// 	}
 
-	return 0;
-}
+// 	return 0;
+// }
