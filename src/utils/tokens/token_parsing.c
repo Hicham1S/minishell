@@ -1,50 +1,6 @@
 #include "../../../includes/minishell.h"
 #include "tokens.h"
 
-void    add_token(t_token **token, char *txt, t_qtype qtype)
-{
-	t_token *new;
-	t_token *current;
-
-	new = (t_token *)malloc(sizeof(t_token));
-	if (!new)
-		return;
-	new->txt = ft_strdup(txt);
-	if (!new->txt)
-	{
-		free(new);
-		return;
-	}
-	new->qtype = qtype;
-	new->next = NULL;
-	if (!(*token))
-	{
-		*token = new;
-		return;
-	}
-	current = *token;
-	while (current->next)
-		current = current->next;
-	current->next = new;
-}
-
-void	free_tokens(t_token **tokens)
-{
-	t_token	*current;
-	t_token	*temp;
-
-	if (!tokens || !*tokens)
-		return ;
-	current = *tokens;
-	while (current)
-	{
-		temp = current->next;
-		free(current->txt); 
-		free(current);
-		current = temp;
-	}
-	*tokens = NULL;
-}
 
 int double_quotes(t_token **token, char *str, int *i)
 {
@@ -144,79 +100,26 @@ int	redir_token(t_token **token, char *str, int *i)
 
 void parse_token(t_token **token, char *str, int *i)
 {
-	if (is_quote(str[*i]) == 1) // Single quote
+	if (is_quote(str[*i]) == 1)
 	{
 		if (!single_quotes(token, str, i))
 			return;
 	}
-	else if (is_quote(str[*i]) == 2) // Double quote
+	else if (is_quote(str[*i]) == 2)
 	{
 		if (!double_quotes(token, str, i))
 			return;
 	}
-	else if (is_redir(str[*i])) // Redirection
+	else if (is_redir(str[*i]))
 	{
 		if (!redir_token(token, str, i))
 			return;
 	}
-	else if (!is_space(str[*i])) // No quotes and not a space
+	else if (!is_space(str[*i]))
 	{
 		if (!no_quotes(token, str, i))
 			return;
 	}
 	else
-		(*i)++; // Skip spaces
+		(*i)++;
 }
-
-t_token *init_tokens(char *str)
-{
-	int     i;
-	t_token *token;
-
-	i = 0;
-	token = NULL;
-	while (str[i] != '\0')
-		parse_token(&token, str, &i);
-	return (token);
-}
-
-static void	print_tokens(t_token *token)
-{
-	while (token)
-	{
-		printf("Token: '%s', Type: %d\n", token->txt, token->qtype);
-		token = token->next;
-	}
-}
-
-// #include <readline/readline.h>
-// #include <readline/history.h>
-
-// int main(void)
-// {
-// 	char *input;
-// 	t_token *tokens;
-
-// 	while (1)
-// 	{
-// 		input = readline("minishell> ");
-// 		if (!input) // Exit on EOF (Ctrl+D)
-// 		{
-// 			printf("exit\n");
-// 			break;
-// 		}
-
-// 		if (*input) // Add non-empty input to history
-// 			add_history(input);
-
-// 		tokens = init_tokens(input);
-
-// 		printf("Parsed Tokens:\n");
-// 		print_tokens(tokens);
-
-// 		free_tokens(&tokens);
-// 		free(input);
-// 	}
-
-// 	return 0;
-// }

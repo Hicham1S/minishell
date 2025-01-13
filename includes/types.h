@@ -31,6 +31,7 @@ void	free_env(t_env *env);
 
 t_token *init_tokens(char *str);
 void	free_tokens(t_token **tokens);
+void	cleanup_tokens(t_token **token);
 
 
 #endif
