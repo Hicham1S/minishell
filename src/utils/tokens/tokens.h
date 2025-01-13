@@ -22,6 +22,8 @@ int     redir_token(t_token **token, char *str, int *i);
 void    parse_token(t_token **token, char *str, int *i);
 
 // Replace env
-char	*process_env_string(t_env *env, t_token *token);
-
+char	*append_str(char *str, const char *append);
+int 	is_env_var_start(t_token *token, size_t i);
+char	*handle_env_var(t_env *env, t_token *token,
+		size_t *i);
 #endif

@@ -44,38 +44,30 @@ char	*handle_env_var(t_env *env, t_token *token,
 	return (str);
 }
 
-static int is_env_var_start(t_token *token, size_t i)
+char	*append_str(char *str, const char *append)
+{
+	char	*new_str;
+	size_t	str_len;
+	size_t	append_len;
+	if (!append)
+		return (str);
+	str_len = str ? ft_strlen(str) : 0;
+	append_len = ft_strlen(append);
+	new_str = malloc(str_len + append_len + 1);
+	if (!new_str)
+		return (free(str), NULL);
+	if (str)
+		ft_strlcpy(new_str, str, str_len + 1);
+	else
+		new_str[0] = '\0';
+	ft_strlcat(new_str, append, str_len + append_len + 1);
+	free(str);
+	return (new_str);
+}
+
+int is_env_var_start(t_token *token, size_t i)
 {
 	return (token->txt[i] == '$' && token->txt[i + 1] &&
 			(is_alphanumu(token->txt[i + 1]) || token->txt[i + 1] == '?')
 			&& token->qtype != SINGLE);
-}
-
-char	*process_env_string(t_env *env, t_token *token)
-{
-	char	*result;
-	char	*temp;
-	size_t	i;
-	char	buff[2];
-
-	result = NULL;
-	i = 0;
-	buff[1] = '\0';
-	while (token->txt[i])
-	{
-		if (is_env_var_start(token, i))
-		{
-			temp = handle_env_var(env, token, &i);
-			result = ft_strjoin(result, temp);
-			free(temp);
-		}
-		else
-		{
-			buff[0] = token->txt[i++];
-			result = ft_strjoin(result, buff);
-		}
-		if (!result)
-			return (NULL);
-	}
-	return (result);
 }

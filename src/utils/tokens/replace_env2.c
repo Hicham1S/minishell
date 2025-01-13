@@ -1,6 +1,34 @@
 #include "../../../includes/minishell.h"
 #include "tokens.h"
 
+char	*process_env_string(t_env *env, t_token *token)
+{
+	char	*result;
+	char	*temp;
+	size_t	i;
+	char	buff[2];
+	result = NULL;
+	i = 0;
+	buff[1] = '\0';
+	while (token->txt[i])
+	{
+		if (is_env_var_start(token, i))
+		{
+			temp = handle_env_var(env, token, &i);
+			result = append_str(result, temp);
+			free(temp);
+		}
+		else
+		{
+			buff[0] = token->txt[i++];
+			result = append_str(result, buff);
+		}
+		if (!result)
+			return (NULL);
+	}
+	return (result);
+}
+
 char	*replace_env(t_env *env, t_token *token)
 {
 	char	*new_str;
