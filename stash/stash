@@ -1,0 +1,49 @@
+(replace_env.c)
+
+void	*ft_realloc(void *ptr, size_t size)
+{
+	void	*new_ptr;
+	size_t	old_size;
+	if (!ptr)
+		return (malloc(size));
+	if (!size)
+		return (free(ptr), NULL);
+	old_size = ft_strlen(ptr) + 1;
+	new_ptr = malloc(size);
+	if (!new_ptr)
+		return (free(ptr), NULL);
+	ft_memcpy(new_ptr, ptr, old_size < size ? old_size : size);
+	free(ptr);
+	return (new_ptr);
+}
+
+static size_t	calc_new_len(char *str, t_env *env)
+{
+	size_t	len;
+	if (!str || !env)
+		return (0);
+	len = ft_strlen(str);
+	if (!env->value)
+		return (len - ft_strlen(env->key) - 1);
+	return (len - ft_strlen(env->key) - 1 + ft_strlen(env->value));
+}
+static char	*append_str(char *str, const char *append)
+{
+	char	*new_str;
+	size_t	str_len;
+	size_t	append_len;
+	if (!append)
+		return (str);
+	str_len = str ? ft_strlen(str) : 0;
+	append_len = ft_strlen(append);
+	new_str = malloc(str_len + append_len + 1);
+	if (!new_str)
+		return (free(str), NULL);
+	if (str)
+		ft_strlcpy(new_str, str, str_len + 1);
+	else
+		new_str[0] = '\0';
+	ft_strlcat(new_str, append, str_len + append_len + 1);
+	free(str);
+	return (new_str);
+}

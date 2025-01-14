@@ -4,7 +4,14 @@
 # include <sys/types.h>
 # include <stdbool.h>
 
-typedef struct s_env
+typedef enum	e_qtype
+{
+	NO,
+	SINGLE,
+	DOUBLE
+}	t_qtype;
+
+typedef struct	s_env
 {
 	char			*key;
 	char			*value;
