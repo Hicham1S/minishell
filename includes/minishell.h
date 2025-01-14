@@ -18,14 +18,7 @@
 # include <errno.h>
 # include <string.h>
 
-typedef struct s_minishell
-{
-	bool	force_exit;
-	bool	heredoc;
-	int		signal;
-	t_env	*envs;
-}	t_minishell;
+void	redirs(t_cmd *cmd);
 
-extern t_minishell	g_minishell;
 
 #endif

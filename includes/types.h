@@ -11,4 +11,17 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_cmd
+{
+	char			*name;
+	char			**args;
+	int				infile;
+	int				outfile;
+	bool			has_heredoc;
+	bool			has_pipe;
+	pid_t			pid;
+	struct s_cmd	*next;
+}	t_cmd;
+
+
 #endif

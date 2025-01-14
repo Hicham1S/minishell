@@ -14,8 +14,8 @@
 
 int exec_builtin(t_cmd *cmd, t_env **envs)
 {
-	t_builtin   builtin[7];
-	size_t      i;
+	t_builtin	builtin[7];
+	size_t		j;
 
 	builtin[0] = (t_builtin){.name = "cd", .func = builtin_cd};
 	builtin[1] = (t_builtin){.name = "echo", .func = builtin_echo};
@@ -24,12 +24,12 @@ int exec_builtin(t_cmd *cmd, t_env **envs)
 	builtin[4] = (t_builtin){.name = "export", .func = builtin_export};
 	builtin[5] = (t_builtin){.name = "pwd", .func = builtin_pwd};
 	builtin[6] = (t_builtin){.name = "unset", .func = builtin_unset};
-	i = 0;
-	while (i < 7)
+	j = 0;
+	while (j < 7)
 	{
-		if(ft_strcmp(builtin[i].name, cmd->name) == 0)
-			return(builtin[i].fun(cmd, envs));
-		i++;
+		if(ft_strcmp(builtin[j].name, cmd->name) == 0)
+			return(builtin[j].fun(cmd, envs));
+		j++;
 	}
 	return(BUILTIN_NOT_FOUND);
 }
@@ -72,4 +72,23 @@ int exec_relative(t_cmd *cmd, t_env **envs)
 	return (EXIT_FAILURE);
 }
 
-int exec_cmd ( )
+int exec_cmd (t_cmd *cmds, t_env **envs)
+{
+	int backups[2];
+	int	exit_status;
+
+	if(cmds->next)
+		return(pipeline(cmds, envs));
+	backups[0] = dup(STDIN_FILENO);
+	backups[1] = dup(STDOUT_FILENO);
+	redirs(cmds);
+	exit_status = exec_builtin(cmds, envs);
+	dup2(backups[0], STDIN_FILENO);
+	dup2(backups[1], STDOUT_FILENO);
+	close(backups[0]);
+	close(backups[1]);
+	if (exit_status == BUILTIN_NOT_FOUND)
+		return (pipeline(cmds, envs));
+	close_redirs(cmds);
+	return (exit_status);
+}
