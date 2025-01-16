@@ -96,9 +96,14 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		tokens = init_tokens(input);
+		if (!tokens)
+			continue;
 		replace_tokens_with_env(env, tokens);
-		printf("Parsed Tokens with Replaced Variables:\n");
-		print_tokens(tokens);
+		if (redir_check(tokens, env))
+		{
+			printf("Parsed Tokens with Replaced Variables:\n");
+			print_tokens(tokens);
+		}
 		if (tokens)
 			free_tokens(&tokens);
 		free(input);

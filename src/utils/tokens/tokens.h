@@ -26,4 +26,7 @@ char	*append_str(char *str, const char *append);
 int 	is_env_var_start(t_token *token, size_t i);
 char	*handle_env_var(t_env *env, t_token *token,
 		size_t *i);
+
+// Redir check
+int redir_check(t_token *token, t_env *env);
 #endif

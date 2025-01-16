@@ -20,6 +20,7 @@ SRC = $(TOKENSDIR)/replace_env.c \
       $(TOKENSDIR)/token_init.c \
       $(TOKENSDIR)/token_management.c \
       $(TOKENSDIR)/token_parsing.c \
+      $(TOKENSDIR)/redir_check.c \
       $(ENVDIR)/env.c \
       $(ENVDIR)/env2.c
 
