@@ -26,11 +26,11 @@ t_token *init_tokens(char *str)
 
 	i = 0;
 	token = NULL;
-	if (unmatched_quotes(str))
-	{
-		printf("Unmatched Quotes.\n");
-		return (NULL);
-	}
+	// if (unmatched_quotes(str))
+	// {
+	// 	printf("Unmatched Quotes.\n");
+	// 	return (NULL);
+	// }
 	while (str[i] != '\0')
 		parse_token(&token, str, &i);
 	return (token);

@@ -75,39 +75,44 @@ static void	print_tokens(t_token *token)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	char	*input;
-	t_token	*tokens;
-	t_env	*env;
-
-	(void)argc;
-	(void)argv;
-	env = init_env(envp);
-
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*input)
-			add_history(input);
-		tokens = init_tokens(input);
-		if (!tokens)
-			continue;
-		replace_tokens_with_env(env, tokens);
-		if (redir_check(tokens, env))
-		{
-			printf("Parsed Tokens with Replaced Variables:\n");
-			print_tokens(tokens);
-		}
-		if (tokens)
-			free_tokens(&tokens);
-		free(input);
-	}
-	free(env);
-	return (0);
+    char    *input;
+    t_token *tokens;
+    t_env   *env;
+    (void)argc;
+    (void)argv;
+    env = init_env(envp);
+    while (1)
+    {
+        input = readline("minishell> ");
+        if (!input)
+        {
+            printf("exit\n");
+            break ;
+        }
+        if (*input)
+            add_history(input);
+            
+        // Add quote check here
+        if (unmatched_quotes(input))
+        {
+            printf("Error: Unmatched quotes\n");
+            free(input);
+            continue;
+        }
+        
+        tokens = init_tokens(input);
+        replace_tokens_with_env(env, tokens);
+        if (redir_check(tokens, env))
+        {
+            printf("Parsed Tokens with Replaced Variables:\n");
+            print_tokens(tokens);
+        }
+        if (tokens)
+            free_tokens(&tokens);
+        free(input);
+    }
+    free(env);
+    return (0);
 }

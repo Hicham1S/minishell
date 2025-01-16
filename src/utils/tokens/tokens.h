@@ -20,7 +20,7 @@ int     double_quotes(t_token **token, char *str, int *i);
 int     no_quotes(t_token **token, char *str, int *i);
 int     redir_token(t_token **token, char *str, int *i);
 void    parse_token(t_token **token, char *str, int *i);
-
+int		unmatched_quotes(char *str);
 // Replace env
 char	*append_str(char *str, const char *append);
 int 	is_env_var_start(t_token *token, size_t i);
