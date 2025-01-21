@@ -56,7 +56,10 @@ void	replace_tokens_with_env(t_env *env, t_token *token)
 	{
 		if (current->txt && ft_strchr(current->txt, '$'))
 			replace_env(env, current);
-		current = current->next;
+		if (ft_strcmp(current->txt, "<<") == 0)
+			current = current->next->next;
+		else
+			current = current->next;
 	}
 }
 

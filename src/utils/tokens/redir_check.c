@@ -14,16 +14,9 @@ int	print_unexpected(t_env *env, char *token, int new_status)
 
 static int	is_redir_token(char *str)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!is_redir(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+	return (ft_strcmp(str, "<") == 0 || ft_strcmp(str, "<<") == 0
+		|| ft_strcmp(str, ">") == 0 || ft_strcmp(str, ">>") == 0
+		|| ft_strcmp(str, "|") == 0);
 }
 
 int redir_check(t_token *token, t_env *env)
