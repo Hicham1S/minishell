@@ -18,6 +18,7 @@
 # include <string.h>
 
 void	redirs(t_cmd *cmd);
+void	close_redirs(t_cmd *cmds);
 
 
 #endif

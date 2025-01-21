@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarraj <hsarraj@student.42beirut.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 10:53:29 by hsarraj           #+#    #+#             */
-/*   Updated: 2025/01/10 10:53:29 by hsarraj          ###   ########.fr       */
+/*   Created: 2025/01/21 11:58:56 by hsarraj           #+#    #+#             */
+/*   Updated: 2025/01/21 11:58:56 by hsarraj          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "minishell.h"
 
-# include "types.h"
-
-typedef struct s_builtin
+int wait_processes(t_cmd *cmds)
 {
-	char	*name;
-	int		(*func)(t_cmd *cmd, t_env **envs);
-}	t_builtin;
+	int		status;
 
-int exec_builtin(t_cmd *cmd, t_env **envs);
-int exec_relative(t_cmd *cmd, t_env **envs);
+	status = 0;
+	while (cmds)
+	{
+		if (waitpid(cmds->pid, &status, 0) == -1)
+			return (perror("waitpid"), WEXITSTATUS(status));
+		cmds = cmds->next;
+	}
+	retrun (WEXITSTATUS(status));
+}
 
-
-#endif
+bool    is_child_process(t_cmd *cmds)
+{
+	while (cmds)
+	{
+		if (cmds->pid == 0)
+			return (true);
+		cmds = cmds->next;
+	}
+	return (false);
+}
