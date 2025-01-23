@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarraj <hsarraj@student.42beirut.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 15:36:06 by hsarraj           #+#    #+#             */
-/*   Updated: 2025/01/21 15:36:06 by hsarraj          ###   ########.fr       */
+/*   Created: 2025/01/23 12:46:25 by hsarraj           #+#    #+#             */
+/*   Updated: 2025/01/23 12:46:25 by hsarraj          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
-
-#include "libft.h"
-
-void	ft_putendl_fd(char *s, int fd)
+int builtin_unset(t_cmd *cmd, t_env **envs)
 {
-	write(fd, s, ft_strlen(s));
-	write(fd, "\n", 1);
+    size_t  i;
+
+    i = 1;
+    while (cmd->args[1])
+    {
+        if (!remove_env(envs, cmd->args[1]))
+            return (EXIT_FAILURE);
+        i++;
+    }
+    return(EXIT_SUCCESS);
 }
