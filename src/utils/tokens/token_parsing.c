@@ -6,7 +6,9 @@ int double_quotes(t_token **token, char *str, int *i)
 {
 	int     j;
 	char    *sub;
+	int		flag;
 	
+	flag = 0;
 	if (str[*i] == '\"')
 	{
 		(*i)++;
@@ -18,7 +20,10 @@ int double_quotes(t_token **token, char *str, int *i)
 		sub = ft_substr(str, *i, j - *i);
 		if (!sub)
 			return (0);
-		add_token(token, sub, DOUBLE);
+		if (str[j + 1] && !is_space(str[j + 1])
+			&& !is_redir(str[j + 1]))
+		flag = 1;
+		add_token(token, sub, DOUBLE, flag);
 		free(sub);
 		*i = j + 1;
 		return (1);
@@ -28,9 +33,11 @@ int double_quotes(t_token **token, char *str, int *i)
 
 int single_quotes(t_token **token, char *str, int *i)
 {
-	int     j;
-	char    *sub;
+	int		j;
+	char	*sub;
+	int		flag;
 	
+	flag = 0;
 	if (str[*i] == '\'')
 	{
 		(*i)++;
@@ -42,7 +49,10 @@ int single_quotes(t_token **token, char *str, int *i)
 		sub = ft_substr(str, *i, j - *i);
 		if (!sub)
 			return (0);
-		add_token(token, sub, SINGLE);
+		if (str[j + 1] &&!is_space(str[j + 1])
+			&& !is_redir(str[j + 1]))
+			flag = 1;
+		add_token(token, sub, SINGLE, flag);
 		free(sub);
 		*i = j + 1;
 		return (1);
@@ -54,7 +64,9 @@ int no_quotes(t_token **token, char *str, int *i)
 {
 	int     j;
 	char    *sub;
-
+	int		flag;
+	
+	flag = 0;
 	while (is_space(str[*i]))
 		(*i)++;
 	j = *i;
@@ -66,7 +78,10 @@ int no_quotes(t_token **token, char *str, int *i)
 		sub = ft_substr(str, j, *i - j);
 		if (sub)
 		{
-			add_token(token, sub, NO);
+			if (str[*i] && !is_space(str[*i]) &&
+				!is_redir(str[*i]))
+				flag = 1;
+			add_token(token, sub, NO, flag);
 			free(sub);
 		}
 	}
@@ -82,14 +97,14 @@ int	redir_token(t_token **token, char *str, int *i)
 		if (str[*i] == str[*i + 1])
 		{
 			sub = ft_substr(str, *i, 2);
-			add_token(token, sub, NO);
+			add_token(token, sub, NO, 0);
 			free(sub);
 			*i += 2;
 		}
 		else
 		{
 			sub = ft_substr(str, *i, 1);
-			add_token(token, sub, NO);
+			add_token(token, sub, NO, 0);
 			free(sub);
 			(*i)++;
 		}

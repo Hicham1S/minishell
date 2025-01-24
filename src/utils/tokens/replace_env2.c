@@ -56,8 +56,13 @@ void	replace_tokens_with_env(t_env *env, t_token *token)
 	{
 		if (current->txt && ft_strchr(current->txt, '$'))
 			replace_env(env, current);
-		if (ft_strcmp(current->txt, "<<") == 0)
-			current = current->next->next;
+		if (is_redir_token(current, "<<"))
+		{
+			if (current->next->next)
+				current = current->next->next;
+			else
+				break ;
+		}
 		else
 			current = current->next;
 	}
@@ -73,7 +78,7 @@ static void	print_tokens(t_token *token)
 	while (token)
 	{
 		if (token->txt)
-			printf("Token: '%s', Type: %d\n", token->txt, token->qtype);
+			printf("Token: '%s', Type: %d, Flag: %d\n", token->txt, token->qtype, token->merge_next);
 		token = token->next;
 	}
 }
@@ -187,7 +192,8 @@ int main(int argc, char **argv, char **envp)
 		if (redir_check(tokens, env))
 		{
 			replace_tokens_with_env(env, tokens);
-			printf("Parsed Tokens with Replaced Variables:\n");
+			merge_tokens(&tokens);
+			printf("\n\n\nParsed Tokens with Replaced Variables:\n");
 			print_tokens(tokens);
 			cmd = init_cmd(tokens);
 			print_cmd(cmd);

@@ -47,3 +47,43 @@ static char	*append_str(char *str, const char *append)
 	free(str);
 	return (new_str);
 }
+
+
+(token_management.c)
+void	remove_head(t_token **token)
+{
+	while (*token && (*token)->txt[0] == '\0')
+	{
+		*token = (*token)->next;
+		free_one_token(*token);
+	}
+}
+
+void	cleanup_tokens(t_token **token)
+{
+	t_token	*temp;
+	t_token	*current;
+	t_token	*prev;
+
+	prev = NULL;
+	if (!token || !*token)
+		return;
+	remove_head(token);
+	current = *token;
+	while (current)
+	{
+		if (current->txt[0] == '\0')
+		{
+			temp = current;
+			if (prev)
+				prev->next = current->next;
+			current = current->next;
+			free_one_token(temp);
+		}
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
+	}
+}
