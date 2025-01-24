@@ -7,6 +7,7 @@ SRCDIR = src
 UTILSDIR = $(SRCDIR)/utils
 TOKENSDIR = $(UTILSDIR)/tokens
 ENVDIR = $(UTILSDIR)/env
+CMDDIR = $(UTILSDIR)/command
 LIBFTDIR = libft
 
 # Libraries
@@ -22,7 +23,8 @@ SRC = $(TOKENSDIR)/replace_env.c \
       $(TOKENSDIR)/token_parsing.c \
       $(TOKENSDIR)/redir_check.c \
       $(ENVDIR)/env.c \
-      $(ENVDIR)/env2.c
+      $(ENVDIR)/env2.c \
+	#   $(CMDDIR)/tokens_to_arrstr.c
 
 # Object Files
 OBJ = $(SRC:.c=.o)

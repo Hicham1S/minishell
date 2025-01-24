@@ -23,8 +23,8 @@ typedef struct s_cmd
 	char			**args;
 	int				infile;
 	int				outfile;
-	bool			has_heredoc;
-	bool			has_pipe;
+	int				has_heredoc;
+	int				has_pipe;
 	pid_t			pid;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -46,5 +46,8 @@ void	del_env(t_env **env, char *key);
 t_token *init_tokens(char *str);
 void	free_tokens(t_token **tokens);
 void	cleanup_tokens(t_token **token);
+
+char	**tokens_to_arrstr(t_token *token);
+void	free_arrstr(char **arr);
 
 #endif

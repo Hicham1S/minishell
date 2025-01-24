@@ -78,6 +78,25 @@ static void	print_tokens(t_token *token)
 	}
 }
 
+// static void	print_arrstr(char **arr)
+// {
+// 	size_t	i;
+
+// 	if (!arr)
+// 	{
+// 		printf("Array is NULL\n");
+// 		return;
+// 	}
+// 	i = 0;
+// 	while (arr[i])
+// 	{
+// 		printf("arr[%zu]: %s\n", i, arr[i]);
+// 		i++;
+// 	}
+// 	if (i == 0)
+// 		printf("Array is empty\n");
+// }
+
 int main(int argc, char **argv, char **envp)
 {
     char    *input;
@@ -106,14 +125,18 @@ int main(int argc, char **argv, char **envp)
         }
         
         tokens = init_tokens(input);
-        replace_tokens_with_env(env, tokens);
         if (redir_check(tokens, env))
         {
+       		replace_tokens_with_env(env, tokens);
             printf("Parsed Tokens with Replaced Variables:\n");
             print_tokens(tokens);
         }
+		// char **arrstr = tokens_to_arrstr(tokens);
+		// print_arrstr(arrstr);
         if (tokens)
             free_tokens(&tokens);
+		// if (arrstr)
+		// 	free_arrstr(arrstr);
         free(input);
     }
     free(env);
