@@ -19,7 +19,7 @@ int builtin_unset(t_cmd *cmd, t_env **envs)
     i = 1;
     while (cmd->args[1])
     {
-        if (!remove_env(envs, cmd->args[1]))
+        if (!del_env(envs, cmd->args[1]))
             return (EXIT_FAILURE);
         i++;
     }

@@ -12,26 +12,30 @@
 
 #include "minishell.h"
 
+
 int exec_builtin(t_cmd *cmd, t_env **envs)
 {
-	t_builtin	builtin[7];
-	size_t		j;
+    int len;
 
-	builtin[0] = (t_builtin){.name = "cd", .func = builtin_cd};
-	builtin[1] = (t_builtin){.name = "echo", .func = builtin_echo};
-	builtin[2] = (t_builtin){.name = "env", .func = builtin_env};
-	builtin[3] = (t_builtin){.name = "exit", .func = builtin_exit};
-	builtin[4] = (t_builtin){.name = "export", .func = builtin_export};
-	builtin[5] = (t_builtin){.name = "pwd", .func = builtin_pwd};
-	builtin[6] = (t_builtin){.name = "unset", .func = builtin_unset};
-	j = 0;
-	while (j < 7)
-	{
-		if(ft_strcmp(builtin[j].name, cmd->name) == 0)
-			return(builtin[j].fun(cmd, envs));
-		j++;
-	}
-	return(BUILTIN_NOT_FOUND);
+    if (!cmd->args || !cmd->args[0])
+        return BUILTIN_NOT_FOUND;
+
+    len = ft_strlen(cmd->args[0]);
+    if (!ft_strncmp(cmd->args[0], "pwd", len) && len == 3)
+        return (builtin_pwd(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "env", len) && len == 3)
+        return (builtin_env(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "cd", len) && len == 2)
+        return (builtin_cd(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "export", len) && len == 6)
+        return (builtin_export(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "unset", len) && len == 5)
+        return (builtin_unset(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "echo", len) && len == 4)
+        return (builtin_echo(cmd, envs));
+    if (!ft_strncmp(cmd->args[0], "exit", len) && len == 4)
+        return (builtin_exit(cmd, envs));
+    return BUILTIN_NOT_FOUND;
 }
 
 static int	handle_errors(char *path)

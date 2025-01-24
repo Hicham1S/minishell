@@ -20,7 +20,6 @@ typedef struct	s_env
 
 typedef struct s_cmd
 {
-	char			*name;
 	char			**args;
 	int				infile;
 	int				outfile;
@@ -41,6 +40,8 @@ t_env	*get_env(t_env *env, char *key);
 void	set_env(t_env **env, char *key, char *value);
 t_env	*init_env(char **envp);
 void	free_env(t_env *env);
+void	del_env(t_env **env, char *key);
+
 
 t_token *init_tokens(char *str);
 void	free_tokens(t_token **tokens);
