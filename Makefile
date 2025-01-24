@@ -24,7 +24,8 @@ SRC = $(TOKENSDIR)/replace_env.c \
       $(TOKENSDIR)/redir_check.c \
       $(ENVDIR)/env.c \
       $(ENVDIR)/env2.c \
-	#   $(CMDDIR)/tokens_to_arrstr.c
+	  $(CMDDIR)/command.c \
+	  $(CMDDIR)/args.c \
 
 # Object Files
 OBJ = $(SRC:.c=.o)

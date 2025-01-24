@@ -12,7 +12,7 @@ int	print_unexpected(t_env *env, char *token, int new_status)
 	return (0);
 }
 
-static int	is_redir_token(t_token *token, char *to_compare)
+int	is_redir_token(t_token *token, char *to_compare)
 {
 	if (!token || token->qtype != NO)
 		return (0);

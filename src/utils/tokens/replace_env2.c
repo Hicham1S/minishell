@@ -97,48 +97,107 @@ static void	print_tokens(t_token *token)
 // 		printf("Array is empty\n");
 // }
 
+void print_cmd(t_cmd *cmd)
+{
+	t_cmd *current = cmd;
+	while (current)
+	{
+		printf("Command: \n");
+		printf("Infile: %d\n", current->infile);
+		printf("Outfile: %d\n", current->outfile);
+		printf("Has Pipe: %d\n", current->has_pipe);
+		printf("Has Heredoc: %d\n", current->has_heredoc);
+		if (current->args)
+		{
+			int i = 0;
+			while (current->args[i])
+			{
+				printf("Arg[%d]: %s\n", i, current->args[i]);
+				i++;
+			}
+		}
+		current = current->next;
+	}
+}
+
+void free_cmd(t_cmd *cmd)
+{
+    t_cmd *temp;
+
+    while (cmd)
+    {
+        temp = cmd->next; // Save the pointer to the next node
+
+        // Free arguments array
+        if (cmd->args)
+        {
+            for (int i = 0; cmd->args[i] != NULL; i++)
+                free(cmd->args[i]); // Free each argument string
+            free(cmd->args);       // Free the array itself
+            cmd->args = NULL;      // Avoid dangling pointers
+        }
+
+        // Close infile if valid and not a standard file descriptor
+        if (cmd->infile > 2)
+        {
+            close(cmd->infile);
+            cmd->infile = -1; // Mark as invalid after closing
+        }
+
+        // Close outfile if valid and not a standard file descriptor
+        if (cmd->outfile > 2)
+        {
+            close(cmd->outfile);
+            cmd->outfile = -1; // Mark as invalid after closing
+        }
+
+        free(cmd); // Free the current node
+        cmd = temp; // Move to the next node
+    }
+}
+
 int main(int argc, char **argv, char **envp)
 {
-    char    *input;
-    t_token *tokens;
-    t_env   *env;
-    (void)argc;
-    (void)argv;
-    env = init_env(envp);
-    while (1)
-    {
-        input = readline("minishell> ");
-        if (!input)
-        {
-            printf("exit\n");
-            break ;
-        }
-        if (*input)
-            add_history(input);
-            
-        // Add quote check here
-        if (unmatched_quotes(input))
-        {
-            printf("Error: Unmatched quotes\n");
-            free(input);
-            continue;
-        }
-        
-        tokens = init_tokens(input);
-        if (redir_check(tokens, env))
-        {
-       		replace_tokens_with_env(env, tokens);
-            printf("Parsed Tokens with Replaced Variables:\n");
-            print_tokens(tokens);
-        }
-		// char **arrstr = tokens_to_arrstr(tokens);
-		// print_arrstr(arrstr);
-        if (tokens)
-            free_tokens(&tokens);
-		// if (arrstr)
-		// 	free_arrstr(arrstr);
-        free(input);
-    }
-    free(env);
-    return (0);
+	char    *input;
+	t_token *tokens;
+	t_env   *env;
+	t_cmd   *cmd;
+	
+	(void)argc;
+	(void)argv;
+	env = init_env(envp);
+
+	while (1)
+	{
+		input = readline("minishell> ");
+		if (!input)
+		{
+			printf("exit\n");
+			break;
+		}
+		if (*input)
+			add_history(input);
+		if (unmatched_quotes(input))
+		{
+			printf("Error: Unmatched quotes\n");
+			free(input);
+			continue;
+		}
+		tokens = init_tokens(input);
+		if (redir_check(tokens, env))
+		{
+			replace_tokens_with_env(env, tokens);
+			printf("Parsed Tokens with Replaced Variables:\n");
+			print_tokens(tokens);
+			cmd = init_cmd(tokens);
+			print_cmd(cmd);
+			free_cmd(cmd);
+		}
+		if (tokens)
+			free_tokens(&tokens);
+		free(input);
+	}
+	free(env);
+	return (0);
 }
+

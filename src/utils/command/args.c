@@ -1,85 +1,87 @@
 #include "../../../includes/minishell.h"
 #include "command.h"
 
-static size_t	get_args_size(t_token *token, int limit[2])
+static size_t get_args_size(t_token *token, int limit[2])
 {
-	size_t	i;
-	t_token	*current;
-
-	i = -1;
-	current = token;
-	while (++i < (size_t)limit[0] && current)
-		current = current->next;
-	i = 0;
-	while (current
-		&& (size_t)limit[0] + i < (size_t)limit[1])
-	{
-		if ((current->txt[0] == '>' || current->txt[0] == '<')
-			&& current->qtype == NO)
-			current = current->next->next;
-		else if (ft_strcmp(current->txt, "") == 0)
-			current = current->next;
-		else
-		{
-			i++;
-			current = current->next;
-		}
-	}
-	return (i);
+    size_t  i = 0;
+    t_token *current = token;
+    int     j = 0;
+    while (j < limit[0] && current)
+    {
+        current = current->next;
+        j++;
+    }
+    while (current && j < limit[1])
+    {
+        if ((current->txt[0] == '>' || current->txt[0] == '<') 
+            && current->qtype == NO)
+        {
+            if (current->next)
+            {
+                current = current->next->next;
+                j += 2;
+            }
+            continue;
+        }
+        if (ft_strcmp(current->txt, "") == 0)
+        {
+            current = current->next;
+            j++;
+            continue;
+        }
+        i++;
+        current = current->next;
+        j++;
+    }
+    return (i);
 }
 
-static t_token	*filter_token(t_token *current, int *j)
+static char **fill_args(t_token *token, int limit[2], char **arrstr)
 {
-	if ((current->txt[0] == '>'
-			|| current->txt[0] == '<') && current->qtype == NO)
-	{
-		if (current->next)
-			current = current->next->next;
-		(*j)++;
-	}
-	else if (ft_strcmp(current->txt, "") == 0)
-	{
-		current = current->next;
-		(*j)++;
-	}
-	return (current);
+    t_token *current = token;
+    int     i = 0;
+    int     j = 0;
+
+    while (j < limit[0] && current)
+    {
+        current = current->next;
+        j++;
+    }
+    while (current && j < limit[1])
+    {
+        if ((current->txt[0] == '>' || current->txt[0] == '<') 
+            && current->qtype == NO)
+        {
+            if (current->next)
+            {
+                current = current->next->next;
+                j += 2;
+            }
+            continue;
+        }
+        if (ft_strcmp(current->txt, "") == 0)
+        {
+            current = current->next;
+            j++;
+            continue;
+        }
+        arrstr[i++] = ft_strdup(current->txt);
+        current = current->next;
+        j++;
+    }
+    arrstr[i] = NULL;
+    return (arrstr);
 }
 
-static char	**fill_args(t_token *token, int limit[2], char **arrstr)
+char **init_args(t_token *token, int limit[2])
 {
-	t_token	*current;
-	int		i;
-	int		j;
-
-	current = token;
-	i = 0;
-	j = 0;
-	while (j < limit[0] && current)
-	{
-		current = current->next;
-		j++;
-	}
-	while (current && j < limit[1])
-	{
-		current = filter_token(current, &j);
-		if (!current || j >= limit[1])
-			break ;
-		arrstr[i++] = ft_strdup(current->txt);
-		current = current->next;
-		j++;
-	}
-	arrstr[i] = NULL;
-	return (arrstr);
-}
-
-char	**init_args(t_token *token, int limit[2])
-{
-	char	**arrstr;
-	size_t	size;
-
-	size = get_args_size(token, limit);
-	arrstr = (char **)malloc((size + 1) * sizeof(char *));
-	if (!arrstr)
-		return (NULL);
-	return (fill_args(token, limit, arrstr));
+    char    **arrstr;
+    size_t  size;
+    
+    size = get_args_size(token, limit);
+    arrstr = (char **)malloc((size + 1) * sizeof(char *));
+    if (!arrstr)
+        return (NULL);
+    
+    return (fill_args(token, limit, arrstr));
 }

@@ -53,40 +53,40 @@ void	free_one_token(t_token *token)
 	free(token);
 }
 
-void	remove_head(t_token **token)
-{
-	while (*token && (*token)->txt[0] == '\0')
-	{
-		*token = (*token)->next;
-		free_one_token(*token);
-	}
-}
+// void	remove_head(t_token **token)
+// {
+// 	while (*token && (*token)->txt[0] == '\0')
+// 	{
+// 		*token = (*token)->next;
+// 		free_one_token(*token);
+// 	}
+// }
 
-void	cleanup_tokens(t_token **token)
-{
-	t_token	*temp;
-	t_token	*current;
-	t_token	*prev;
+// void	cleanup_tokens(t_token **token)
+// {
+// 	t_token	*temp;
+// 	t_token	*current;
+// 	t_token	*prev;
 
-	prev = NULL;
-	if (!token || !*token)
-		return;
-	remove_head(token);
-	current = *token;
-	while (current)
-	{
-		if (current->txt[0] == '\0')
-		{
-			temp = current;
-			if (prev)
-				prev->next = current->next;
-			current = current->next;
-			free_one_token(temp);
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
-	}
-}
+// 	prev = NULL;
+// 	if (!token || !*token)
+// 		return;
+// 	remove_head(token);
+// 	current = *token;
+// 	while (current)
+// 	{
+// 		if (current->txt[0] == '\0')
+// 		{
+// 			temp = current;
+// 			if (prev)
+// 				prev->next = current->next;
+// 			current = current->next;
+// 			free_one_token(temp);
+// 		}
+// 		else
+// 		{
+// 			prev = current;
+// 			current = current->next;
+// 		}
+// 	}
+// }
