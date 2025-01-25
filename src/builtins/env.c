@@ -41,7 +41,7 @@ int builtin_env(t_cmd *cmd, t_env **envs)
             if (!ft_putstr_fd(env->key, STDOUT_FILENO)
                 || !ft_putstr_fd("=", STDOUT_FILENO)
                 || !ft_putstr_fd(env->value, STDOUT_FILENO))
-                return(print_error("env"), EXIT_FAILURE);
+                return(error_write("env"), EXIT_FAILURE);
         }
         env = env->next;
     }
