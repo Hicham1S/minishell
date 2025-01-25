@@ -7,5 +7,4 @@ void	set_env(t_env **env, char *key, char *value);
 void	free_env(t_env *env);
 void	free_one_env(t_env *env);
 
-
 #endif

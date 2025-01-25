@@ -1,11 +1,13 @@
 #include "../../../includes/minishell.h"
 #include "command.h"
 
-void cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
+void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 {
-	int i = 0;
-	t_token *current = token;
+	int		i;
+	t_token	*current;
 
+	i = 0;
+	current = token;
 	while (i < limit[0] && current)
 	{
 		current = current->next;
@@ -18,9 +20,11 @@ void cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 			if (cmd->outfile > 2)
 				close(cmd->outfile);
 			if (current->next && is_redir_token(current, ">>"))
-				cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				cmd->outfile = open(current->next->txt, O_WRONLY
+						| O_CREAT | O_APPEND, 0644);
 			else if (current->next && is_redir_token(current, ">"))
-				cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				cmd->outfile = open(current->next->txt, O_WRONLY
+						| O_CREAT | O_TRUNC, 0644);
 		}
 		if (is_redir_token(current, "") && current->txt[0] == '<')
 		{
@@ -40,21 +44,22 @@ void cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 	}
 }
 
-t_cmd *new_cmd(t_token *token, int limit[2])
+t_cmd	*new_cmd(t_token *token, int limit[2])
 {
-    t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));
-    if (!new)
-        return (NULL);
+	t_cmd	*new;
 
-    new->infile = -1;
-    new->outfile = -1;
-    new->pid = -1;
-    new->has_pipe = 0;
-    new->has_heredoc = 0;
-    new->next = NULL;
-    new->args = init_args(token, limit);
-    cmd_redirs(new, token, limit);
-    return (new);
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!new)
+		return (NULL);
+	new->infile = -1;
+	new->outfile = -1;
+	new->pid = -1;
+	new->has_pipe = 0;
+	new->has_heredoc = 0;
+	new->next = NULL;
+	new->args = init_args(token, limit);
+	cmd_redirs(new, token, limit);
+	return (new);
 }
 
 void	add_cmd(t_cmd **cmd, t_cmd *new)
@@ -62,7 +67,7 @@ void	add_cmd(t_cmd **cmd, t_cmd *new)
 	t_cmd	*current;
 
 	if (!new)
-		return;
+		return ;
 	if (!*cmd)
 		*cmd = new;
 	else

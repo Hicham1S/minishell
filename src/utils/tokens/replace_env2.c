@@ -83,25 +83,6 @@ static void	print_tokens(t_token *token)
 	}
 }
 
-// static void	print_arrstr(char **arr)
-// {
-// 	size_t	i;
-
-// 	if (!arr)
-// 	{
-// 		printf("Array is NULL\n");
-// 		return;
-// 	}
-// 	i = 0;
-// 	while (arr[i])
-// 	{
-// 		printf("arr[%zu]: %s\n", i, arr[i]);
-// 		i++;
-// 	}
-// 	if (i == 0)
-// 		printf("Array is empty\n");
-// }
-
 void print_cmd(t_cmd *cmd)
 {
 	t_cmd *current = cmd;
@@ -206,4 +187,3 @@ int main(int argc, char **argv, char **envp)
 	free(env);
 	return (0);
 }
-

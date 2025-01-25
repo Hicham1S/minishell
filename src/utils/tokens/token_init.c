@@ -5,7 +5,7 @@ int	unmatched_quotes(char *str)
 {
 	int	i;
 	int	c;
-	
+
 	i = 0;
 	c = 0;
 	while (str[i])
@@ -19,7 +19,7 @@ int	unmatched_quotes(char *str)
 	return (c);
 }
 
-t_token *init_tokens(char *str)
+t_token	*init_tokens(char *str)
 {
 	int		i;
 	t_token	*token;
@@ -30,44 +30,3 @@ t_token *init_tokens(char *str)
 		parse_token(&token, str, &i);
 	return (token);
 }
-
-// static void	print_tokens(t_token *token)
-// {
-// 	while (token)
-// 	{
-// 		printf("Token: '%s', Type: %d\n", token->txt, token->qtype);
-// 		token = token->next;
-// 	}
-// }
-
-// #include <readline/readline.h>
-// #include <readline/history.h>
-
-// int main(void)
-// {
-// 	char *input;
-// 	t_token *tokens;
-
-// 	while (1)
-// 	{
-// 		input = readline("minishell> ");
-// 		if (!input) // Exit on EOF (Ctrl+D)
-// 		{
-// 			printf("exit\n");
-// 			break;
-// 		}
-
-// 		if (*input) // Add non-empty input to history
-// 			add_history(input);
-
-// 		tokens = init_tokens(input);
-
-// 		printf("Parsed Tokens:\n");
-// 		print_tokens(tokens);
-
-// 		free_tokens(&tokens);
-// 		free(input);
-// 	}
-
-// 	return 0;
-// }

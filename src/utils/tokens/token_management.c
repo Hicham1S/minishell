@@ -1,19 +1,19 @@
 #include "../../../includes/minishell.h"
 #include "tokens.h"
 
-void    add_token(t_token **token, char *txt, t_qtype qtype, int flag)
+void	add_token(t_token **token, char *txt, t_qtype qtype, int flag)
 {
-	t_token *new;
-	t_token *current;
+	t_token	*new;
+	t_token	*current;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
-		return;
+		return ;
 	new->txt = ft_strdup(txt);
 	if (!new->txt)
 	{
 		free(new);
-		return;
+		return ;
 	}
 	new->qtype = qtype;
 	new->merge_next = flag;
@@ -21,7 +21,7 @@ void    add_token(t_token **token, char *txt, t_qtype qtype, int flag)
 	if (!(*token))
 	{
 		*token = new;
-		return;
+		return ;
 	}
 	current = *token;
 	while (current->next)
@@ -40,7 +40,7 @@ void	free_tokens(t_token **tokens)
 	while (current)
 	{
 		temp = current->next;
-		free(current->txt); 
+		free(current->txt);
 		free(current);
 		current = temp;
 	}
@@ -53,4 +53,3 @@ void	free_one_token(t_token *token)
 	token->next = NULL;
 	free(token);
 }
-

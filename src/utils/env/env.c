@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hsarraj <hsarraj@student.42beirut.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 12:58:30 by hsarraj           #+#    #+#             */
-/*   Updated: 2025/01/25 12:58:30 by hsarraj          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/minishell.h"
 #include "env.h"
 
@@ -69,18 +57,18 @@ void	set_env(t_env **env, char *key, char *value)
 
 void	free_env(t_env *env)
 {
-	t_env *temp;
+	t_env	*temp;
 
-    while (env)
-    {
-        temp = env;
-        env = env->next;
+	while (env)
+	{
+		temp = env;
+		env = env->next;
 		if (temp->key)
-    	    free(temp->key);
+			free(temp->key);
 		if (temp->value)
-        	free(temp->value);
-        free(temp);
-    }
+			free(temp->value);
+		free(temp);
+	}
 }
 
 void	free_one_env(t_env *env)

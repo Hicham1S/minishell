@@ -87,3 +87,132 @@ void	cleanup_tokens(t_token **token)
 		}
 	}
 }
+
+(args.c)
+static size_t get_args_size(t_token *token, int limit[2])
+{
+	size_t  i = 0;
+	t_token *current = token;
+	int     j = 0;
+	while (j < limit[0] && current)
+	{
+		current = current->next;
+		j++;
+	}
+	while (current && j < limit[1])
+	{
+		if ((current->txt[0] == '>' || current->txt[0] == '<') 
+			&& current->qtype == NO)
+		{
+			if (current->next)
+			{
+				current = current->next->next;
+				j += 2;
+			}
+			continue;
+		}
+		if (ft_strcmp(current->txt, "") == 0)
+		{
+			current = current->next;
+			j++;
+			continue;
+		}
+		i++;
+		current = current->next;
+		j++;
+	}
+	return (i);
+}
+
+static char **fill_args(t_token *token, int limit[2], char **arrstr)
+{
+	t_token *current = token;
+	int     i = 0;
+	int     j = 0;
+
+	while (j < limit[0] && current)
+	{
+		current = current->next;
+		j++;
+	}
+	while (current && j < limit[1])
+	{
+		if ((current->txt[0] == '>' || current->txt[0] == '<') 
+			&& current->qtype == NO)
+		{
+			if (current->next)
+			{
+				current = current->next->next;
+				j += 2;
+			}
+			continue;
+		}
+		if (ft_strcmp(current->txt, "") == 0)
+		{
+			current = current->next;
+			j++;
+			continue;
+		}
+		arrstr[i++] = ft_strdup(current->txt);
+		current = current->next;
+		j++;
+	}
+	arrstr[i] = NULL;
+	return (arrstr);
+}
+
+(tokens_to_arrstr.c)
+
+static size_t	get_arrstrlen(t_token *token)
+{
+	size_t		i;
+	t_token	*current;
+
+	i = 0;
+	current = token;
+	while (current && ft_strcmp(current->txt, "") != 0)
+	{
+		i++;
+		current = current->next;
+	}
+	return (i);
+}
+
+char	**tokens_to_arrstr(t_token *token)
+{
+	size_t	i;
+	size_t	len;
+	t_token	*current;
+	char	**tokens;
+
+	i = 0;
+	len = get_arrstrlen(token);
+	tokens = (char **)malloc((len + 1) * sizeof(char *));
+	current = token;
+	while (i < len)
+	{
+		if (ft_strcmp(current->txt, "") != 0)
+		{
+			tokens[i] = ft_strdup(current->txt);
+			i++;
+		}
+		current = current->next;
+	}
+	tokens[i] = NULL;
+	return (tokens);
+}
+
+void	free_arrstr(char **arr)
+{
+	size_t	i;
+
+	if (!arr)
+		return;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}

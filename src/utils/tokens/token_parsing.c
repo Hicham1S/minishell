@@ -1,13 +1,12 @@
 #include "../../../includes/minishell.h"
 #include "tokens.h"
 
-
-int double_quotes(t_token **token, char *str, int *i)
+int	double_quotes(t_token **token, char *str, int *i)
 {
-	int     j;
-	char    *sub;
+	int		j;
+	char	*sub;
 	int		flag;
-	
+
 	flag = 0;
 	if (str[*i] == '\"')
 	{
@@ -22,7 +21,7 @@ int double_quotes(t_token **token, char *str, int *i)
 			return (0);
 		if (str[j + 1] && !is_space(str[j + 1])
 			&& !is_redir(str[j + 1]))
-		flag = 1;
+			flag = 1;
 		add_token(token, sub, DOUBLE, flag);
 		free(sub);
 		*i = j + 1;
@@ -31,12 +30,12 @@ int double_quotes(t_token **token, char *str, int *i)
 	return (0);
 }
 
-int single_quotes(t_token **token, char *str, int *i)
+int	single_quotes(t_token **token, char *str, int *i)
 {
 	int		j;
 	char	*sub;
 	int		flag;
-	
+
 	flag = 0;
 	if (str[*i] == '\'')
 	{
@@ -60,12 +59,12 @@ int single_quotes(t_token **token, char *str, int *i)
 	return (0);
 }
 
-int no_quotes(t_token **token, char *str, int *i)
+int	no_quotes(t_token **token, char *str, int *i)
 {
-	int     j;
-	char    *sub;
+	int		j;
+	char	*sub;
 	int		flag;
-	
+
 	flag = 0;
 	while (is_space(str[*i]))
 		(*i)++;
@@ -78,8 +77,8 @@ int no_quotes(t_token **token, char *str, int *i)
 		sub = ft_substr(str, j, *i - j);
 		if (sub)
 		{
-			if (str[*i] && !is_space(str[*i]) &&
-				!is_redir(str[*i]))
+			if (str[*i] && !is_space(str[*i])
+				&& !is_redir(str[*i]))
 				flag = 1;
 			add_token(token, sub, NO, flag);
 			free(sub);
@@ -113,27 +112,27 @@ int	redir_token(t_token **token, char *str, int *i)
 	return (0);
 }
 
-void parse_token(t_token **token, char *str, int *i)
+void	parse_token(t_token **token, char *str, int *i)
 {
 	if (is_quote(str[*i]) == 1)
 	{
 		if (!single_quotes(token, str, i))
-			return;
+			return ;
 	}
 	else if (is_quote(str[*i]) == 2)
 	{
 		if (!double_quotes(token, str, i))
-			return;
+			return ;
 	}
 	else if (is_redir(str[*i]))
 	{
 		if (!redir_token(token, str, i))
-			return;
+			return ;
 	}
 	else if (!is_space(str[*i]))
 	{
 		if (!no_quotes(token, str, i))
-			return;
+			return ;
 	}
 	else
 		(*i)++;

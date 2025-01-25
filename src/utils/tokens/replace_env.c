@@ -7,7 +7,7 @@ char	*get_next_key(t_token *token, int start)
 
 	start++;
 	if (token->txt[start] == '?')
-			return (ft_strdup("?"));
+		return (ft_strdup("?"));
 	i = start;
 	while (token->txt[i] && is_alphanumu(token->txt[i]))
 		i++;
@@ -49,9 +49,13 @@ char	*append_str(char *str, const char *append)
 	char	*new_str;
 	size_t	str_len;
 	size_t	append_len;
+
 	if (!append)
 		return (str);
-	str_len = str ? ft_strlen(str) : 0;
+	if (str)
+		str_len = ft_strlen(str);
+	else
+		str_len = 0;
 	append_len = ft_strlen(append);
 	new_str = malloc(str_len + append_len + 1);
 	if (!new_str)
@@ -65,9 +69,9 @@ char	*append_str(char *str, const char *append)
 	return (new_str);
 }
 
-int is_env_var_start(t_token *token, size_t i)
+int	is_env_var_start(t_token *token, size_t i)
 {
-	return (token->txt[i] == '$' && token->txt[i + 1] &&
-			(is_alphanumu(token->txt[i + 1]) || token->txt[i + 1] == '?')
-			&& token->qtype != SINGLE);
+	return (token->txt[i] == '$' && token->txt[i + 1]
+		&& (is_alphanumu(token->txt[i + 1]) || token->txt[i + 1] == '?')
+		&& token->qtype != SINGLE);
 }

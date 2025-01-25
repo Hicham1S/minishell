@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env2.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hsarraj <hsarraj@student.42beirut.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/23 14:25:36 by hsarraj           #+#    #+#             */
-/*   Updated: 2025/01/23 14:25:36 by hsarraj          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
+#include "../../../includes/minishell.h"
 #include "env.h"
 
 void	del_env(t_env **env, char *key)
@@ -23,7 +11,7 @@ void	del_env(t_env **env, char *key)
 		temp = *env;
 		*env = (*env)->next;
 		free_one_env(temp);
-		return;
+		return ;
 	}
 	current = *env;
 	while (current && current->next)
@@ -33,7 +21,7 @@ void	del_env(t_env **env, char *key)
 			temp = current->next;
 			current->next = current->next->next;
 			free_one_env(temp);
-			return;
+			return ;
 		}
 		current = current->next;
 	}
@@ -62,30 +50,3 @@ t_env	*init_env(char **envp)
 	set_env(&env, "?", "0");
 	return (env);
 }
-
-
-// int main(int argc, char **argv, char **envp)
-// {
-// 	t_env *env = init_env(envp);
-
-// 	t_env *current = env;
-
-// 	while (current)
-// 	{
-// 		printf("%s=%s\n", current->key, current->value);
-// 		current = current->next;
-// 	}
-
-// 	current = env;
-// 	del_env(&env, "PATH");
-// 	del_env(&env, "OLDPWD");
-// 	del_env(&env, "LS_COLORS");
-// 	printf("\n\n\n/////////////////////////////////\n\n\n");
-// 	while (current)
-// 	{
-// 		printf("%s=%s\n", current->key, current->value);
-// 		current = current->next;
-// 	}
-// 	free_env(env);
-// 	return (0);
-// }
