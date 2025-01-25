@@ -1,5 +1,6 @@
 #include "../../../includes/minishell.h"
 #include "tokens.h"
+#include "../command/command.h"
 
 char	*process_env_string(t_env *env, t_token *token)
 {
@@ -106,48 +107,12 @@ void print_cmd(t_cmd *cmd)
 	}
 }
 
-void free_cmd(t_cmd *cmd)
-{
-    t_cmd *temp;
-
-    while (cmd)
-    {
-        temp = cmd->next; // Save the pointer to the next node
-
-        // Free arguments array
-        if (cmd->args)
-        {
-            for (int i = 0; cmd->args[i] != NULL; i++)
-                free(cmd->args[i]); // Free each argument string
-            free(cmd->args);       // Free the array itself
-            cmd->args = NULL;      // Avoid dangling pointers
-        }
-
-        // Close infile if valid and not a standard file descriptor
-        if (cmd->infile > 2)
-        {
-            close(cmd->infile);
-            cmd->infile = -1; // Mark as invalid after closing
-        }
-
-        // Close outfile if valid and not a standard file descriptor
-        if (cmd->outfile > 2)
-        {
-            close(cmd->outfile);
-            cmd->outfile = -1; // Mark as invalid after closing
-        }
-
-        free(cmd); // Free the current node
-        cmd = temp; // Move to the next node
-    }
-}
-
 int main(int argc, char **argv, char **envp)
 {
-	char    *input;
-	t_token *tokens;
-	t_env   *env;
-	t_cmd   *cmd;
+	char	*input;
+	t_token	*tokens;
+	t_env	*env;
+	t_cmd	*cmd;
 	
 	(void)argc;
 	(void)argv;

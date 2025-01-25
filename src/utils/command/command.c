@@ -1,49 +1,6 @@
 #include "../../../includes/minishell.h"
 #include "command.h"
 
-void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
-{
-	int		i;
-	t_token	*current;
-
-	i = 0;
-	current = token;
-	while (i < limit[0] && current)
-	{
-		current = current->next;
-		i++;
-	}
-	while (current && i < limit[1])
-	{
-		if (is_redir_token(current, "") && current->txt[0] == '>')
-		{
-			if (cmd->outfile > 2)
-				close(cmd->outfile);
-			if (current->next && is_redir_token(current, ">>"))
-				cmd->outfile = open(current->next->txt, O_WRONLY
-						| O_CREAT | O_APPEND, 0644);
-			else if (current->next && is_redir_token(current, ">"))
-				cmd->outfile = open(current->next->txt, O_WRONLY
-						| O_CREAT | O_TRUNC, 0644);
-		}
-		if (is_redir_token(current, "") && current->txt[0] == '<')
-		{
-			if (cmd->infile > 2)
-				close(cmd->infile);
-			if (current->next && is_redir_token(current, "<"))
-				cmd->infile = open(current->next->txt, O_RDONLY);
-		}
-		if (is_redir_token(current, "<<"))
-		{
-			cmd->has_heredoc = 1;
-			if (current->next)
-				current = current->next;
-		}
-		current = current->next;
-		i++;
-	}
-}
-
 t_cmd	*new_cmd(t_token *token, int limit[2])
 {
 	t_cmd	*new;
@@ -79,6 +36,15 @@ void	add_cmd(t_cmd **cmd, t_cmd *new)
 	}
 }
 
+static void	skip_non_pipe_tokens(t_token **current, int *limit)
+{
+	while (*current && !is_redir_token(*current, "|"))
+	{
+		(*limit)++;
+		*current = (*current)->next;
+	}
+}
+
 t_cmd	*init_cmd(t_token *token)
 {
 	int		limit[2];
@@ -92,11 +58,7 @@ t_cmd	*init_cmd(t_token *token)
 	current = token;
 	while (current)
 	{
-		while (current && !is_redir_token(current, "|"))
-		{
-			limit[1]++;
-			current = current->next;
-		}
+		skip_non_pipe_tokens(&current, &limit[1]);
 		new = new_cmd(token, limit);
 		if (!new)
 			return (NULL);
@@ -109,4 +71,33 @@ t_cmd	*init_cmd(t_token *token)
 		limit[1]++;
 	}
 	return (cmd);
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	t_cmd *temp;
+
+	while (cmd)
+	{
+		temp = cmd->next;
+		if (cmd->args)
+		{
+			for (int i = 0; cmd->args[i] != NULL; i++)
+				free(cmd->args[i]);
+			free(cmd->args);
+			cmd->args = NULL;
+		}
+		if (cmd->infile > 2)
+		{
+			close(cmd->infile);
+			cmd->infile = -1;
+		}
+		if (cmd->outfile > 2)
+		{
+			close(cmd->outfile);
+			cmd->outfile = -1;
+		}
+		free(cmd);
+		cmd = temp;
+	}
 }
