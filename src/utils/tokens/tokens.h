@@ -8,7 +8,7 @@ int	is_quote(char c);
 int	is_alphanumu(char c);
 
 // Token management
-void    add_token(t_token **token, char *txt, t_qtype qtype);
+void    add_token(t_token **token, char *txt, t_qtype qtype, int flag);
 void    free_tokens(t_token **tokens);
 void    free_one_token(t_token *token);
 void    remove_head(t_token **token);
@@ -29,4 +29,8 @@ char	*handle_env_var(t_env *env, t_token *token,
 
 // Redir check
 int redir_check(t_token *token, t_env *env);
+
+// Token merge
+void	merge_tokens(t_token **token);
+
 #endif

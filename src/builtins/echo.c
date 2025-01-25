@@ -46,5 +46,21 @@ int builtin_echo(t_cmd *cmd, t_env **envs)
     int     i;
 
     (void)envs;
-    i = 1 + handle_options()
+    i = 1 + handle_options(cmd->args, &n_option);
+    while (cmd->args &&cmd->args[i])
+    {
+        if (cmd->args[i][0])
+        {
+            if (!ft_putchar_fd(cmd->args[i], STDOUT_FILENO))
+                return (print_error("echo"), EXIT_FAILURE);
+            if (cmd->args[i + 1])
+                if (!ft_putstr_fd(" ", STDOUT_FILENO))
+                    return (print_error("echo"), EXIT_FAILURE);
+        }
+        i++;
+    }
+    if (!n_option)
+        if(!ft_putstr_fd("\n", STDOUT_FILENO))
+			return (error_write("echo"), EXIT_FAILURE);
+	return (EXIT_SUCCESS);   
 }

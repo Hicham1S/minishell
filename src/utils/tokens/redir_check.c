@@ -12,7 +12,7 @@ int	print_unexpected(t_env *env, char *token, int new_status)
 	return (0);
 }
 
-static int	is_redir_token(t_token *token, char *to_compare)
+int	is_redir_token(t_token *token, char *to_compare)
 {
 	if (!token || token->qtype != NO)
 		return (0);
@@ -25,7 +25,7 @@ static int	is_redir_token(t_token *token, char *to_compare)
 		|| ft_strcmp(token->txt, "|") == 0);
 }
 
-static int	check_and(t_token *token)
+static int	check_or(t_token *token)
 {
 	t_token	*current;
 
@@ -45,7 +45,7 @@ int	redir_check(t_token *token, t_env *env)
 	t_token	*current;
 
 	current = token;
-	if (is_redir_token(current, "|") || !check_and(token))
+	if (is_redir_token(current, "|") || !check_or(token))
 		return (print_unexpected(env, "|", 2));
 	while (current && current->next)
 	{
