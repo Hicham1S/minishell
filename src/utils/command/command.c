@@ -75,28 +75,26 @@ t_cmd	*init_cmd(t_token *token)
 
 void	free_cmd(t_cmd *cmd)
 {
-	t_cmd *temp;
+	t_cmd	*temp;
+	int		i;
 
 	while (cmd)
 	{
 		temp = cmd->next;
 		if (cmd->args)
 		{
-			for (int i = 0; cmd->args[i] != NULL; i++)
+			i = -1;
+			while (cmd->args[++i] != NULL)
 				free(cmd->args[i]);
 			free(cmd->args);
 			cmd->args = NULL;
 		}
 		if (cmd->infile > 2)
-		{
 			close(cmd->infile);
-			cmd->infile = -1;
-		}
+		cmd->infile = -1;
 		if (cmd->outfile > 2)
-		{
 			close(cmd->outfile);
-			cmd->outfile = -1;
-		}
+		cmd->outfile = -1;
 		free(cmd);
 		cmd = temp;
 	}
