@@ -4,6 +4,7 @@
 # include "types.h"
 # include "builtins.h"
 # include "../libft/libft.h"
+#include "utils.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
