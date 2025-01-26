@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	error_invalid(char *path)
+static	void	error_invalid(char *path)
 {
 	struct stat	sb;
 
@@ -27,7 +27,7 @@ static void	error_invalid(char *path)
 		ft_putstr_fd(": Unknown error\n", STDERR_FILENO);
 }
 
-static char	*home_path(t_env **envs)
+static	char	*home_path(t_env **envs)
 {
 	t_env	*env;
 
@@ -37,7 +37,7 @@ static char	*home_path(t_env **envs)
 	return (env->value);
 }
 
-static char	*get_path(t_cmd *cmd, t_env **envs)
+static	char	*get_path(t_cmd *cmd, t_env **envs)
 {
 	size_t	i;
 	char	*path;
@@ -64,7 +64,8 @@ static char	*get_path(t_cmd *cmd, t_env **envs)
 	}
 	return (ft_strdup(path));
 }
-static void	tilted_path(t_env **envs, char **path)
+
+static	void	tilted_path(t_env **envs, char **path)
 {
 	char	*home;
 	char	*tmp;
@@ -78,26 +79,26 @@ static void	tilted_path(t_env **envs, char **path)
 	}
 }
 
-int builtin_cd(t_cmd *cmd, t_env **envs)
+int	builtin_cd(t_cmd *cmd, t_env **envs)
 {
-    char    *path;
-    char    current[1024];
+	char	*path;
+	char	current[1024];
 
-    path = get_path(cmd, envs);
-    if (path && path[0] == '~')
-        tilted_path(envs, &path);
-    if (!path)
-        return (EXIT_FAILURE);
-    if (path[0])
-    {
-        if(chdir(path) == -1)
-        {
-            error_invalid(path);
-            return (free(path), EXIT_FAILURE);
-        }
-        if (getcwd(current, 1024))
-            set_env(envs, "PWD", ft_strdup(current));
-    }
-    free(path);
-    return (EXIT_SUCCESS);
+	path = get_path(cmd, envs);
+	if (path && path[0] == '~')
+		tilted_path(envs, &path);
+	if (!path)
+		return (EXIT_FAILURE);
+	if (path[0])
+	{
+		if (chdir(path) == -1)
+		{
+			error_invalid(path);
+			return (free(path), EXIT_FAILURE);
+		}
+		if (getcwd(current, 1024))
+			set_env(envs, "PWD", ft_strdup(current));
+	}
+	free(path);
+	return (EXIT_SUCCESS);
 }

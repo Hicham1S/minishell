@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-int builtin_unset(t_cmd *cmd, t_env **envs)
+int	builtin_unset(t_cmd *cmd, t_env **envs)
 {
-    size_t  i;
+	size_t	i;
 
-    i = 1;
-    while (cmd->args[1])
-    {
-        if (!del_env(envs, cmd->args[1]))
-            return (EXIT_FAILURE);
-        i++;
-    }
-    return(EXIT_SUCCESS);
+	i = 1;
+	while (cmd->args[1])
+	{
+		if (!del_env(envs, cmd->args[1]))
+			return (EXIT_FAILURE);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }
