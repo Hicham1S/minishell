@@ -18,7 +18,7 @@ int	exec_builtin(t_cmd *cmd, t_env **envs)
     int	len;
 
     if (!cmd->args || !cmd->args[0])
-        return BUILTIN_NOT_FOUND;
+        return (BUILTIN_NOT_FOUND);
 
     len = ft_strlen(cmd->args[0]);
     if (!ft_strncmp(cmd->args[0], "pwd", len) && len == 3)
