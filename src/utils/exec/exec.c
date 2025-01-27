@@ -13,9 +13,9 @@
 #include "minishell.h"
 
 
-int exec_builtin(t_cmd *cmd, t_env **envs)
+int	exec_builtin(t_cmd *cmd, t_env **envs)
 {
-    int len;
+    int	len;
 
     if (!cmd->args || !cmd->args[0])
         return BUILTIN_NOT_FOUND;
@@ -35,7 +35,7 @@ int exec_builtin(t_cmd *cmd, t_env **envs)
         return (builtin_echo(cmd, envs));
     if (!ft_strncmp(cmd->args[0], "exit", len) && len == 4)
         return (builtin_exit(cmd, envs));
-    return BUILTIN_NOT_FOUND;
+    return (BUILTIN_NOT_FOUND);
 }
 
 static int	handle_errors(char *path)
@@ -55,14 +55,14 @@ int exec_relative(t_cmd *cmd, t_env **envs)
 {
 	char	*path;
 	int		error_code;
-	char 	**envp;
+	char	**envp;
 	size_t	i;
 
-	if(!cmd->name[0])
+	if (!cmd->name[0])
 		return (EXIT_SUCCESS);
 	path = resolve_path(cmd->name, *envs, F_ok);
-	if(!path)
-		return(error(cmd->name, "command not found"), 127);
+	if (!path)
+		return (error(cmd->name, "command not found"), 127);
 	error_code = handle_errors(path);
 	if (error_code != EXIT_SUCCESS)
 		return (free(path), error_code);
@@ -70,18 +70,18 @@ int exec_relative(t_cmd *cmd, t_env **envs)
 	execve(path, cmd->args, envp);
 	free(path);
 	i = 0;
-	while(envp[i])
+	while (envp[i])
 		free(envp[i++]);
 	free(envp);
 	return (EXIT_FAILURE);
 }
 
-int exec_cmd (t_cmd *cmds, t_env **envs)
+int	exec_cmd	(t_cmd *cmds, t_env **envs)
 {
-	int backups[2];
+	int	backups[2];
 	int	exit_status;
 
-	if(cmds->next)
+	if (cmds->next)
 		return(pipeline(cmds, envs));
 	backups[0] = dup(STDIN_FILENO);
 	backups[1] = dup(STDOUT_FILENO);
