@@ -11,4 +11,7 @@
 // utils/error.c
 void	error(char *msg, char *more);
 
+//utils/exec/redires2.c
+void	redir_heredoc2(t_cmd *cmd);
+
 #endif
