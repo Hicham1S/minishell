@@ -31,3 +31,11 @@ void	error_write(char *cmd)
 	ft_putstr_fd(": write error: ", STDERR_FILENO);
 	ft_putstr_fd("No space left on device\n", STDERR_FILENO);
 }
+
+void	error_heredoc(char *delimiter)
+{
+	ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
+	ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(delimiter, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
+}
