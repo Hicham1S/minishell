@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	main_signal(int signal, t_cmd *cmd, t_env *envs)
+{
+	g_exit_status = signal;
+	if (signal == SIGINT)
+	{
+		if (!cmd->has_heredoc)
+			write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		set_env(envs, "?", ft_itoa(128 + g_exit_status));
+	}
+}
 
 void	heredoc_signal(int signal, t_cmd *cmd)
 {
