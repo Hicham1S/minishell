@@ -1,0 +1,25 @@
+This is a step by step guide on how the parsing works
+
+1-	Quotation checking: using simple function that checks that all the quotations present are closed correctly
+
+2-	Token initialization:
+		I made a linked list called t_token containing the text, an enum(t_qtype) indicating its quotation type
+		and a flag called merge_next which will help us handle cases such as e"ch"'o' into registering as echo
+		and not e, ch and o seperately.
+
+		The process starts with the function init_tokens which calls parse_tokens, which manages 4 different
+		functions to slice the input string correctly all sharing a pointer for the current index, all adding
+		tokens along with their type and the merge_next flag.
+
+3-	Redirection check:
+	Since our previous functions split redirection into 1 or 2 characters including pipe we'll check for ||
+	tokens first, then we check if the first tokken is a pipe, afterwards we check for adjacent tokens and
+	print unexpected error with the appropriate token, the only acceptable adjacent redir combo is | <<.
+
+4-	Replacing $VAR$
+	We iterate through each token's str, we create a new string and start adding the key's value or the next
+	character then replacing old_str with new_str that is except << to preserve it for EOF.
+
+5-	Token merge
+	Finally we merge the tokens' txts with their
+	flags up with the next token and inheriting the flag of the 2nd token to handle multiple mergings.

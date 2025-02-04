@@ -8,6 +8,7 @@ char	*process_env_string(t_env *env, t_token *token)
 	char	*temp;
 	size_t	i;
 	char	buff[2];
+
 	result = NULL;
 	i = 0;
 	buff[1] = '\0';
