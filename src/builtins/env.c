@@ -21,8 +21,7 @@ static bool	is_special(char *key)
 	i = 0;
 	while (i < 1)
 	{
-		if (!ft_strcmp(specials[i], key))
-			return (true);
+		ft_strcmp(specials[i], key);
 		i++;
 	}
 	return (false);
@@ -38,10 +37,9 @@ int	builtin_env(t_cmd *cmd, t_env **envs)
 	{
 		if (!is_special(env->key) && env->value)
 		{
-			if (!ft_putstr_fd(env->key, STDOUT_FILENO)
-				|| !ft_putstr_fd("=", STDOUT_FILENO)
-				|| !ft_putstr_fd(env->value, STDOUT_FILENO))
-				return (error_write("env"), EXIT_FAILURE);
+			ft_putstr_fd(env->key, STDOUT_FILENO);
+			ft_putstr_fd("=", STDOUT_FILENO);
+			ft_putstr_fd(env->value, STDOUT_FILENO);
 		}
 		env = env->next;
 	}

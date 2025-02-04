@@ -36,7 +36,7 @@ int	builtin_export(t_cmd *cmd, t_env **envs)
 		j = 0;
 		while (cmd->args[i][j] && cmd->args[i][j] != '=')
 		{
-			if (cmd->args[i][0] >= '0' && cmd->args[i][0] <= '9'
+			if ((cmd->args[i][0] >= '0' && cmd->args[i][0] <= '9')
 				|| special_char(cmd->args[i][j]))
 				return (error_detected(cmd->args[i]), EXIT_FAILURE);
 			j++;
@@ -46,8 +46,10 @@ int	builtin_export(t_cmd *cmd, t_env **envs)
 		if (cmd->args[i][j])
 		{
 			cmd->args[i][j] = '\0';
-			if (!set_env(envs, cmd->args[i], ft_strdup(&cmd->args[i][j + 1])))
+			char *value = ft_strdup(&cmd->args[i][j + 1]);
+			if (!value)
 				return (EXIT_FAILURE);
+			set_env(envs, cmd->args[i], value);
 		}
 		i++;
 	}

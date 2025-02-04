@@ -18,7 +18,7 @@ static void	free_and_exit(t_cmd *cmds, t_env *envs, int exit_code, char *msg)
 
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
-	free_cmds(cmds);
+	free_cmd(cmds);
 	while (envs)
 	{
 		tmp = envs;

@@ -24,10 +24,6 @@ int	builtin_pwd(t_cmd *cmd, t_env **envs)
 		perror("pwd");
 		return (EXIT_FAILURE);
 	}
-	if (!ft_putendl_fd(path, STDOUT_FILENO))
-	{
-		error_write("pwd");
-		return (EXIT_FAILURE);
-	}
+	ft_putendl_fd(path, STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }

@@ -51,16 +51,13 @@ int	builtin_echo(t_cmd *cmd, t_env **envs)
 	{
 		if (cmd->args[i][0])
 		{
-			if (!ft_putchar_fd(cmd->args[i], STDOUT_FILENO))
-				return (error_write("echo"), EXIT_FAILURE);
+			ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
 			if (cmd->args[i + 1])
-				if (!ft_putstr_fd(" ", STDOUT_FILENO))
-					return (error_write("echo"), EXIT_FAILURE);
+				ft_putstr_fd(" ", STDOUT_FILENO);
 		}
 		i++;
 	}
 	if (!n_option)
-		if (!ft_putstr_fd("\n", STDOUT_FILENO))
-			return (error_write("echo"), EXIT_FAILURE);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
