@@ -9,7 +9,7 @@ TOKENSDIR = $(UTILSDIR)/tokens
 ENVDIR = $(UTILSDIR)/env
 EXECDIR = $(UTILSDIR)/exec
 CMDDIR = $(UTILSDIR)/command
-BUILTINDIR = $(UTILSDIR)/builtins
+BUILTINDIR = $(SRCDIR)/builtins
 LIBFTDIR = libft
 
 # Libraries
