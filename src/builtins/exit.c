@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 static void	free_and_exit(t_cmd *cmds, t_env *envs, int exit_code, char *msg)
 {

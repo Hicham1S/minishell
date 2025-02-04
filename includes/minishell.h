@@ -34,4 +34,19 @@ void	close_redirs(t_cmd *cmds);
 void	print_tokens(t_token *token);
 void	print_cmd(t_cmd *cmd);
 
+// exec.c
+int	exec_cmd	(t_cmd *cmds, t_env **envs);
+
+// path.c
+char    *resolve_path(char *file, t_env *envs, int key);
+
+// pipeline.c
+int pipeline(t_cmd *cmds, t_env **envs);
+
+// process.c
+int wait_processes(t_cmd *cmds);
+
+// signal.c
+void	heredoc_signal(int signal, t_cmd *cmd);
+
 #endif

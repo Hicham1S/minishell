@@ -7,7 +7,9 @@ SRCDIR = src
 UTILSDIR = $(SRCDIR)/utils
 TOKENSDIR = $(UTILSDIR)/tokens
 ENVDIR = $(UTILSDIR)/env
+EXECDIR = $(UTILSDIR)/exec
 CMDDIR = $(UTILSDIR)/command
+BUILTINDIR = $(UTILSDIR)/builtins
 LIBFTDIR = libft
 
 # Libraries
@@ -29,7 +31,19 @@ SRC = $(TOKENSDIR)/replace_env.c \
 	  $(CMDDIR)/args.c \
 	  $(CMDDIR)/command_redirs.c \
 	  $(UTILSDIR)/main.c \
-	  $(UTILSDIR)/debug.c
+	  $(UTILSDIR)/debug.c \
+	  $(EXECDIR)/exec.c \
+	  $(EXECDIR)/pipeline.c \
+	  $(EXECDIR)/process.c \
+	  $(EXECDIR)/redirs.c \
+	  $(EXECDIR)/redirs2.c \
+	  $(BUILTINDIR)/cd.c \
+	  $(BUILTINDIR)/echo.c \
+	  $(BUILTINDIR)/env.c \
+	  $(BUILTINDIR)/exit.c \
+	  $(BUILTINDIR)/export.c \
+	  $(BUILTINDIR)/pwd.c \
+	  $(BUILTINDIR)/unset.c
 
 # Object Files
 OBJ = $(SRC:.c=.o)

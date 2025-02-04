@@ -43,6 +43,7 @@ void	readline_loop(t_env *env)
 			continue ;
 		}
 		cmd = input_to_cmd(input, env);
+		exec_cmd(cmd, &env);
 		free_cmd(cmd);
 		free(input);
 	}

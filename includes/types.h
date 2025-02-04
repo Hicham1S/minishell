@@ -43,7 +43,7 @@ t_env	*init_env(char **envp);
 void	free_env(t_env *env);
 void	del_env(t_env **env, char *key);
 void	replace_tokens_with_env(t_env *env, t_token *token);
-
+char	**format_env(t_env *env);
 
 
 t_token *init_tokens(char *str);

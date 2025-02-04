@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../includes/minishell.h"
 
 int wait_processes(t_cmd *cmds)
 {
@@ -23,7 +23,7 @@ int wait_processes(t_cmd *cmds)
 			return (perror("waitpid"), WEXITSTATUS(status));
 		cmds = cmds->next;
 	}
-	retrun (WEXITSTATUS(status));
+	return (WEXITSTATUS(status));
 }
 
 bool    is_child_process(t_cmd *cmds)

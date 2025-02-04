@@ -50,3 +50,41 @@ t_env	*init_env(char **envp)
 	set_env(&env, "?", "0");
 	return (env);
 }
+
+static size_t	env_len(t_env *env)
+{
+	size_t	i;
+	t_env	*current;
+
+	i = 0;
+	current = env;
+	while (current)
+	{
+		current = current->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**format_env(t_env *env)
+{
+	size_t	i;
+	t_env	*current;
+	char	*key;
+	char	**arrstr;
+
+	i = env_len(env);
+	arrstr = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	current = env;
+	while (current)
+	{
+		key = ft_strjoin(current->key, "=");
+		arrstr[i] = ft_strjoin(key, current->value);
+		free(key);
+		i++;
+		current = current->next;
+	}
+	arrstr[i] = NULL;
+	return (arrstr);
+}

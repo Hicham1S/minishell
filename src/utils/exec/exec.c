@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
+#include "../../../includes/minishell.h"
 
 int	exec_builtin(t_cmd *cmd, t_env **envs)
 {
@@ -34,7 +33,7 @@ int	exec_builtin(t_cmd *cmd, t_env **envs)
     if (!ft_strncmp(cmd->args[0], "echo", len) && len == 4)
         return (builtin_echo(cmd, envs));
     if (!ft_strncmp(cmd->args[0], "exit", len) && len == 4)
-        return (builtin_exit(cmd, envs));
+        return (builtin_exit(cmd, *envs));
     return (BUILTIN_NOT_FOUND);
 }
 
@@ -58,11 +57,11 @@ int exec_relative(t_cmd *cmd, t_env **envs)
 	char	**envp;
 	size_t	i;
 
-	if (!cmd->name[0])
+	if (!cmd->args[0][0])
 		return (EXIT_SUCCESS);
-	path = resolve_path(cmd->name, *envs, F_ok);
+	path = resolve_path(cmd->args[0], *envs, F_OK);
 	if (!path)
-		return (error(cmd->name, "command not found"), 127);
+		return (error(cmd->args[0], "command not found"), 127);
 	error_code = handle_errors(path);
 	if (error_code != EXIT_SUCCESS)
 		return (free(path), error_code);

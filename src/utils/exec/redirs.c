@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../includes/minishell.h"
+
 static void	reopen_heredoc(t_cmd *cmd)
 {
 	close(cmd->infile);

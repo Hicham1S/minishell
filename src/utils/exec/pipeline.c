@@ -10,20 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../includes/minishell.h"
 
-int	wait_processes(t_cmd *cmds)
+static void	cursor_close(int pipes[2][2], size_t i, t_cmd *cmd)
 {
-	int		status;
-
-	status = 0;
-	while (cmds)
-	{
-		if (waitpid(cmds->pid, &status, 0) == -1)
-			return (perror("waitpid"), WEXITSTATUS(status));
-		cmds = cmds->next;
-	}
-	return (WEXITSTATUS(status));
+	if (i > 0)
+		close(pipes[(i - 1) % 2][0]);
+	if (cmd->next)
+		close(pipes[i % 2][1]);
 }
 
 static void set_pipes(int pipes[2][2])
