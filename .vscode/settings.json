@@ -2,6 +2,8 @@
     "files.associations": {
         "minishell.h": "c",
         "minishell": "c",
-        "env.h": "c"
+        "env.h": "c",
+        "libft.h": "c",
+        "builtins.h": "c"
     }
 }

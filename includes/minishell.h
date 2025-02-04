@@ -43,10 +43,13 @@ char    *resolve_path(char *file, t_env *envs, int key);
 // pipeline.c
 int pipeline(t_cmd *cmds, t_env **envs);
 
+//error.c
+void	error_heredoc(char *delimiter);
+
 // process.c
 int wait_processes(t_cmd *cmds);
 
 // signal.c
-void	heredoc_signal(int signal, t_cmd *cmd);
+void	heredoc_signal(int signal);
 
 #endif

@@ -26,13 +26,15 @@ void	main_signal(int signal, t_cmd *cmd, t_env *envs)
 	}
 }
 
-void	heredoc_signal(int signal, t_cmd *cmd)
+void heredoc_signal(int signal)
 {
 	g_exit_status = signal;
-	if (cmd)
-		cmd->has_heredoc = true;
-	set_env(&t_minishell.envs, "?", ft_itoa(128 + g_exit_status));
+	re_replace_line("", 1);
+	write(1, "\n", 1);
+	re_on_new_line();
+	close(STDIN_FILENO);
 }
+
 
 void	cmd_signal(int signal)
 {

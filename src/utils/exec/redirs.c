@@ -64,12 +64,12 @@ bool	init_redirs(char **tokens, size_t i, t_cmd *cmd)
 	}
 	else if (tokens[i][0] == '<')
 	{
-		if (cmd.infile > 2)
-			close(cmd.infile);
+		if (cmd->infile > 2)
+			close(cmd->infile);
 		if (tokens[i][1] == '<')
 			return (redir_heredoc(tokens[i + 1], cmd));
-		cmd.infile = open(tokens[i + 1], O_RDONLY);
-		if (cmd.infile < 0)
+		cmd->infile = open(tokens[i + 1], O_RDONLY);
+		if (cmd->infile < 0)
 			return (perror("minishell"), false);
 	}
 	return (true);
