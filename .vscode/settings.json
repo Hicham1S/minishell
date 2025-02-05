@@ -4,6 +4,8 @@
         "minishell": "c",
         "env.h": "c",
         "libft.h": "c",
-        "builtins.h": "c"
+        "builtins.h": "c",
+        "tokens.h": "c",
+        "command.h": "c"
     }
 }

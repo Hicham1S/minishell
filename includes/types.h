@@ -26,6 +26,7 @@ typedef struct s_cmd
 	int				has_heredoc;
 	int				has_pipe;
 	pid_t			pid;
+	int				args_count;
 	struct s_cmd	*next;
 }	t_cmd;
 

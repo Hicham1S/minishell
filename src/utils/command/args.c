@@ -27,7 +27,7 @@ static t_token	*process_token(t_token *current, int *j,
 	return (current);
 }
 
-static size_t	get_args_size(t_token *token, int limit[2])
+size_t	get_args_size(t_token *token, int limit[2])
 {
 	size_t	i;
 	t_token	*current;

@@ -14,4 +14,7 @@ void	error(char *msg, char *more);
 //utils/exec/redires2.c
 void	redir_heredoc2(t_cmd *cmd);
 
+//args
+size_t	get_args_size(t_token *token, int limit[2]);
+
 #endif

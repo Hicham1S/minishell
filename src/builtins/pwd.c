@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-// Execute the pwd builtin command 
 int	builtin_pwd(t_cmd *cmd, t_env **envs)
 {
 	char	path[1024];
