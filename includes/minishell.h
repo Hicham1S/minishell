@@ -51,5 +51,8 @@ int wait_processes(t_cmd *cmds);
 
 // signal.c
 void	heredoc_signal(int signal);
+void	error(char *msg, char *more);
+void	error_write(char *cmd);
+
 
 #endif

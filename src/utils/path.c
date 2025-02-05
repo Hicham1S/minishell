@@ -24,14 +24,14 @@ char	*join_path(char *path, char *file)
 	if (path[path_len -1] == '/')
 		path_len--;
 	file_len = ft_strlen(file);
-	if (file[0] = '/')
+	if (file[0] == '/')
 		file_len--;
 	output = malloc(sizeof(char) * (path_len + file_len + 2));
 	if (!output)
 		return (NULL);
 	ft_memcpy(output,path, path_len);
 	output[path_len] = '/';
-	ft_memcpy(outptu + path_len + 1, file, file_len);
+	ft_memcpy(output + path_len + 1, file, file_len);
 	output[path_len + file_len + 1] = '\0';
 	return (output);
 }
@@ -48,17 +48,17 @@ char    *resolve_path(char *file, t_env *envs, int key)
 		return (NULL);
 	if (access(file, key) >= 0)
 		return (ft_strdup(file));
-	path = get_env(env, "PATH");
+	path = get_env(envs, "PATH");
 	if (!path)
 		return (NULL);
 	paths = ft_split(path->value, ':');
 	i = 0;
-	while (path[i])
+	while (paths[i])
 	{
-		output = join_path(path[i], file);
+		output = join_path(paths[i], file);
 		if (access(output, key) >= 0)
 			break;
-		free(output)
+		free(output);
 		output = NULL;
 		free(paths[i]);
 		i++;

@@ -1,5 +1,7 @@
 #include "../../includes/minishell.h"
 
+int g_exit_status = 0;
+
 t_cmd	*input_to_cmd(char *input, t_env *env)
 {
 	t_token	*tokens;

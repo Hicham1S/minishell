@@ -22,19 +22,18 @@ void	main_signal(int signal, t_cmd *cmd, t_env *envs)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		set_env(envs, "?", ft_itoa(128 + g_exit_status));
+		set_env(&envs, "?", ft_itoa(128 + g_exit_status));
 	}
 }
 
-void heredoc_signal(int signal)
+void	heredoc_signal(int signal)
 {
 	g_exit_status = signal;
-	re_replace_line("", 1);
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
-	re_on_new_line();
+	rl_on_new_line();
 	close(STDIN_FILENO);
 }
-
 
 void	cmd_signal(int signal)
 {
