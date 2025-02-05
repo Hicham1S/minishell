@@ -18,20 +18,27 @@ static void	free_and_exit(t_cmd *cmds, t_env *envs, int exit_code, char *msg)
 
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
-	free_cmd(cmds);
+	if (cmds)
+	{
+		free_cmd(cmds);
+		cmds = NULL;
+	}
 	while (envs)
 	{
 		tmp = envs;
 		envs = envs->next;
-		free_env(tmp);
+		if (tmp)
+			free_env(tmp);
 	}
 	exit(exit_code);
 }
 
-static	bool	is_valid_number(const char *str)
+static bool	is_valid_number(const char *str)
 {
 	size_t	i;
 
+	if (!str || !*str)
+		return (false);
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')
 		i++;
@@ -48,14 +55,16 @@ static bool	is_overflowing(const char *str)
 {
 	bool	is_negative;
 
+	if (!str || !*str)
+		return (true);
 	while (*str == '0' && str[1] != '\0')
 		str++;
 	is_negative = (str[0] == '-');
 	if (ft_strlen(str) - is_negative > 19)
 		return (true);
-	if (is_negative && ft_strcmp(str + 1, "9223372036854775808") > 0)
-		return (true);
 	if (!is_negative && ft_strcmp(str, "9223372036854775807") > 0)
+		return (true);
+	if (is_negative && ft_strcmp(str + 1, "9223372036854775807") > 0)
 		return (true);
 	return (false);
 }
@@ -63,12 +72,15 @@ static bool	is_overflowing(const char *str)
 int	builtin_exit(t_cmd *cmd, t_env *envs)
 {
 	char	**args;
+	int		exit_code;
 
 	args = cmd->args;
 	if (!cmd->has_pipe)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (!args[1])
+	{
 		free_and_exit(cmd, envs, 0, NULL);
+	}
 	if (!is_valid_number(args[1]) || is_overflowing(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
@@ -82,6 +94,7 @@ int	builtin_exit(t_cmd *cmd, t_env *envs)
 		error("exit", "too many arguments");
 		return (EXIT_FAILURE);
 	}
-	free_and_exit(cmd, envs, ft_atoi(args[1]) & 255, NULL);
+	exit_code = ft_atoi(args[1]) & 255;
+	free_and_exit(cmd, envs, exit_code, NULL);
 	return (EXIT_SUCCESS);
 }

@@ -55,21 +55,19 @@ void	set_env(t_env **env, char *key, char *value)
 		*env = new;
 }
 
-void	free_env(t_env *env)
+void free_env(t_env *env)
 {
-	t_env	*temp;
-
-	while (env)
-	{
-		temp = env;
-		env = env->next;
-		if (temp->key)
-			free(temp->key);
-		if (temp->value)
-			free(temp->value);
-		free(temp);
-	}
+    if (env)
+    {
+        // Free the components of the t_env structure, if applicable
+        if (env->key)
+            free(env->key);
+        if (env->value)
+            free(env->value);
+        free(env); // Finally, free the struct itself
+    }
 }
+
 
 void	free_one_env(t_env *env)
 {

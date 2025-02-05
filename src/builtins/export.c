@@ -25,32 +25,59 @@ void	error_detected(char *identifier)
 	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
+void	print_env(t_env *envs)
+{
+	t_env *temp = envs;
+	while (temp)
+	{
+		ft_putstr_fd(temp->key, STDOUT_FILENO);
+		ft_putstr_fd("=", STDOUT_FILENO);
+		ft_putstr_fd(temp->value, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		temp = temp->next;
+	}
+}
+
+int	validate_and_process_export(t_env **envs, char *arg)
+{
+	size_t	j;
+	char	*value;
+
+	j = 0;
+	while (arg[j] && arg[j] != '=')
+	{
+		if ((arg[0] >= '0' && arg[0] <= '9') || special_char(arg[j]))
+			return (error_detected(arg), EXIT_FAILURE);
+		j++;
+	}
+	if (j == 0)
+		return (error_detected(arg), EXIT_FAILURE);
+
+	if (arg[j])
+	{
+		arg[j] = '\0';
+		value = ft_strdup(&arg[j + 1]);
+		if (!value)
+			return (EXIT_FAILURE);
+		set_env(envs, arg, value);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	builtin_export(t_cmd *cmd, t_env **envs)
 {
 	size_t	i;
-	size_t	j;
 
-	i = 1;
-	while (cmd->args && cmd->args[i])
+	if (!cmd->args[1])
 	{
-		j = 0;
-		while (cmd->args[i][j] && cmd->args[i][j] != '=')
-		{
-			if ((cmd->args[i][0] >= '0' && cmd->args[i][0] <= '9')
-				|| special_char(cmd->args[i][j]))
-				return (error_detected(cmd->args[i]), EXIT_FAILURE);
-			j++;
-		}
-		if (j == 0)
-			return (error_detected(&cmd->args[i][j]), EXIT_FAILURE);
-		if (cmd->args[i][j])
-		{
-			cmd->args[i][j] = '\0';
-			char *value = ft_strdup(&cmd->args[i][j + 1]);
-			if (!value)
-				return (EXIT_FAILURE);
-			set_env(envs, cmd->args[i], value);
-		}
+		print_env(*envs);
+		return (EXIT_SUCCESS);
+	}
+	i = 1;
+	while (cmd->args[i])
+	{
+		if (validate_and_process_export(envs, cmd->args[i]) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);

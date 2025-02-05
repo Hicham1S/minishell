@@ -51,10 +51,10 @@ static void	close_all_pipes(int pipes[2][2])
 static int	child_process(size_t index, int pipes[2][2],
 		t_cmd *cmds, t_env **envs)
 {
-	int	builtin_exit;
+	int		builtin_exit;
 	t_cmd	*cmd;
 	size_t	i;
-	int	result;
+	int		result;
 
 	i = 0;
 	cmd = cmds;
@@ -69,17 +69,16 @@ static int	child_process(size_t index, int pipes[2][2],
 		dup2(pipes[index % 2][1], STDOUT_FILENO);
 	close_all_pipes(pipes);
 	redirs(cmd);
-	close_redirs(cmds);
-
+	close_redirs(cmd);
 	builtin_exit = exec_builtin(cmd, envs);
 	if (builtin_exit == BUILTIN_NOT_FOUND)
 	{
 		result = exec_relative(cmd, envs);
 		exit(result);
 	}
-
 	exit(builtin_exit);
 }
+
 
 int	pipeline(t_cmd *cmds, t_env **envs)
 {
