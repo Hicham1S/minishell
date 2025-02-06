@@ -12,22 +12,14 @@
 
 #include "../../includes/minishell.h"
 
-static bool	is_special(char *key)
+static bool is_special(char *key)
 {
-	char	*specials[1];
-	size_t	i;
-
-	specials[0] = "?";
-	i = 0;
-	while (i < 1)
-	{
-		ft_strcmp(specials[i], key);
-		i++;
-	}
-	return (false);
+	if (!key)
+		return (false);
+	return (ft_strcmp(key, "?") == 0);
 }
 
-int	builtin_env(t_cmd *cmd, t_env **envs)
+int builtin_env(t_cmd *cmd, t_env **envs)
 {
 	t_env	*env;
 
