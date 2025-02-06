@@ -54,5 +54,9 @@ void	heredoc_signal(int signal);
 void	error(char *msg, char *more);
 void	error_write(char *cmd);
 
+int		main(int argc, char **argv, char **envp);
+
+void increment_shlvl(t_env *new_env);
+int	relaunch_minishell(t_env *env);
 
 #endif
