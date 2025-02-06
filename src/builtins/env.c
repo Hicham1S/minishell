@@ -40,6 +40,7 @@ int	builtin_env(t_cmd *cmd, t_env **envs)
 			ft_putstr_fd(env->key, STDOUT_FILENO);
 			ft_putstr_fd("=", STDOUT_FILENO);
 			ft_putstr_fd(env->value, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 		env = env->next;
 	}
