@@ -28,11 +28,31 @@ void	main_signal(int signal, t_cmd *cmd, t_env *envs)
 
 void	heredoc_signal(int signal)
 {
-	g_exit_status = signal;
 	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	close(STDIN_FILENO);
+	g_exit_status = signal;
+
+}
+
+void	handler_signal(int sig)
+{
+	if (sig == SIGQUIT)
+		return ;
+	if (sig == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
+void	init_signal(void)
+{
+	signal(SIGINT, &handler_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	cmd_signal(int signal)

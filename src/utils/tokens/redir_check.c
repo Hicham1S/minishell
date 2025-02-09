@@ -68,3 +68,4 @@ int	redir_check(t_token *token, t_env *env)
 		return (print_unexpected(env, "newline", 2));
 	return (1);
 }
+

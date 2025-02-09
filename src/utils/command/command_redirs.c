@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_redirs.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsarraj <hsarraj@student.42beirut.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/08 14:39:25 by hsarraj           #+#    #+#             */
+/*   Updated: 2025/02/08 14:39:25 by hsarraj          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 #include "command.h"
 
@@ -17,16 +29,23 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 {
 	if (cmd->infile > 2)
 		close(cmd->infile);
-	if (is_redir_token(current, "<"))
-		cmd->infile = open(current->next->txt, O_RDONLY);
+	cmd->infile = open(current->next->txt, O_RDONLY);
+	if (cmd->infile < 0)
+	{
+		perror("minishell");
+		cmd->infile = -1;
+	}
 }
 
 t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 {
 	cmd->has_heredoc = 1;
-	if (current->next)
-		current = current->next;
-	return (current);
+	if (!current || !current->next)
+		return (NULL);
+	char *delimiter = current->next->txt;
+	if (!redir_heredoc(delimiter, cmd))
+		return (NULL);
+	return (current->next->next);
 }
 
 void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
@@ -51,8 +70,16 @@ void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 				handle_input_redirs(cmd, current);
 		}
 		else if (is_redir_token(current, "<<"))
+		{
 			current = handle_heredoc_redir(cmd, current);
+			if (!current)
+				return;
+			continue; 
+		}
+		if (!current)
+			break;
 		current = current->next;
 		i++;
 	}
 }
+

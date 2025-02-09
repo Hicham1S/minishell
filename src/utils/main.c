@@ -60,7 +60,6 @@ int main(int argc, char **argv, char **envp)
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (1);
-
 	minishell->envs = init_env(envp);
 	readline_loop(minishell->envs);
 	free(minishell->envs);

@@ -27,6 +27,7 @@ typedef struct s_cmd
 	int				has_pipe;
 	pid_t			pid;
 	int				args_count;
+	int				errfile;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -56,5 +57,7 @@ char	**tokens_to_arrstr(t_token *token);
 void	free_arrstr(char **arr);
 
 t_cmd	*init_cmd(t_token *token);
+bool	init_redirs(t_token **tokens, size_t i, t_cmd *cmd);
+
 
 #endif
