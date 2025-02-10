@@ -29,11 +29,12 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 {
 	if (cmd->infile > 2)
 		close(cmd->infile);
+
 	cmd->infile = open(current->next->txt, O_RDONLY);
 	if (cmd->infile < 0)
 	{
 		perror("minishell");
-		cmd->infile = -1;
+		cmd->infile = -2;
 	}
 }
 

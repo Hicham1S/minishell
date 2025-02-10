@@ -12,13 +12,14 @@
 
 #include "../../../includes/minishell.h"
 
-int	exec_builtin(t_cmd *cmd, t_env **envs)
+static int check_builtin_first(t_cmd *cmd, t_env **envs)
 {
-	int	len;
+	int len;
 
 	if (!cmd->args || !cmd->args[0])
 		return (BUILTIN_NOT_FOUND);
-
+	else if (cmd->infile == -2)
+		return (1);
 	len = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp(cmd->args[0], "pwd", len) && len == 3)
 		return (builtin_pwd(cmd, envs));
@@ -28,6 +29,18 @@ int	exec_builtin(t_cmd *cmd, t_env **envs)
 		return (builtin_cd(cmd, envs));
 	if (!ft_strncmp(cmd->args[0], "export", len) && len == 6)
 		return (builtin_export(cmd, envs));
+	return (BUILTIN_NOT_FOUND);
+}
+
+int exec_builtin(t_cmd *cmd, t_env **envs)
+{
+	int len;
+	int ret;
+
+	ret = check_builtin_first(cmd, envs);
+	if (ret != BUILTIN_NOT_FOUND)
+		return (ret);
+	len = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp(cmd->args[0], "unset", len) && len == 5)
 		return (builtin_unset(cmd, envs));
 	if (!ft_strncmp(cmd->args[0], "echo", len) && len == 4)
