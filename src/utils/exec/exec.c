@@ -18,7 +18,7 @@ static int check_builtin_first(t_cmd *cmd, t_env **envs)
 
 	if (!cmd->args || !cmd->args[0])
 		return (BUILTIN_NOT_FOUND);
-	else if (cmd->infile == -2)
+	else if (cmd->infile == -2 || cmd-> outfile == -2)
 		return (1);
 	len = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp(cmd->args[0], "pwd", len) && len == 3)

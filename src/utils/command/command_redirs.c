@@ -18,12 +18,16 @@ void	handle_output_redirs(t_cmd *cmd, t_token *current)
 	if (cmd->outfile > 2)
 		close(cmd->outfile);
 	if (is_redir_token(current, ">>"))
-		cmd->outfile = open(current->next->txt, O_WRONLY
-				| O_CREAT | O_APPEND, 0644);
+		cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (is_redir_token(current, ">"))
-		cmd->outfile = open(current->next->txt, O_WRONLY
-				| O_CREAT | O_TRUNC, 0644);
+		cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->outfile < 0)
+	{
+		perror("minishell");
+		cmd->outfile = -2;
+	}
 }
+
 
 void	handle_input_redirs(t_cmd *cmd, t_token *current)
 {
@@ -40,10 +44,12 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 
 t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 {
+	char *delimiter;
+
 	cmd->has_heredoc = 1;
 	if (!current || !current->next)
 		return (NULL);
-	char *delimiter = current->next->txt;
+	delimiter = current->next->txt;
 	if (!redir_heredoc(delimiter, cmd))
 		return (NULL);
 	return (current->next->next);
