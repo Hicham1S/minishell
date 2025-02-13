@@ -57,7 +57,5 @@ char	**tokens_to_arrstr(t_token *token);
 void	free_arrstr(char **arr);
 
 t_cmd	*init_cmd(t_token *token);
-bool	init_redirs(t_token **tokens, size_t i, t_cmd *cmd);
-
 
 #endif

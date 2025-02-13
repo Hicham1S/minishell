@@ -48,34 +48,6 @@ bool	redir_heredoc(char *delimiter, t_cmd *cmd)
 	return (true);
 }
 
-// bool	init_redirs(t_token **tokens, size_t i, t_cmd *cmd)
-// {
-// 	if (tokens[i][0] == '>')
-// 	{
-// 		if (cmd->outfile > 2)
-// 			close(cmd->outfile);
-// 		if (tokens[i][1] == '>')
-// 			cmd->outfile = open(tokens[i + 1], O_WRONLY | O_CREAT
-// 					| O_APPEND, 0644);
-// 		else
-// 			cmd->outfile = open(tokens[i + 1], O_WRONLY | O_CREAT
-// 					| O_TRUNC, 0644);
-// 		if (cmd->outfile < 0)	
-// 			return (perror("minishell"), false);
-// 	}
-// 	else if (tokens[i][0] == '<')
-// 	{
-// 		if (cmd->infile > 2)
-// 			close(cmd->infile);
-// 		if (tokens[i][1] == '<')
-// 			return (redir_heredoc(tokens[i + 1], cmd));
-// 		cmd->infile = open(tokens[i + 1], O_RDONLY);
-// 		if (cmd->infile < 0)
-// 			return (perror("minishell"), false);
-// 	}
-// 	return (true);
-// }
-
 void	redirs(t_cmd *cmd)
 {
 	if (cmd->infile > 0)

@@ -27,6 +27,7 @@ void readline_loop(t_env *env)
 
 	while (1)
 	{
+		init_signal();
 		input = readline("minishell> ");
 		if (!input)
 		{

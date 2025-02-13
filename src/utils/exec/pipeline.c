@@ -89,6 +89,7 @@ int	pipeline(t_cmd *cmds, t_env **envs)
 	i = 0;
 	cmd = cmds;
 	set_pipes(pipes);
+	signal(SIGQUIT, SIG_IGN);
 
 	while (cmd)
 	{
@@ -98,7 +99,10 @@ int	pipeline(t_cmd *cmds, t_env **envs)
 		if (cmd->pid == -1)
 			return (EXIT_FAILURE);
 		if (cmd->pid == 0)
+		{
+			signal(SIGQUIT, SIG_DFL);
 			return (child_process(i, pipes, cmds, envs));
+		}
 		close_pipes(pipes, i, cmd);
 		i++;
 		cmd = cmd->next;

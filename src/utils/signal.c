@@ -28,13 +28,14 @@ void	main_signal(int signal, t_cmd *cmd, t_env *envs)
 
 void	heredoc_signal(int signal)
 {
-	rl_replace_line("", 0);
-	write(1, "\n", 1);
-	rl_on_new_line();
-	close(STDIN_FILENO);
-	g_exit_status = signal;
+	rl_replace_line("", 0);    // Clear the line in readline
+	write(1, "\n", 1);          // Print a newline for clarity
+	rl_on_new_line();           // Move to the next line for clean prompt
 
+	close(STDIN_FILENO);        // Close STDIN to stop readline from waiting
+	g_exit_status = signal;     // Set the exit status to the signal (130 for Ctrl+C)
 }
+
 
 void	handler_signal(int sig)
 {

@@ -51,9 +51,14 @@ int wait_processes(t_cmd *cmds);
 
 // signal.c
 void	heredoc_signal(int signal);
+void	main_signal(int signal, t_cmd *cmd, t_env *envs);
+void	init_signal(void);
+void	handler_signal(int sig);
+void	cmd_signal(int signal);
+
+
 void	error(char *msg, char *more);
 void	error_write(char *cmd);
-void	init_signal(void);
 
 int		main(int argc, char **argv, char **envp);
 
