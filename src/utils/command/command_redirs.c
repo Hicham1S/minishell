@@ -46,12 +46,13 @@ t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 {
 	char *delimiter;
 
-	cmd->has_heredoc = 1;
 	if (!current || !current->next)
 		return (NULL);
 	delimiter = current->next->txt;
 	if (!redir_heredoc(delimiter, cmd))
 		return (NULL);
+	cmd->has_heredoc = 1;
+
 	return (current->next->next);
 }
 

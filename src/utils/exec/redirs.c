@@ -31,12 +31,12 @@ bool	redir_heredoc(char *delimiter, t_cmd *cmd)
 	cmd->has_heredoc = true;
 	while (1)
 	{
-		signal(SIGINT, &heredoc_signal);
+		signal(SIGINT, heredoc_signal);
 		signal(SIGQUIT, SIG_IGN);
 		rl_getc_function = getc;
 		line = readline("> ");
-		if (!line && g_exit_status == 130)
-			break ;
+		if (!line && g_sginal == SIGINT)
+			break;
 		else if (!line)
 			return (reopen_heredoc(cmd), error_heredoc(delimiter), true);
 		if (ft_strcmp(line, delimiter) == 0)

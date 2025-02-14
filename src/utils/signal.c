@@ -12,37 +12,24 @@
 
 #include "../../includes/minishell.h"
 
-void	main_signal(int signal, t_cmd *cmd, t_env *envs)
+
+void	heredoc_signal(int sig)
 {
-	g_exit_status = signal;
-	if (signal == SIGINT)
+	if (sig == SIGINT)
 	{
-		if (!cmd->has_heredoc)
-			write(1, "\n", 1);
+		g_sginal = SIGINT;
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		set_env(&envs, "?", ft_itoa(128 + g_exit_status));
+        rl_replace_line("", 0);
 	}
-}
-
-void	heredoc_signal(int signal)
-{
-	rl_replace_line("", 0);    // Clear the line in readline
-	write(1, "\n", 1);          // Print a newline for clarity
-	rl_on_new_line();           // Move to the next line for clean prompt
-
-	close(STDIN_FILENO);        // Close STDIN to stop readline from waiting
-	g_exit_status = signal;     // Set the exit status to the signal (130 for Ctrl+C)
 }
 
 
 void	handler_signal(int sig)
 {
-	if (sig == SIGQUIT)
-		return ;
 	if (sig == SIGINT)
 	{
+		g_sginal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
@@ -56,16 +43,16 @@ void	init_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	cmd_signal(int signal)
+void	cmd_signal(int sig)
 {
-	g_exit_status = signal;
-	if (signal == SIGINT)
+	g_sginal = sig;
+	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 	}
-	if (signal == SIGQUIT)
+	if (sig == SIGQUIT)
 	{
 		ft_putendl_fd("Quit", STDERR_FILENO);
 	}

@@ -39,6 +39,12 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_signal_context {
+    t_cmd *cmd;
+    t_env *envs;
+} t_signal_context;
+
+
 t_env	*get_env(t_env *env, char *key);
 void	set_env(t_env **env, char *key, char *value);
 t_env	*init_env(char **envp);

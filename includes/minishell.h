@@ -26,6 +26,7 @@ typedef struct s_minishell
 }	t_minishell;
 
 extern int g_exit_status;
+extern int g_sginal;
 
 void	redirs(t_cmd *cmd);
 void	close_redirs(t_cmd *cmds);
@@ -51,10 +52,10 @@ int wait_processes(t_cmd *cmds);
 
 // signal.c
 void	heredoc_signal(int signal);
-void	main_signal(int signal, t_cmd *cmd, t_env *envs);
 void	init_signal(void);
 void	handler_signal(int sig);
-void	cmd_signal(int signal);
+void	cmd_signal(int sig);
+
 
 
 void	error(char *msg, char *more);

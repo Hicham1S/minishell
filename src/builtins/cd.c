@@ -99,6 +99,7 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 		if (getcwd(current, 1024))
 			set_env(envs, "PWD", ft_strdup(current));
 	}
-	free(path);
+	if(path)
+		free(path);
 	return (EXIT_SUCCESS);
 }

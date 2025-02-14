@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 
 int g_exit_status = 0;
-
+int g_sginal = 0;
 t_cmd *input_to_cmd(char *input, t_env *env)
 {
 	t_token *tokens;
@@ -20,35 +20,47 @@ t_cmd *input_to_cmd(char *input, t_env *env)
 	return (cmd);
 }
 
-void readline_loop(t_env *env)
+void	handle_input(char *input, t_env *env)
 {
-	char *input;
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
+	if (*input)
+		add_history(input);
+	if (unmatched_quotes(input))
+	{
+		printf("Error: Mismatched quotes\n");
+		free(input);
+		return ;
+	}
+	cmd = input_to_cmd(input, env);
+	if (cmd)
+	{
+		exec_cmd(cmd, &env);
+		free_cmd(cmd);
+	}
+	free(input);
+}
+
+void	readline_loop(t_env *env)
+{
+	char	*input;
+
+	init_signal();
 	while (1)
 	{
-		init_signal();
 		input = readline("minishell> ");
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			exit (0);
 		}
-		if (*input)
-			add_history(input);
-		if (unmatched_quotes(input))
+		if (g_sginal == SIGINT)
 		{
-			printf("Error: Mismatched quotes\n");
+			g_sginal = 0;
 			free(input);
-			continue;
+			continue ;
 		}
-		cmd = input_to_cmd(input, env);
-		if (cmd)
-		{
-			exec_cmd(cmd, &env);
-			free_cmd(cmd);
-		}
-		free(input);
+		handle_input(input, env);
 	}
 }
 
@@ -65,5 +77,5 @@ int main(int argc, char **argv, char **envp)
 	readline_loop(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-	return (g_exit_status); // Return the global exit status
+	return (g_exit_status);
 }
