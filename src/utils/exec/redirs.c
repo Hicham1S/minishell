@@ -33,7 +33,6 @@ bool	redir_heredoc(char *delimiter, t_cmd *cmd)
 	{
 		signal(SIGINT, heredoc_signal);
 		signal(SIGQUIT, SIG_IGN);
-		rl_getc_function = getc;
 		line = readline("> ");
 		if (!line && g_sginal == SIGINT)
 			break;

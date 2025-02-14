@@ -20,47 +20,35 @@ t_cmd *input_to_cmd(char *input, t_env *env)
 	return (cmd);
 }
 
-void	handle_input(char *input, t_env *env)
+void readline_loop(t_env *env)
 {
-	t_cmd	*cmd;
+	char *input;
+	t_cmd *cmd;
 
-	if (*input)
-		add_history(input);
-	if (unmatched_quotes(input))
-	{
-		printf("Error: Mismatched quotes\n");
-		free(input);
-		return ;
-	}
-	cmd = input_to_cmd(input, env);
-	if (cmd)
-	{
-		exec_cmd(cmd, &env);
-		free_cmd(cmd);
-	}
-	free(input);
-}
-
-void	readline_loop(t_env *env)
-{
-	char	*input;
-
-	init_signal();
 	while (1)
 	{
+		init_signal();
 		input = readline("minishell> ");
 		if (!input)
 		{
 			printf("exit\n");
 			exit (0);
 		}
-		if (g_sginal == SIGINT)
+		if (*input)
+			add_history(input);
+		if (unmatched_quotes(input))
 		{
-			g_sginal = 0;
+			printf("Error: Mismatched quotes\n");
 			free(input);
-			continue ;
+			continue;
 		}
-		handle_input(input, env);
+		cmd = input_to_cmd(input, env);
+		if (cmd)
+		{
+			exec_cmd(cmd, &env);
+			free_cmd(cmd);
+		}
+		free(input);
 	}
 }
 

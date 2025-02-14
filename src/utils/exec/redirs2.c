@@ -14,7 +14,6 @@
 
 void	redir_heredoc2(t_cmd *cmd)
 {
-	rl_getc_function = rl_getc;
 	if (cmd->infile >= 0)
 		close(cmd->infile);
 	unlink(HEREDOC_FILE);
