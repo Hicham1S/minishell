@@ -88,3 +88,12 @@ char	**format_env(t_env *env)
 	arrstr[i] = NULL;
 	return (arrstr);
 }
+
+void	set_stat(t_env **env, int stat)
+{
+	char	*stat_str;
+
+	stat_str = ft_itoa(stat);
+	set_env(env, "?", stat_str);
+	free(stat_str);
+}

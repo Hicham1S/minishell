@@ -59,5 +59,5 @@ int	builtin_echo(t_cmd *cmd, t_env **envs)
 	}
 	if (!n_option)
 		ft_putstr_fd("\n", STDOUT_FILENO);
-	return (EXIT_SUCCESS);
+	return (set_stat(envs, 0), EXIT_SUCCESS);
 }

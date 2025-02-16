@@ -66,4 +66,6 @@ int		main(int argc, char **argv, char **envp);
 void increment_shlvl(t_env *new_env);
 int	relaunch_minishell(t_env *env);
 
+void	set_stat(t_env **env, int stat);
+
 #endif

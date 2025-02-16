@@ -36,5 +36,5 @@ int builtin_env(t_cmd *cmd, t_env **envs)
 		}
 		env = env->next;
 	}
-	return (EXIT_SUCCESS);
+	return (set_stat(envs, 0), EXIT_SUCCESS);
 }

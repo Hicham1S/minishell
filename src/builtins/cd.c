@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static	void	error_invalid(char *path)
+static	void	error_invalid(char *path, t_env **envs)
 {
 	struct stat	sb;
 
@@ -20,9 +20,15 @@ static	void	error_invalid(char *path)
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	ft_putstr_fd(path, STDERR_FILENO);
 	if (stat(path, &sb) == -1)
+	{
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		set_stat(envs, 1);
+	}
 	else if (!S_ISDIR(sb.st_mode))
+	{
 		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+		set_stat(envs, 1);
+	}
 	else
 		ft_putstr_fd(": Unknown error\n", STDERR_FILENO);
 }
@@ -33,7 +39,10 @@ static	char	*home_path(t_env **envs)
 
 	env = get_env(*envs, "HOME");
 	if (!env)
+	{
+		set_stat(envs, 1);
 		return (error("cd", "HOME not set"), NULL);
+	}
 	return (env->value);
 }
 
@@ -50,7 +59,7 @@ static	char	*get_path(t_cmd *cmd, t_env **envs)
 		if (cmd->args[i][0])
 		{
 			if (path)
-				return (error("cd", "too many arguments"), NULL);
+				return (set_stat(envs, 1), error("cd", "too many arguments"), NULL);
 			path = cmd->args[i];
 		}
 		i++;
@@ -93,13 +102,14 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 	{
 		if (chdir(path) == -1)
 		{
-			error_invalid(path);
+			error_invalid(path, envs);
 			return (free(path), EXIT_FAILURE);
 		}
 		if (getcwd(current, 1024))
-			set_env(envs, "PWD", ft_strdup(current));
+			set_env(envs, "PWD", current);
 	}
-	if(path)
+	if (path)
 		free(path);
+	set_stat(envs, 0);
 	return (EXIT_SUCCESS);
 }

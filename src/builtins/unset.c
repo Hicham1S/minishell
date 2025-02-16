@@ -22,6 +22,6 @@ int	builtin_unset(t_cmd *cmd, t_env **envs)
 		del_env(envs, cmd->args[i]);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (set_stat(envs, 0), EXIT_SUCCESS);
 }
 
