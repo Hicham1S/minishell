@@ -9,8 +9,13 @@ char	*get_next_key(t_token *token, int start)
 	if (token->txt[start] == '?')
 		return (ft_strdup("?"));
 	i = start;
-	while (token->txt[i] && is_alphanumu(token->txt[i]))
+	if (token->txt[start] >= '0' && token->txt[start] <= '9')
 		i++;
+	else
+	{
+		while (token->txt[i] && is_alphanumu(token->txt[i]))
+			i++;
+	}
 	return (ft_substr(token->txt, start, i - start));
 }
 
