@@ -12,7 +12,6 @@
 
 #include "../../../includes/minishell.h"
 
-/* Close the necessary pipe ends based on the command index */
 void	close_pipes(int pipes[2][2], size_t i, t_cmd *cmd)
 {
 	if (i > 0)
@@ -25,7 +24,6 @@ void	close_pipes(int pipes[2][2], size_t i, t_cmd *cmd)
 	}
 }
 
-/* Set the initial state of the pipes (set them to 0) */
 static void	set_pipes(int pipes[2][2])
 {
 	pipes[0][0] = 0;
@@ -34,7 +32,6 @@ static void	set_pipes(int pipes[2][2])
 	pipes[1][1] = 0;
 }
 
-/* Close all pipe ends in use */
 static void	close_all_pipes(int pipes[2][2])
 {
 	if (pipes[0][0] > 0)
@@ -47,8 +44,7 @@ static void	close_all_pipes(int pipes[2][2])
 		close(pipes[1][1]);
 }
 
-/* Handle the execution of each child process */
-int	child_process(size_t index, int pipes[2][2],
+int	child_processpipe(size_t index, int pipes[2][2],
 		t_cmd *cmds, t_env **envs)
 {
 	int		builtin_exit;
@@ -75,42 +71,6 @@ int	child_process(size_t index, int pipes[2][2],
 	}
 	exit(builtin_exit);
 }
-
-// int	pipeline(t_cmd *cmds, t_env **envs)
-// {
-// 	t_cmd	*cmd;
-// 	size_t	i;
-// 	int		pipes[2][2];
-// 	int		status;
-
-// 	i = 0;
-// 	cmd = cmds;
-// 	set_pipes(pipes);
-// 	void	(*old_int)(int) = signal(SIGINT, SIG_IGN);
-// 	void (*old_quit)(int) = signal(SIGQUIT, SIG_IGN);
-
-// 	while (cmd)
-// 	{
-// 		if (cmd->next && pipe(pipes[i % 2]) == -1)
-// 			return (EXIT_FAILURE);
-// 		cmd->pid = fork();
-// 		if (cmd->pid == -1)
-// 			return (EXIT_FAILURE);
-// 		if (cmd->pid == 0)
-// 		{
-// 			signal(SIGINT, SIG_DFL);
-// 			signal(SIGQUIT, SIG_DFL);
-// 			return (child_process(i, pipes, cmds, envs));
-// 		}
-// 		close_pipes(pipes, i, cmd);
-// 		i++;
-// 		cmd = cmd->next;
-// 	}
-// 	signal(SIGINT, old_int);
-// 	signal(SIGQUIT, old_quit);
-// 	status = wait_processes(cmds);
-// 	return (status);
-// }
 
 int	pipeline(t_cmd *cmds, t_env **envs)
 {

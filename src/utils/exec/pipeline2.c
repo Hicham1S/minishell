@@ -32,7 +32,7 @@ int	fork_child(t_exec *exec, size_t i, int pipes[2][2])
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		exit(child_process(i, pipes, cmd, envs));
+		exit(child_processpipe(i, pipes, cmd, envs));
 	}
 	return (EXIT_SUCCESS);
 }

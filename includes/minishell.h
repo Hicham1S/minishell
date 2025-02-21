@@ -16,6 +16,7 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <errno.h>
+#include <termios.h>
 #include <sys/ioctl.h>
 # include <string.h>
 # include "../src/utils/tokens/tokens.h"
@@ -45,7 +46,7 @@ char    *resolve_path(char *file, t_env *envs, int key);
 // pipeline.c
 int pipeline(t_cmd *cmds, t_env **envs);
 void	close_pipes(int pipes[2][2], size_t i, t_cmd *cmd);
-int	child_process(size_t index, int pipes[2][2],
+int	child_processpipe(size_t index, int pipes[2][2],
 	t_cmd *cmds, t_env **envs);
 
 
