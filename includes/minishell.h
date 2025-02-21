@@ -16,6 +16,8 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <errno.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 # include <string.h>
 # include "../src/utils/tokens/tokens.h"
 # include "../src/utils/command/command.h"

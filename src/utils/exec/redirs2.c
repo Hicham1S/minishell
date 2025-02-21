@@ -12,9 +12,9 @@
 
 #include "../../../includes/minishell.h"
 
-void	redir_heredoc2(t_cmd *cmd)
-{
-	if (cmd->infile >= 0)
-		close(cmd->infile);
-	unlink(HEREDOC_FILE);
-}
+// void	redir_heredoc2(t_cmd *cmd)
+// {
+// 	if (cmd->infile >= 0)
+// 		close(cmd->infile);
+// 	unlink(HEREDOC_FILE);
+// }

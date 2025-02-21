@@ -80,32 +80,44 @@ static int	child_process(size_t index, int pipes[2][2],
 }
 
 
-int	pipeline(t_cmd *cmds, t_env **envs)
+int pipeline(t_cmd *cmds, t_env **envs)
 {
-	t_cmd	*cmd;
-	size_t	i;
-	int		pipes[2][2];
+    t_cmd   *cmd;
+    size_t  i;
+    int     pipes[2][2];
+    int     status;
 
-	i = 0;
-	cmd = cmds;
-	set_pipes(pipes);
-	signal(SIGQUIT, SIG_IGN);
+    i = 0;
+    cmd = cmds;
+    set_pipes(pipes);
+    
+    // Save parent's signal handlers
+    void (*old_int)(int) = signal(SIGINT, SIG_IGN);
+    void (*old_quit)(int) = signal(SIGQUIT, SIG_IGN);
 
-	while (cmd)
-	{
-		if (cmd->next && pipe(pipes[i % 2]) == -1)
-			return (EXIT_FAILURE);
-		cmd->pid = fork();
-		if (cmd->pid == -1)
-			return (EXIT_FAILURE);
-		if (cmd->pid == 0)
-		{
-			signal(SIGQUIT, SIG_DFL);
-			return (child_process(i, pipes, cmds, envs));
-		}
-		close_pipes(pipes, i, cmd);
-		i++;
-		cmd = cmd->next;
-	}
-	return (wait_processes(cmds));
+    while (cmd)
+    {
+        if (cmd->next && pipe(pipes[i % 2]) == -1)
+            return (EXIT_FAILURE);
+        cmd->pid = fork();
+        if (cmd->pid == -1)
+            return (EXIT_FAILURE);
+        if (cmd->pid == 0)
+        {
+            // Child process gets default signal handling
+            signal(SIGINT, SIG_DFL);
+            signal(SIGQUIT, SIG_DFL);
+            return (child_process(i, pipes, cmds, envs));
+        }
+        close_pipes(pipes, i, cmd);
+        i++;
+        cmd = cmd->next;
+    }
+    
+    // Restore parent's signal handlers before waiting
+    signal(SIGINT, old_int);
+    signal(SIGQUIT, old_quit);
+    
+    status = wait_processes(cmds);
+    return (status);
 }

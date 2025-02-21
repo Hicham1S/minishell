@@ -22,34 +22,43 @@ t_cmd *input_to_cmd(char *input, t_env *env)
 
 void readline_loop(t_env *env)
 {
-	char *input;
-	t_cmd *cmd;
+    char *input;
+    t_cmd *cmd;
+    struct termios term;
 
-	while (1)
-	{
-		init_signal();
-		input = readline("minishell> ");
-		if (!input)
-		{
-			printf("exit\n");
-			exit (0);
-		}
-		if (*input)
-			add_history(input);
-		if (unmatched_quotes(input))
-		{
-			printf("Error: Mismatched quotes\n");
-			free(input);
-			continue;
-		}
-		cmd = input_to_cmd(input, env);
-		if (cmd)
-		{
-			exec_cmd(cmd, &env);
-			free_cmd(cmd);
-		}
-		free(input);
-	}
+    // Save original terminal settings at the start
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~(ECHOCTL);
+    
+    while (1)
+    {
+        // Reset signal and terminal state each iteration
+        tcsetattr(STDIN_FILENO, TCSANOW, &term);
+        init_signal();
+        g_sginal = 0;
+        
+        input = readline("minishell> ");
+        if (!input)
+        {
+            write(STDOUT_FILENO, "exit\n", 5);
+            exit(0);
+        }
+        if (*input)
+            add_history(input);
+        if (unmatched_quotes(input))
+        {
+            ft_putendl_fd("Error: Mismatched quotes", STDERR_FILENO);
+            free(input);
+            continue;
+        }
+        cmd = input_to_cmd(input, env);
+        if (cmd)
+        {
+            exec_cmd(cmd, &env);
+            free_cmd(cmd);
+        }
+        free(input);
+    }
 }
 
 int main(int argc, char **argv, char **envp)

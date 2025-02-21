@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-
 void	heredoc_signal(int sig)
 {
 	if (sig == SIGINT)
@@ -20,21 +19,20 @@ void	heredoc_signal(int sig)
 		g_sginal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
-        rl_replace_line("", 0);
+		rl_replace_line("", 0);
 	}
 }
 
-
-void	handler_signal(int sig)
+void handler_signal(int sig)
 {
-	if (sig == SIGINT)
-	{
-		g_sginal = SIGINT;
-		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
-	}
+    if (sig == SIGINT)
+    {
+        g_sginal = SIGINT;
+        write(STDOUT_FILENO, "\n", 1);
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+    }
 }
 
 void	init_signal(void)
@@ -43,17 +41,15 @@ void	init_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	cmd_signal(int sig)
+void cmd_signal(int sig)
 {
-	g_sginal = sig;
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-	}
-	if (sig == SIGQUIT)
-	{
-		ft_putendl_fd("Quit", STDERR_FILENO);
-	}
+    g_sginal = sig;
+    if (sig == SIGINT)
+    {
+        write(1, "\n", 1);
+    }
+    if (sig == SIGQUIT)
+    {
+        ft_putendl_fd("Quit", STDERR_FILENO);
+    }
 }
