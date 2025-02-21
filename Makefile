@@ -37,6 +37,7 @@ SRC = $(TOKENSDIR)/replace_env.c \
 	  $(UTILSDIR)/signal.c \
 	  $(EXECDIR)/exec.c \
 	  $(EXECDIR)/pipeline.c \
+	  $(EXECDIR)/pipeline2.c \
 	  $(EXECDIR)/process.c \
 	  $(EXECDIR)/redirs.c \
 	  $(EXECDIR)/redirs2.c \
