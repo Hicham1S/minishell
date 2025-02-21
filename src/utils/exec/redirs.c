@@ -136,98 +136,96 @@
 //     return true;
 // }
 
+static void heredoc_child_process(char *delimiter, int write_fd)
+{
+	char *line;
 
+	// Set up child signal handling
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 
-// static void heredoc_child_process(char *delimiter, int write_fd)
-// {
-// 	char *line;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || g_sginal == SIGINT)
+		{
+			if (line)
+				free(line);
+			exit(1);
+		}
 
-// 	// Set up child signal handling
-// 	signal(SIGINT, SIG_DFL);
-// 	signal(SIGQUIT, SIG_IGN);
+		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			exit(0);
+		}
 
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line || g_sginal == SIGINT)
-// 		{
-// 			if (line)
-// 				free(line);
-// 			exit(1);
-// 		}
+		write(write_fd, line, ft_strlen(line));
+		write(write_fd, "\n", 1);
+		free(line);
+	}
+}
 
-// 		if (ft_strcmp(line, delimiter) == 0)
-// 		{
-// 			free(line);
-// 			exit(0);
-// 		}
+bool redir_heredoc(char *delimiter, t_cmd *cmd)
+{
+	pid_t   pid;
+	int     status;
+	char    *heredoc_file;
 
-// 		write(write_fd, line, ft_strlen(line));
-// 		write(write_fd, "\n", 1);
-// 		free(line);
-// 	}
-// }
-
-// bool redir_heredoc(char *delimiter, t_cmd *cmd)
-// {
-// 	pid_t   pid;
-// 	int     status;
-// 	char    *heredoc_file;
-
-// 	// Create temporary file for heredoc
-// 	heredoc_file = "/tmp/.minishell_heredoc";
+	// Create temporary file for heredoc
+	heredoc_file = "/tmp/.minishell_heredoc";
 	
-// 	// Open file for writing
-// 	int fd = open(heredoc_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	if (fd < 0)
-// 		return (false);
+	// Open file for writing
+	int fd = open(heredoc_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+		return (false);
 
-// 	// Save original signal handlers
-// 	void (*old_int)(int) = signal(SIGINT, SIG_IGN);
-// 	void (*old_quit)(int) = signal(SIGQUIT, SIG_IGN);
+	// Save original signal handlers
+	void (*old_int)(int) = signal(SIGINT, SIG_IGN);
+	void (*old_quit)(int) = signal(SIGQUIT, SIG_IGN);
 
-// 	pid = fork();
-// 	if (pid < 0)
-// 	{
-// 		close(fd);
-// 		unlink(heredoc_file);
-// 		return (false);
-// 	}
+	pid = fork();
+	if (pid < 0)
+	{
+		close(fd);
+		unlink(heredoc_file);
+		return (false);
+	}
 
-// 	if (pid == 0)
-// 	{
-// 		heredoc_child_process(delimiter, fd);
-// 		exit(1);  // Should never reach here
-// 	}	
-// 	// Parent process
-// 	close(fd);
-// 	waitpid(pid, &status, 0);
+	if (pid == 0)
+	{
+		heredoc_child_process(delimiter, fd);
+		exit(1);  // Should never reach here
+	}	
+	// Parent process
+	close(fd);
+	waitpid(pid, &status, 0);
 
-// 	// Restore original signal handlers
-// 	signal(SIGINT, old_int);
-// 	signal(SIGQUIT, old_quit);
+	// Restore original signal handlers
+	signal(SIGINT, old_int);
+	signal(SIGQUIT, old_quit);
 
-// 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
-// 	{
-// 		unlink(heredoc_file);
-// 		return (false);
-// 	}
+	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
+	{
+		unlink(heredoc_file);
+		return (false);
+	}
 	
 
-// 	// Open file for reading
-// 	fd = open(heredoc_file, O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		unlink(heredoc_file);
-// 		return (false);
-// 	}
+	// Open file for reading
+	fd = open(heredoc_file, O_RDONLY);
+	if (fd < 0)
+	{
+		unlink(heredoc_file);
+		return (false);
+	}
 
-// 	unlink(heredoc_file);  // Delete the temporary file
-// 	cmd->infile = fd;
-// 	cmd->has_heredoc = 1;
+	unlink(heredoc_file);  // Delete the temporary file
+	cmd->infile = fd;
+	cmd->has_heredoc = 1;
 	
-// 	return (true);
-// }
+	return (true);
+}
 
 void	redirs(t_cmd *cmd)
 {
