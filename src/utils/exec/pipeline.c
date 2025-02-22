@@ -56,10 +56,10 @@ int	child_processpipe(size_t index, int pipes[2][2],
 	cmd = cmds;
 	while (++i < index)
 		cmd = cmd->next;
-	if (index > 0)
-		dup2(pipes[(index - 1) % 2][0], STDIN_FILENO);
-	if (cmd->next)
-		dup2(pipes[index % 2][1], STDOUT_FILENO);
+	if (index > 0 && dup2(pipes[(index - 1) % 2][0], STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	if (cmd->next && dup2(pipes[index % 2][1], STDOUT_FILENO) == -1)
+		exit(EXIT_FAILURE);
 	close_all_pipes(pipes);
 	redirs(cmd);
 	close_redirs(cmd);

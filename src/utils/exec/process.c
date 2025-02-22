@@ -12,9 +12,9 @@
 
 #include "../../../includes/minishell.h"
 
-int wait_processes(t_cmd *cmds)
+int	wait_processes(t_cmd *cmds)
 {
-	int		status;
+	int	status;
 
 	status = 0;
 	while (cmds)
@@ -24,15 +24,4 @@ int wait_processes(t_cmd *cmds)
 		cmds = cmds->next;
 	}
 	return (WEXITSTATUS(status));
-}
-
-bool    is_child_process(t_cmd *cmds)
-{
-	while (cmds)
-	{
-		if (cmds->pid == 0)
-			return (true);
-		cmds = cmds->next;
-	}
-	return (false);
 }

@@ -5,19 +5,23 @@ void	print_tokens(t_token *token)
 	if (!token)
 	{
 		printf("no tokens inserted");
-		return;
+		return ;
 	}
 	while (token)
 	{
 		if (token->txt)
-			printf("Token: '%s', Type: %d, Flag: %d\n", token->txt, token->qtype, token->merge_next);
+			printf("Token: '%s', Type: %d, Flag: %d\n", token->txt,
+				token->qtype, token->merge_next);
 		token = token->next;
 	}
 }
 
-void print_cmd(t_cmd *cmd)
+void	print_cmd(t_cmd *cmd)
 {
-	t_cmd *current = cmd;
+	t_cmd	*current;
+	int		i;
+
+	current = cmd;
 	while (current)
 	{
 		printf("Command: \n");
@@ -27,7 +31,7 @@ void print_cmd(t_cmd *cmd)
 		printf("Has Heredoc: %d\n", current->has_heredoc);
 		if (current->args)
 		{
-			int i = 0;
+			i = 0;
 			while (current->args[i])
 			{
 				printf("Arg[%d]: %s\n", i, current->args[i]);

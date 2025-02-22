@@ -18,9 +18,11 @@ void	handle_output_redirs(t_cmd *cmd, t_token *current)
 	if (cmd->outfile > 2)
 		close(cmd->outfile);
 	if (is_redir_token(current, ">>"))
-		cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		cmd->outfile = open(current->next->txt,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (is_redir_token(current, ">"))
-		cmd->outfile = open(current->next->txt, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		cmd->outfile = open(current->next->txt,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (cmd->outfile < 0)
 	{
 		perror("minishell");
@@ -28,12 +30,10 @@ void	handle_output_redirs(t_cmd *cmd, t_token *current)
 	}
 }
 
-
 void	handle_input_redirs(t_cmd *cmd, t_token *current)
 {
 	if (cmd->infile > 2)
 		close(cmd->infile);
-
 	cmd->infile = open(current->next->txt, O_RDONLY);
 	if (cmd->infile < 0)
 	{
@@ -44,7 +44,7 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 
 t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 {
-	char *delimiter;
+	char	*delimiter;
 
 	if (!current || !current->next)
 		return (NULL);
@@ -52,7 +52,6 @@ t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 	if (!redir_heredoc(delimiter, cmd))
 		return (NULL);
 	cmd->has_heredoc = 1;
-
 	return (current->next->next);
 }
 
@@ -81,13 +80,12 @@ void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 		{
 			current = handle_heredoc_redir(cmd, current);
 			if (!current)
-				return;
-			continue; 
+				return ;
+			continue ;
 		}
 		if (!current)
-			break;
+			break ;
 		current = current->next;
 		i++;
 	}
 }
-

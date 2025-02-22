@@ -1,11 +1,11 @@
 #include "../../includes/minishell.h"
 
-int g_exit_status = 0;
-int g_sginal = 0;
-t_cmd *input_to_cmd(char *input, t_env *env)
+int	g_sginal = 0;
+
+t_cmd	*input_to_cmd(char *input, t_env *env)
 {
-	t_token *tokens;
-	t_cmd *cmd;
+	t_token	*tokens;
+	t_cmd	*cmd;
 
 	cmd = NULL;
 	tokens = init_tokens(input);
@@ -20,21 +20,19 @@ t_cmd *input_to_cmd(char *input, t_env *env)
 	return (cmd);
 }
 
-void readline_loop(t_env *env)
+void	readline_loop(t_env *env)
 {
-	char *input;
-	t_cmd *cmd;
-	struct termios term;
+	char			*input;
+	t_cmd			*cmd;
+	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
-	
 	while (1)
 	{
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		init_signal();
 		g_sginal = 0;
-		
 		input = readline("minishell> ");
 		if (!input)
 		{
@@ -47,7 +45,7 @@ void readline_loop(t_env *env)
 		{
 			ft_putendl_fd("Error: Mismatched quotes", STDERR_FILENO);
 			free(input);
-			continue;
+			continue ;
 		}
 		cmd = input_to_cmd(input, env);
 		if (cmd)
@@ -59,9 +57,9 @@ void readline_loop(t_env *env)
 	}
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_minishell *minishell;
+	t_minishell	*minishell;
 
 	(void)argc;
 	(void)argv;
@@ -72,5 +70,5 @@ int main(int argc, char **argv, char **envp)
 	readline_loop(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-	return (g_exit_status);
+	return (g_sginal);
 }

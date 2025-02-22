@@ -92,7 +92,7 @@ int	exec_relative(t_cmd *cmd, t_env **envs)
 	return (EXIT_FAILURE);
 }
 
-int	exec_cmd	(t_cmd *cmds, t_env **envs)
+int	exec_cmd(t_cmd *cmds, t_env **envs)
 {
 	int	backups[2];
 	int	exit_status;
@@ -100,7 +100,7 @@ int	exec_cmd	(t_cmd *cmds, t_env **envs)
 	signal(SIGINT, &cmd_signal);
 	signal(SIGQUIT, &cmd_signal);
 	if (cmds->next)
-		return(pipeline(cmds, envs));
+		return (pipeline(cmds, envs));
 	backups[0] = dup(STDIN_FILENO);
 	backups[1] = dup(STDOUT_FILENO);
 	redirs(cmds);

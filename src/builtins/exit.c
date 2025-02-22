@@ -90,7 +90,7 @@ int	builtin_exit(t_cmd *cmd, t_env *envs)
 	}
 	if (args[2])
 	{
-		g_exit_status = 1;
+		g_sginal = 1;
 		error("exit", "too many arguments");
 		return (EXIT_FAILURE);
 	}

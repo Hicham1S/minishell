@@ -27,7 +27,6 @@ typedef struct s_minishell
 	t_env	*envs;
 }	t_minishell;
 
-extern int g_exit_status;
 extern int g_sginal;
 
 void	redirs(t_cmd *cmd);

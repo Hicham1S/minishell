@@ -12,9 +12,24 @@
 
 #include "../../../includes/minishell.h"
 
-// void	redir_heredoc2(t_cmd *cmd)
-// {
-// 	if (cmd->infile >= 0)
-// 		close(cmd->infile);
-// 	unlink(HEREDOC_FILE);
-// }
+void	redirs(t_cmd *cmd)
+{
+	if (cmd->infile >= 0)
+		dup2(cmd->infile, STDIN_FILENO);
+	if (cmd->outfile >= 0)
+		dup2(cmd->outfile, STDOUT_FILENO);
+}
+
+void	close_redirs(t_cmd *cmds)
+{
+	while (cmds)
+	{
+		if (cmds->infile > 2)
+			close(cmds->infile);
+		if (cmds->outfile > 2)
+			close(cmds->outfile);
+		if (cmds->has_heredoc)
+			unlink(HEREDOC_FILE);
+		cmds = cmds->next;
+	}
+}
