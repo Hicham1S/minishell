@@ -17,7 +17,6 @@ static int	check_pwd_opt(t_cmd *cmd)
 	return (cmd->args[1] && cmd->args[1][0] == '-' && cmd->args[1][1]);
 }
 
-
 int	builtin_pwd(t_cmd *cmd, t_env **envs)
 {
 	char	path[1024];
@@ -33,9 +32,9 @@ int	builtin_pwd(t_cmd *cmd, t_env **envs)
 	{
 		set_stat(envs, 2);
 		printf("minishell: pwd: -%c: invalid option\n",
-				cmd->args[1][1]);
+			cmd->args[1][1]);
 		return (EXIT_FAILURE);
 	}
 	ft_putendl_fd(path, STDOUT_FILENO);
-	return (set_stat(envs, 0) ,EXIT_SUCCESS);
+	return (set_stat(envs, 0), EXIT_SUCCESS);
 }

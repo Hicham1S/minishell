@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static	int	handle_options(char **args, bool *n_option)
+static int	handle_options(char **args, bool *n_option)
 {
 	size_t	i;
 	size_t	j;

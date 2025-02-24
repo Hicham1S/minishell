@@ -24,4 +24,3 @@ int	builtin_unset(t_cmd *cmd, t_env **envs)
 	}
 	return (set_stat(envs, 0), EXIT_SUCCESS);
 }
-

@@ -46,6 +46,7 @@ SRC = $(TOKENSDIR)/replace_env.c \
 	  $(BUILTINDIR)/echo.c \
 	  $(BUILTINDIR)/env.c \
 	  $(BUILTINDIR)/exit.c \
+	  $(BUILTINDIR)/exit_utils.c \
 	  $(BUILTINDIR)/export.c \
 	  $(BUILTINDIR)/pwd.c \
 	  $(BUILTINDIR)/unset.c

@@ -27,7 +27,9 @@ void	error_detected(char *identifier)
 
 void	print_env(t_env *envs)
 {
-	t_env *temp = envs;
+	t_env	*temp;
+
+	temp = envs;
 	while (temp)
 	{
 		ft_putstr_fd(temp->key, STDOUT_FILENO);
@@ -52,7 +54,6 @@ int	validate_and_process_export(t_env **envs, char *arg)
 	}
 	if (j == 0)
 		return (error_detected(arg), EXIT_FAILURE);
-
 	if (arg[j])
 	{
 		arg[j] = '\0';

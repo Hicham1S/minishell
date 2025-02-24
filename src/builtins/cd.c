@@ -59,7 +59,8 @@ static	char	*get_path(t_cmd *cmd, t_env **envs)
 		if (cmd->args[i][0])
 		{
 			if (path)
-				return (set_stat(envs, 1), error("cd", "too many arguments"), NULL);
+				return (set_stat(envs, 1), error("cd",
+						"too many arguments"), NULL);
 			path = cmd->args[i];
 		}
 		i++;

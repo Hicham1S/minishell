@@ -67,6 +67,13 @@ void	init_signal(void);
 void	handler_signal(int sig);
 void	cmd_signal(int sig);
 
+// exit
+void	free_and_exit(t_cmd *cmds, t_env *envs, int exit_code, char *msg);
+//exit_utils
+bool	is_valid_number(const char *str);
+bool	is_overflowing(const char *str);
+void	handle_exit_error(t_cmd *cmd, t_env *envs, char *arg);
+int		check_exit_args(t_cmd *cmd);
 
 
 void	error(char *msg, char *more);

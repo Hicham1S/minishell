@@ -28,10 +28,10 @@ void	readline_loop(t_env *env)
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
+	init_signal();
 	while (1)
 	{
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		init_signal();
 		g_sginal = 0;
 		input = readline("minishell> ");
 		if (!input)
