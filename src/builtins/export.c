@@ -32,10 +32,14 @@ void	print_env(t_env *envs)
 	temp = envs;
 	while (temp)
 	{
-		ft_putstr_fd(temp->key, STDOUT_FILENO);
-		ft_putstr_fd("=", STDOUT_FILENO);
-		ft_putstr_fd(temp->value, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		if (ft_strcmp(temp->key, "?") != 0)
+		{
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putstr_fd(temp->key, STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(temp->value, STDOUT_FILENO);
+			ft_putstr_fd("\"\n", STDOUT_FILENO);
+		}
 		temp = temp->next;
 	}
 }

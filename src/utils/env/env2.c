@@ -93,7 +93,7 @@ void	set_stat(t_env **env, int stat)
 {
 	char	*stat_str;
 
-	stat_str = ft_itoa(stat);
+	stat_str = ft_itoa(stat % 256);
 	set_env(env, "?", stat_str);
 	free(stat_str);
 }

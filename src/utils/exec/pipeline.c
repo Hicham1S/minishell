@@ -89,5 +89,6 @@ int	pipeline(t_cmd *cmds, t_env **envs)
 	signal(SIGINT, old_int);
 	signal(SIGQUIT, old_quit);
 	status = wait_processes(cmds);
+	set_stat(envs, status);
 	return (status);
 }
