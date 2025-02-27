@@ -29,15 +29,15 @@ void	handler_signal(int sig)
 	{
 		g_sginal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
 void	init_signal(void)
 {
-	signal(SIGINT, &handler_signal);
+	signal(SIGINT, handler_signal);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -46,10 +46,11 @@ void	cmd_signal(int sig)
 	g_sginal = sig;
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
-		ft_putendl_fd("Quit", STDERR_FILENO);
-	}
+	else if (sig == SIGQUIT)
+		ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 }
