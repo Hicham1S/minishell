@@ -10,6 +10,7 @@
 
 // utils/error.c
 void	error(char *msg, char *more);
+void	error_invalid_cd(char *path, t_env **envs);
 
 //utils/exec/redires2.c
 void	redir_heredoc2(t_cmd *cmd);
