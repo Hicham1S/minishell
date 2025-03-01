@@ -72,18 +72,22 @@ int	validate_and_process_export(t_env **envs, char *arg)
 int	builtin_export(t_cmd *cmd, t_env **envs)
 {
 	size_t	i;
+	int		exit_status;
 
 	if (!cmd->args[1])
 	{
 		print_env(*envs);
+		set_stat(envs, EXIT_SUCCESS);
 		return (EXIT_SUCCESS);
 	}
+	exit_status = EXIT_SUCCESS;
 	i = 1;
 	while (cmd->args[i])
 	{
 		if (validate_and_process_export(envs, cmd->args[i]) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
+			exit_status = EXIT_FAILURE;
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	set_stat(envs, exit_status);
+	return (exit_status);
 }
