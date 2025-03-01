@@ -55,6 +55,26 @@ t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 	return (current->next->next);
 }
 
+void	process_redir(t_cmd *cmd, t_token **current)
+{
+	if (is_redir_token(*current, ">>") || is_redir_token(*current, ">"))
+	{
+		if ((*current)->next)
+			handle_output_redirs(cmd, *current);
+	}
+	else if (is_redir_token(*current, "<"))
+	{
+		if ((*current)->next)
+			handle_input_redirs(cmd, *current);
+	}
+	else if (is_redir_token(*current, "<<"))
+	{
+		*current = handle_heredoc_redir(cmd, *current);
+		if (!*current)
+			return ;
+	}
+}
+
 void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 {
 	int		i;
@@ -66,25 +86,9 @@ void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 		current = current->next;
 	while (current && i < limit[1])
 	{
-		if (is_redir_token(current, ">>") || is_redir_token(current, ">"))
-		{
-			if (current->next)
-				handle_output_redirs(cmd, current);
-		}
-		else if (is_redir_token(current, "<"))
-		{
-			if (current->next)
-				handle_input_redirs(cmd, current);
-		}
-		else if (is_redir_token(current, "<<"))
-		{
-			current = handle_heredoc_redir(cmd, current);
-			if (!current)
-				return ;
-			continue ;
-		}
+		process_redir(cmd, &current);
 		if (!current)
-			break ;
+			return ;
 		current = current->next;
 		i++;
 	}
