@@ -76,6 +76,7 @@ static int	get_stat(t_env *envs)
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	*minishell;
+	int			status; 
 
 	(void)argc;
 	(void)argv;
@@ -84,7 +85,10 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	minishell->envs = init_env(envp);
 	readline_loop(minishell->envs);
+	status = get_stat(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-	return (get_stat(minishell->envs));
+
+	return (status);
 }
+
