@@ -75,6 +75,9 @@ bool	is_overflowing(const char *str);
 void	handle_exit_error(t_cmd *cmd, t_env *envs, char *arg);
 int		check_exit_args(t_cmd *cmd);
 
+// cd_utils
+char *get_path(t_cmd *cmd, t_env **envs);
+void tilted_path(t_env **envs, char **path);
 
 void	error(char *msg, char *more);
 void	error_write(char *cmd);

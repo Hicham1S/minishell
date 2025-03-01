@@ -43,6 +43,7 @@ SRC = $(TOKENSDIR)/replace_env.c \
 	  $(EXECDIR)/redirs2.c \
 	  $(EXECDIR)/shlvl.c \
 	  $(BUILTINDIR)/cd.c \
+	  $(BUILTINDIR)/cd_utils.c \
 	  $(BUILTINDIR)/echo.c \
 	  $(BUILTINDIR)/env.c \
 	  $(BUILTINDIR)/exit.c \
