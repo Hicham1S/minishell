@@ -34,6 +34,8 @@ void	readline_loop(t_env *env)
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		g_signal = 0;
 		input = readline("minishell> ");
+		if (g_signal == SIGINT)
+			set_stat(&env, 130);
 		if (!input)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -57,6 +59,14 @@ void	readline_loop(t_env *env)
 	}
 }
 
+static int	get_stat(t_env *envs)
+{
+	t_env *curr;
+
+	curr = get_env(envs, "?");
+	return (ft_atoi(curr->value));
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	*minishell;
@@ -70,5 +80,5 @@ int	main(int argc, char **argv, char **envp)
 	readline_loop(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-	return (g_signal);
+	return (get_stat(minishell->envs));
 }

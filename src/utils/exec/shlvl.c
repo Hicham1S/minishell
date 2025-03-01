@@ -76,6 +76,7 @@ int	relaunch_minishell(t_env *env)
 	if (pid == 0)
 		child_process(env);
 	waitpid(pid, &status, 0);
+	set_stat(&env, status >> 8);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	return (status >> 8);

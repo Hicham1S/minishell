@@ -46,6 +46,7 @@ int	builtin_exit(t_cmd *cmd, t_env *envs)
 	if (check_exit_args(cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	exit_code = ft_atoi(cmd->args[1]) & 255;
+	set_stat(&envs, exit_code);
 	free_and_exit(cmd, envs, exit_code, NULL);
 	return (EXIT_SUCCESS);
 }
