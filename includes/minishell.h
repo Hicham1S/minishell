@@ -27,7 +27,7 @@ typedef struct s_minishell
 	t_env	*envs;
 }	t_minishell;
 
-extern int g_sginal;
+extern int g_signal;
 
 void	redirs(t_cmd *cmd);
 void	close_redirs(t_cmd *cmds);

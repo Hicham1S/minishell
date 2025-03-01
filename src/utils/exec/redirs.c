@@ -21,7 +21,7 @@ static void	heredoc_child_process(char *delimiter, int write_fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || g_sginal == SIGINT)
+		if (!line || g_signal == SIGINT)
 		{
 			if (line)
 				free(line);

@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int	g_sginal = 0;
+int	g_signal = 0;
 
 t_cmd	*input_to_cmd(char *input, t_env *env)
 {
@@ -32,7 +32,7 @@ void	readline_loop(t_env *env)
 	while (1)
 	{
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		g_sginal = 0;
+		g_signal = 0;
 		input = readline("minishell> ");
 		if (!input)
 		{
@@ -70,5 +70,5 @@ int	main(int argc, char **argv, char **envp)
 	readline_loop(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-	return (g_sginal);
+	return (g_signal);
 }

@@ -16,7 +16,7 @@ void	heredoc_signal(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_sginal = SIGINT;
+		g_signal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -27,7 +27,7 @@ void	handler_signal(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_sginal = SIGINT;
+		g_signal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -43,7 +43,7 @@ void	init_signal(void)
 
 void	cmd_signal(int sig)
 {
-	g_sginal = sig;
+	g_signal = sig;
 	if (sig == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);

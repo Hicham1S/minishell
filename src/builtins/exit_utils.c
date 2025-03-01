@@ -60,7 +60,7 @@ int	check_exit_args(t_cmd *cmd)
 {
 	if (cmd->args[2])
 	{
-		g_sginal = 1;
+		g_signal = 1;
 		error("exit", "too many arguments");
 		return (EXIT_FAILURE);
 	}
