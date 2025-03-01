@@ -88,7 +88,5 @@ int	main(int argc, char **argv, char **envp)
 	status = get_stat(minishell->envs);
 	free(minishell->envs);
 	free(minishell);
-
 	return (status);
 }
-
