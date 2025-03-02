@@ -18,7 +18,10 @@ static char	*get_oldpwd_path(t_env **envs)
 
 	oldpwd_env = get_env(*envs, "OLDPWD");
 	if (!oldpwd_env || !oldpwd_env->value)
-		return (error("cd", "OLDPWD not set"), NULL);
+	{
+		error("cd", "OLDPWD not set");
+		return (NULL);
+	}
 	return (ft_strdup(oldpwd_env->value));
 }
 
@@ -26,23 +29,32 @@ static void	update_pwd_oldpwd(t_env **envs, char *oldpwd)
 {
 	char	current[1024];
 
-	if (getcwd(current, 1024))
+	if (getcwd(current, sizeof(current)))
 	{
 		set_env(envs, "PWD", current);
 		set_env(envs, "OLDPWD", oldpwd);
 	}
+	else
+		set_env(envs, "OLDPWD", oldpwd);
 }
 
 static int	change_directory(char *path, t_env **envs, char *oldpwd)
 {
-	if (chdir(path) == -1)
+	int	cd_status;
+	int	lost_dir;
+
+	lost_dir = getcwd(NULL, 0) == NULL;
+	cd_status = chdir(path);
+	if (cd_status == -1)
 	{
 		error_invalid_cd(path, envs);
 		free(path);
 		return (EXIT_FAILURE);
 	}
-	update_pwd_oldpwd(envs, oldpwd);
 	free(path);
+	if (lost_dir)
+		error("cd", "error retrieving current directory: getcwd failed");
+	update_pwd_oldpwd(envs, oldpwd);
 	set_stat(envs, 0);
 	return (EXIT_SUCCESS);
 }
@@ -52,8 +64,8 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 	char	*path;
 	char	oldpwd[1024];
 
-	if (!getcwd(oldpwd, 1024))
-		return (error("cd", "getcwd failed"), EXIT_FAILURE);
+	if (!getcwd(oldpwd, sizeof(oldpwd)))
+		oldpwd[0] = '\0';
 	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-") == 0)
 		path = get_oldpwd_path(envs);
 	else
