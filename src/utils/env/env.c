@@ -18,7 +18,7 @@ t_env	*new_env(char *key, char *value)
 {
 	t_env	*new;
 
-	if (!key || !value)
+	if (!key)
 		return (NULL);
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
@@ -43,7 +43,10 @@ void	set_env(t_env **env, char *key, char *value)
 		new->value = ft_strdup(value);
 		return ;
 	}
-	new = new_env(ft_strdup(key), ft_strdup(value));
+	if (value)
+		new = new_env(ft_strdup(key), ft_strdup(value));
+	else if (value == NULL)
+		new = new_env(ft_strdup(key), NULL);
 	if (*env)
 	{
 		current = *env;

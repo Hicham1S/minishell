@@ -18,6 +18,9 @@ int	is_redir_token(t_token *token, char *to_compare)
 		return (0);
 	if (to_compare && ft_strcmp(to_compare, "") != 0)
 		return (ft_strcmp(token->txt, to_compare) == 0);
+	else if ((to_compare && ft_strcmp(to_compare, "<<<") != 0))
+		return (ft_strcmp(token->txt, "<") == 0
+			|| ft_strcmp(token->txt, "<<") == 0);
 	return (ft_strcmp(token->txt, "<") == 0
 		|| ft_strcmp(token->txt, "<<") == 0
 		|| ft_strcmp(token->txt, ">") == 0
@@ -53,7 +56,7 @@ int	redir_check(t_token *token, t_env *env)
 			&& is_redir_token(current->next, ""))
 		{
 			if (is_redir_token(current, "|")
-				&& is_redir_token(current->next, "<<"))
+				&& is_redir_token(current->next, "<<<"))
 				;
 			else if (is_redir_token(current, "|")
 				|| is_redir_token(current->next, "|"))

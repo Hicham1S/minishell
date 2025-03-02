@@ -36,9 +36,13 @@ void	print_env(t_env *envs)
 		{
 			ft_putstr_fd("declare -x ", STDOUT_FILENO);
 			ft_putstr_fd(temp->key, STDOUT_FILENO);
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(temp->value, STDOUT_FILENO);
-			ft_putstr_fd("\"\n", STDOUT_FILENO);
+			if (temp->value)
+			{
+				ft_putstr_fd("=\"", STDOUT_FILENO);
+				ft_putstr_fd(temp->value, STDOUT_FILENO);
+				ft_putstr_fd("\"", STDOUT_FILENO);
+			}
+			ft_putstr_fd("\n", STDOUT_FILENO);
 		}
 		temp = temp->next;
 	}
@@ -50,22 +54,22 @@ int	validate_and_process_export(t_env **envs, char *arg)
 	char	*value;
 
 	j = 0;
+	value = NULL;
 	while (arg[j] && arg[j] != '=')
 	{
 		if ((arg[0] >= '0' && arg[0] <= '9') || special_char(arg[j]))
 			return (error_detected(arg), EXIT_FAILURE);
 		j++;
 	}
-	if (j == 0)
-		return (error_detected(arg), EXIT_FAILURE);
-	if (arg[j])
+	if (arg[j] == '=')
 	{
 		arg[j] = '\0';
 		value = ft_strdup(&arg[j + 1]);
-		if (!value)
-			return (EXIT_FAILURE);
 		set_env(envs, arg, value);
+		free(value);
 	}
+	else
+		set_env(envs, arg, NULL);
 	return (EXIT_SUCCESS);
 }
 
