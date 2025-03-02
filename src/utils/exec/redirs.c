@@ -60,20 +60,27 @@ static int	fork_heredoc(char *delimiter, int fd)
 	return (pid);
 }
 
-static bool	setup_heredoc_signals(pid_t pid, void (*old_int)(int),
-		void (*old_quit)(int))
+static bool setup_heredoc_signals(pid_t pid, void (*old_int)(int),
+        void (*old_quit)(int))
 {
-	int	status;
+    int status;
 
-	waitpid(pid, &status, 0);
-	signal(SIGINT, old_int);
-	signal(SIGQUIT, old_quit);
-	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
-	{
-		unlink("/tmp/.minishell_heredoc");
-		return (false);
-	}
-	return (true);
+    waitpid(pid, &status, 0);
+    signal(SIGINT, old_int);
+    signal(SIGQUIT, old_quit);
+    
+    if (WIFSIGNALED(status))
+    {
+        g_signal = WTERMSIG(status);
+        unlink("/tmp/.minishell_heredoc");
+        return (false);
+    }
+    else if (WEXITSTATUS(status) != 0)
+    {
+        unlink("/tmp/.minishell_heredoc");
+        return (false);
+    }
+    return (true);
 }
 
 bool	redir_heredoc(char *delimiter, t_cmd *cmd)
