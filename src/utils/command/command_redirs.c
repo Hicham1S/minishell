@@ -44,15 +44,13 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 
 t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
 {
-	char	*delimiter;
-
-	if (!current || !current->next)
-		return (NULL);
-	delimiter = current->next->txt;
-	if (!redir_heredoc(delimiter, cmd))
-		return (NULL);
-	cmd->has_heredoc = 1;
-	return (current->next->next);
+	while (current && current->next && ft_strcmp(current->txt, "<<") == 0)
+	{
+		if (!redir_heredoc(current->next->txt, cmd))
+			return (NULL);
+		current = current->next->next;
+	}
+	return (current);
 }
 
 void	process_redir(t_cmd *cmd, t_token **current)
