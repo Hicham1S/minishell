@@ -24,8 +24,8 @@ void	process_input(char *input, t_env *env)
 {
 	t_cmd	*cmd;
 
-	if (g_signal == SIGINT)
-		set_stat(&env, 130);
+	if (g_signal > 0)
+		set_stat(&env, (128 + g_signal));
 	if (!input)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);

@@ -38,7 +38,7 @@ void	handler_signal(int sig)
 void	init_signal(void)
 {
 	signal(SIGINT, handler_signal);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, cmd_signal);
 }
 
 void	cmd_signal(int sig)
@@ -52,5 +52,8 @@ void	cmd_signal(int sig)
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
-		ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
