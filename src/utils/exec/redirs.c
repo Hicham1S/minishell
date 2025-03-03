@@ -29,12 +29,14 @@ static void	heredoc_child_process(char *delimiter, int write_fd)
 		}
 		if (ft_strcmp(line, delimiter) == 0)
 		{
-			free(line);
+			if (line)
+				free(line);
 			exit(0);
 		}
 		write(write_fd, line, ft_strlen(line));
 		write(write_fd, "\n", 1);
-		free(line);
+		if (line)
+			free(line);
 	}
 }
 

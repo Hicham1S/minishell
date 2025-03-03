@@ -74,7 +74,7 @@ int	exec_relative(t_cmd *cmd, t_env **envs)
 	char	**envp;
 	size_t	i;
 
-	if (!cmd->args[0][0])
+	if (!cmd->args || !cmd->args[0] || !cmd->args[0][0])
 		return (EXIT_SUCCESS);
 	path = resolve_path(cmd->args[0], *envs, F_OK);
 	if (!path)

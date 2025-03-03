@@ -52,18 +52,28 @@ void	readline_loop(t_env *env)
 {
 	char			*input;
 	struct termios	term;
+	int				last_signal;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	init_signal();
+	last_signal = 0;
 	while (1)
 	{
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		if (g_signal > 0)
+			last_signal = g_signal;
 		g_signal = 0;
 		input = readline("minishell> ");
+		if (last_signal > 0)
+		{
+			set_stat(&env, (128 + last_signal));
+			last_signal = 0;
+		}
 		process_input(input, env);
 	}
 }
+
 
 static int	get_stat(t_env *envs)
 {
