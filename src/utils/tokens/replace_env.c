@@ -76,7 +76,13 @@ char	*append_str(char *str, const char *append)
 
 int	is_env_var_start(t_token *token, size_t i)
 {
-	return (token->txt[i] == '$' && token->txt[i + 1]
+	if (token->txt[i] == '$' && token->txt[i + 1]
 		&& (is_alphanumu(token->txt[i + 1]) || token->txt[i + 1] == '?')
-		&& token->qtype != SINGLE);
+		&& token->qtype != SINGLE)
+		return (1);
+	if (token->txt[i] == '$' && token->txt[i + 1] == '\0'
+		&& token->next && token->next->qtype != NO
+		&& token->merge_next == 1 && token->qtype == NO)
+		return (1);
+	return (0);
 }
