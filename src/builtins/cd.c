@@ -40,10 +40,13 @@ static void	update_pwd_oldpwd(t_env **envs, char *oldpwd)
 
 static int	change_directory(char *path, t_env **envs, char *oldpwd)
 {
-	int	cd_status;
-	int	lost_dir;
+	int		cd_status;
+	int		lost_dir;
+	char	*cwd;
 
-	lost_dir = getcwd(NULL, 0) == NULL;
+	cwd = getcwd(NULL, 0);
+	lost_dir = (cwd == NULL);
+	free(cwd);
 	cd_status = chdir(path);
 	if (cd_status == -1)
 	{
@@ -58,6 +61,7 @@ static int	change_directory(char *path, t_env **envs, char *oldpwd)
 	set_stat(envs, 0);
 	return (EXIT_SUCCESS);
 }
+
 
 int	builtin_cd(t_cmd *cmd, t_env **envs)
 {
