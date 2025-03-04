@@ -74,7 +74,6 @@ void	readline_loop(t_env *env)
 	}
 }
 
-
 static int	get_stat(t_env *envs)
 {
 	t_env	*curr;

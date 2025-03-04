@@ -21,8 +21,8 @@ typedef struct s_builtin
 	int		(*func)(t_cmd *cmd, t_env **envs);
 }	t_builtin;
 
-int exec_builtin(t_cmd *cmd, t_env **envs);
-int exec_relative(t_cmd *cmd, t_env **envs);
+int	exec_builtin(t_cmd *cmd, t_env **envs);
+int	exec_relative(t_cmd *cmd, t_env **envs);
 
 int	builtin_cd(t_cmd *cmd, t_env **envs);
 int	builtin_echo(t_cmd *cmd, t_env **envs);

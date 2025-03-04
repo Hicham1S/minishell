@@ -62,7 +62,6 @@ static int	change_directory(char *path, t_env **envs, char *oldpwd)
 	return (EXIT_SUCCESS);
 }
 
-
 int	builtin_cd(t_cmd *cmd, t_env **envs)
 {
 	char	*path;
