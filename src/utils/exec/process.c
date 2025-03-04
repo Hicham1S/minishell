@@ -12,25 +12,56 @@
 
 #include "../../../includes/minishell.h"
 
-int	wait_processes(t_cmd *cmds)
+static int	count_cmds(t_cmd *cmds)
+{
+	int		count;
+	t_cmd	*tmp;
+
+	count = 0;
+	tmp = cmds;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+static void	wait_for_cmd(t_cmd *cmds, int *exit_statuses, int *count)
 {
 	int	status;
-	int	last_status = 0;
 
+	if (waitpid(cmds->pid, &status, 0) == -1)
+	{
+		perror("waitpid");
+		exit_statuses[*count] = 1;
+	}
+	else
+	{
+		if (WIFEXITED(status))
+			exit_statuses[*count] = WEXITSTATUS(status);
+		else
+			exit_statuses[*count] = 1;
+	}
+	(*count)++;
+}
+
+int	wait_processes(t_cmd *cmds)
+{
+	int	*exit_statuses;
+	int	count;
+
+	count = count_cmds(cmds);
+	exit_statuses = malloc(sizeof(int) * count);
+	if (!exit_statuses)
+		return (1);
+	count = 0;
 	while (cmds)
 	{
-		if (waitpid(cmds->pid, &status, 0) == -1)
-		{
-			perror("waitpid");
-			last_status = 1;
-			printf("wait2: %d\n", last_status);
-		}
-		else
-		{
-			last_status = WIFEXITED(status) ? WEXITSTATUS(status) : 1;
-			printf("wait4: %d\n", last_status);
-		}
+		wait_for_cmd(cmds, exit_statuses, &count);
 		cmds = cmds->next;
 	}
-	return (last_status);
+	count = exit_statuses[0];
+	free(exit_statuses);
+	return (count);
 }
