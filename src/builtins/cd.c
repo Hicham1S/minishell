@@ -41,12 +41,8 @@ static void	update_pwd_oldpwd(t_env **envs, char *oldpwd)
 static int	change_directory(char *path, t_env **envs, char *oldpwd)
 {
 	int		cd_status;
-	int		lost_dir;
 	char	*cwd;
 
-	cwd = getcwd(NULL, 0);
-	lost_dir = (cwd == NULL);
-	free(cwd);
 	cd_status = chdir(path);
 	if (cd_status == -1)
 	{
@@ -56,8 +52,14 @@ static int	change_directory(char *path, t_env **envs, char *oldpwd)
 		return (EXIT_FAILURE);
 	}
 	free(path);
-	if (lost_dir)
-		error("cd", "error retrieving current directory: getcwd failed");
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		print_cd_getcwd_error();
+		set_stat(envs, 1);
+		return (EXIT_FAILURE);
+	}
+	free(cwd);
 	update_pwd_oldpwd(envs, oldpwd);
 	set_stat(envs, 0);
 	return (EXIT_SUCCESS);

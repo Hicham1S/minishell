@@ -42,21 +42,17 @@ void	error_heredoc(char *delimiter)
 
 void	error_invalid_cd(char *path, t_env **envs)
 {
-	struct stat	sb;
-
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd("cd: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	ft_putstr_fd(path, STDERR_FILENO);
-	if (stat(path, &sb) == -1)
-	{
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		set_stat(envs, 1);
-	}
-	else if (!S_ISDIR(sb.st_mode))
-	{
-		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
-		set_stat(envs, 1);
-	}
-	else
-		ft_putstr_fd(": Unknown error\n", STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	perror("");
+	set_stat(envs, 1);
+}
+
+void	print_cd_getcwd_error(void)
+{
+	ft_putstr_fd("minishell: cd: error retrieving current directory: ",
+		STDERR_FILENO);
+	ft_putstr_fd("getcwd: cannot access parent directories: ", STDERR_FILENO);
+	ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
 }
