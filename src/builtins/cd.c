@@ -52,6 +52,7 @@ static int	change_directory(char *path, t_env **envs, char *oldpwd)
 	{
 		error_invalid_cd(path, envs);
 		free(path);
+		set_stat(envs, 1);
 		return (EXIT_FAILURE);
 	}
 	free(path);
@@ -70,14 +71,18 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 	if (!getcwd(oldpwd, sizeof(oldpwd)))
 		oldpwd[0] = '\0';
 	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-") == 0)
+	{
 		path = get_oldpwd_path(envs);
+		if (!path)
+			return (set_stat(envs, 1), EXIT_FAILURE);
+	}
 	else
 	{
 		path = get_path(cmd, envs);
-		if (path && path[0] == '~')
+		if (!path)
+			return (set_stat(envs, 1), EXIT_FAILURE);
+		if (path[0] == '~')
 			tilted_path(envs, &path);
 	}
-	if (!path)
-		return (EXIT_FAILURE);
 	return (change_directory(path, envs, oldpwd));
 }
