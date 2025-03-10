@@ -38,10 +38,10 @@ static void	wait_for_cmd(t_cmd *cmds, int *exit_statuses, int *count)
 	}
 	else
 	{
-		if (WIFEXITED(status))
-			exit_statuses[*count] = WEXITSTATUS(status);
+		if ((status & 0x7F) == 0)
+			exit_statuses[*count] = (status >> 8) & 0xFF;
 		else
-			exit_statuses[*count] = 1;
+			exit_statuses[*count] = 128 + (status & 0x7F);
 	}
 	(*count)++;
 }

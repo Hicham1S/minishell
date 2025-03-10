@@ -16,7 +16,8 @@ void	print_cd_getcwd_error(void);
 
 //utils/exec/redires2.c
 void	redir_heredoc2(t_cmd *cmd);
-bool	redir_heredoc(char *delimiter, t_cmd *cmd);
+bool	redir_heredoc(t_env *envs, char *delimiter, t_cmd *cmd);
+static void	handle_heredoc_line(t_env *envs, char *line, int write_fd);
 
 //args
 size_t	get_args_size(t_token *token, int limit[2]);

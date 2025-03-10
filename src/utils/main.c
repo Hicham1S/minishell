@@ -13,7 +13,7 @@ t_cmd	*input_to_cmd(char *input, t_env *env)
 	{
 		replace_tokens_with_env(env, tokens);
 		merge_tokens(&tokens);
-		cmd = init_cmd(tokens);
+		cmd = init_cmd(env, tokens);
 	}
 	if (tokens)
 		free_tokens(&tokens);

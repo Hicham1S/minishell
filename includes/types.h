@@ -61,6 +61,6 @@ int		is_redir_token(t_token *token, char *to_compare);
 char	**tokens_to_arrstr(t_token *token);
 void	free_arrstr(char **arr);
 
-t_cmd	*init_cmd(t_token *token);
+t_cmd	*init_cmd(t_env *envs, t_token *token);
 
 #endif

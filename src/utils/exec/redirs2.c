@@ -33,3 +33,15 @@ void	close_redirs(t_cmd *cmds)
 		cmds = cmds->next;
 	}
 }
+
+static void	handle_heredoc_line(t_env *envs, char *line, int write_fd)
+{
+	char	*expanded_line;
+
+	expanded_line = hd_replace_env(envs, line);
+	if (!expanded_line)
+		return ;
+	write(write_fd, expanded_line, ft_strlen(expanded_line));
+	write(write_fd, "\n", 1);
+	free(expanded_line);
+}

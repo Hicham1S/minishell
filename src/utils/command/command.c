@@ -1,7 +1,7 @@
 #include "../../../includes/minishell.h"
 #include "command.h"
 
-t_cmd	*new_cmd(t_token *token, int limit[2])
+t_cmd	*new_cmd(t_env *envs, t_token *token, int limit[2])
 {
 	t_cmd	*new;
 
@@ -15,7 +15,7 @@ t_cmd	*new_cmd(t_token *token, int limit[2])
 	new->has_heredoc = 0;
 	new->next = NULL;
 	new->args = init_args(token, limit);
-	cmd_redirs(new, token, limit);
+	cmd_redirs(envs, new, token, limit);
 	return (new);
 }
 
@@ -45,7 +45,7 @@ static void	skip_non_pipe_tokens(t_token **current, int *limit)
 	}
 }
 
-t_cmd	*init_cmd(t_token *token)
+t_cmd	*init_cmd(t_env *envs, t_token *token)
 {
 	int		limit[2];
 	t_token	*current;
@@ -59,7 +59,7 @@ t_cmd	*init_cmd(t_token *token)
 	while (current)
 	{
 		skip_non_pipe_tokens(&current, &limit[1]);
-		new = new_cmd(token, limit);
+		new = new_cmd(envs, token, limit);
 		if (!new)
 			return (NULL);
 		if (current && is_redir_token(current, "|"))

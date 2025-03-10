@@ -42,18 +42,18 @@ void	handle_input_redirs(t_cmd *cmd, t_token *current)
 	}
 }
 
-t_token	*handle_heredoc_redir(t_cmd *cmd, t_token *current)
+t_token	*handle_heredoc_redir(t_env *envs, t_cmd *cmd, t_token *current)
 {
 	while (current && current->next && ft_strcmp(current->txt, "<<") == 0)
 	{
-		if (!redir_heredoc(current->next->txt, cmd))
+		if (!redir_heredoc(envs, current->next->txt, cmd))
 			return (NULL);
 		current = current->next->next;
 	}
 	return (current);
 }
 
-void	process_redir(t_cmd *cmd, t_token **current)
+void	process_redir(t_env *envs, t_cmd *cmd, t_token **current)
 {
 	if (is_redir_token(*current, ">>") || is_redir_token(*current, ">"))
 	{
@@ -67,13 +67,13 @@ void	process_redir(t_cmd *cmd, t_token **current)
 	}
 	else if (is_redir_token(*current, "<<"))
 	{
-		*current = handle_heredoc_redir(cmd, *current);
+		*current = handle_heredoc_redir(envs, cmd, *current);
 		if (!*current)
 			return ;
 	}
 }
 
-void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
+void	cmd_redirs(t_env *envs, t_cmd *cmd, t_token *token, int limit[2])
 {
 	int		i;
 	t_token	*current;
@@ -84,7 +84,7 @@ void	cmd_redirs(t_cmd *cmd, t_token *token, int limit[2])
 		current = current->next;
 	while (current && i < limit[1])
 	{
-		process_redir(cmd, &current);
+		process_redir(envs, cmd, &current);
 		if (!current)
 			return ;
 		current = current->next;
