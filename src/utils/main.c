@@ -82,6 +82,7 @@ static int	get_stat(t_env *envs)
 	return (ft_atoi(curr->value));
 }
 
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	*minishell;
@@ -91,8 +92,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	if (!minishell)
-		return (1);
+	return (1);
 	minishell->envs = init_env(envp);
+	// test_hd_replace_env(minishell->envs);
 	readline_loop(minishell->envs);
 	status = get_stat(minishell->envs);
 	free(minishell->envs);

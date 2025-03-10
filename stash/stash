@@ -281,3 +281,22 @@ int	main(int argc, char **argv, char **envp)
 	free(minishell->envs);
 	return (0);
 }
+
+void	test_hd_replace_env(t_env *env)
+{
+	char *cases[] = {
+		"hello$HOME",
+		"\"$HOME\"",
+		"'$HOME'",
+		"\"$\"HOME",
+		"$'HOME'",
+		NULL
+	};
+
+	for (int i = 0; cases[i]; i++)
+	{
+		char *result = hd_replace_env(env, ft_strdup(cases[i]));
+		printf("Input: %-10s -> Output: %s\n", cases[i], result);
+		free(result);
+	}
+}

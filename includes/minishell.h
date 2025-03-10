@@ -64,5 +64,8 @@ void	increment_shlvl(t_env *new_env);
 int		relaunch_minishell(t_env *env);
 void	set_stat(t_env **env, int stat);
 void	increment_shlvl(t_env *new_env);
+char	*append_str(char *str, const char *append);
+char	*get_next_value(t_env *env, char *str);
+char	*hd_replace_env(t_env *env, char *str);
 
 #endif

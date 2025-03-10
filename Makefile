@@ -41,6 +41,7 @@ SRC = $(TOKENSDIR)/replace_env.c \
 	  $(EXECDIR)/process.c \
 	  $(EXECDIR)/redirs.c \
 	  $(EXECDIR)/redirs2.c \
+	  $(EXECDIR)/heredoc_replace_env.c \
 	  $(EXECDIR)/shlvl.c \
 	  $(BUILTINDIR)/cd.c \
 	  $(BUILTINDIR)/cd_utils.c \
