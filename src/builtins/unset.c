@@ -17,10 +17,13 @@ int	builtin_unset(t_cmd *cmd, t_env **envs)
 	size_t	i;
 
 	i = 1;
-	while (cmd->args[i])
+	if (ft_strcmp(cmd->args[i], "?") != 0)
 	{
-		del_env(envs, cmd->args[i]);
-		i++;
+		while (cmd->args[i])
+		{
+			del_env(envs, cmd->args[i]);
+			i++;
+		}
 	}
 	return (set_stat(envs, 0), EXIT_SUCCESS);
 }

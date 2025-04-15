@@ -57,3 +57,9 @@ void	cmd_signal(int sig)
 		rl_redisplay();
 	}
 }
+
+void	init_signal_ign(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}

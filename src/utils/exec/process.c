@@ -31,6 +31,7 @@ static void	wait_for_cmd(t_cmd *cmds, int *exit_statuses, int *count)
 {
 	int	status;
 
+	init_signal_ign();
 	if (waitpid(cmds->pid, &status, 0) == -1)
 	{
 		perror("waitpid");
@@ -51,6 +52,7 @@ int	wait_processes(t_cmd *cmds)
 	int	*exit_statuses;
 	int	count;
 
+	init_signal_ign();
 	count = count_cmds(cmds);
 	exit_statuses = malloc(sizeof(int) * count);
 	if (!exit_statuses)
@@ -62,6 +64,8 @@ int	wait_processes(t_cmd *cmds)
 		cmds = cmds->next;
 	}
 	count = exit_statuses[0];
+	signal(SIGINT, &cmd_signal);
+	signal(SIGQUIT, &cmd_signal);
 	free(exit_statuses);
 	return (count);
 }

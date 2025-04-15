@@ -34,7 +34,7 @@ void	close_redirs(t_cmd *cmds)
 	}
 }
 
-static void	handle_heredoc_line(t_env *envs, char *line, int write_fd)
+void	handle_heredoc_line(t_env *envs, char *line, int write_fd)
 {
 	char	*expanded_line;
 

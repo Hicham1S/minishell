@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dawwad <dawwad@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 14:52:57 by dawwad            #+#    #+#             */
+/*   Updated: 2025/03/10 14:52:57 by dawwad           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -30,6 +42,7 @@ typedef struct s_minishell
 extern int	g_signal;
 
 void	redirs(t_cmd *cmd);
+void	init_signal_ign(void);
 void	close_redirs(t_cmd *cmds);
 void	print_tokens(t_token *token);
 void	print_cmd(t_cmd *cmd);
@@ -53,7 +66,7 @@ void	free_and_exit(t_cmd *cmds, t_env *envs, int exit_code, char *msg);
 bool	is_valid_number(const char *str);
 bool	is_overflowing(const char *str);
 void	handle_exit_error(t_cmd *cmd, t_env *envs, char *arg);
-int		check_exit_args(t_cmd *cmd);
+int		check_exit_args(t_cmd *cmd, t_env **envs);
 
 char	*get_path(t_cmd *cmd, t_env **envs);
 void	tilted_path(t_env **envs, char **path);
@@ -67,5 +80,6 @@ void	increment_shlvl(t_env *new_env);
 char	*append_str(char *str, const char *append);
 char	*get_next_value(t_env *env, char *str);
 char	*hd_replace_env(t_env *env, char *str);
+int		get_stat(t_env *envs);
 
 #endif

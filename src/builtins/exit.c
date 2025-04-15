@@ -43,7 +43,7 @@ int	builtin_exit(t_cmd *cmd, t_env *envs)
 		free_and_exit(cmd, envs, 0, NULL);
 	if (!is_valid_number(cmd->args[1]) || is_overflowing(cmd->args[1]))
 		handle_exit_error(cmd, envs, cmd->args[1]);
-	if (check_exit_args(cmd) == EXIT_FAILURE)
+	if (check_exit_args(cmd, &envs) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	exit_code = ft_atoi(cmd->args[1]) & 255;
 	set_stat(&envs, exit_code);

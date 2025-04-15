@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_check.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dawwad <dawwad@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 14:52:00 by dawwad            #+#    #+#             */
+/*   Updated: 2025/03/10 14:52:00 by dawwad           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 #include "tokens.h"
 
@@ -18,7 +30,7 @@ int	is_redir_token(t_token *token, char *to_compare)
 		return (0);
 	if (to_compare && ft_strcmp(to_compare, "") != 0)
 		return (ft_strcmp(token->txt, to_compare) == 0);
-	else if ((to_compare && ft_strcmp(to_compare, "<<<") != 0))
+	if (to_compare && ft_strcmp(to_compare, "<<<") == 0)
 		return (ft_strcmp(token->txt, "<") == 0
 			|| ft_strcmp(token->txt, "<<") == 0);
 	return (ft_strcmp(token->txt, "<") == 0

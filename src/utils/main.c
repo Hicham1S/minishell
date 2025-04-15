@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dawwad <dawwad@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 14:52:32 by dawwad            #+#    #+#             */
+/*   Updated: 2025/03/10 14:52:32 by dawwad           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	g_signal = 0;
@@ -74,14 +86,13 @@ void	readline_loop(t_env *env)
 	}
 }
 
-static int	get_stat(t_env *envs)
+int	get_stat(t_env *envs)
 {
 	t_env	*curr;
 
 	curr = get_env(envs, "?");
 	return (ft_atoi(curr->value));
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -92,9 +103,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	if (!minishell)
-	return (1);
+		return (1);
 	minishell->envs = init_env(envp);
-	// test_hd_replace_env(minishell->envs);
 	readline_loop(minishell->envs);
 	status = get_stat(minishell->envs);
 	free(minishell->envs);

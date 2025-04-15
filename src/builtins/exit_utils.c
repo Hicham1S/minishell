@@ -56,11 +56,11 @@ void	handle_exit_error(t_cmd *cmd, t_env *envs, char *arg)
 	free_and_exit(cmd, envs, 2, NULL);
 }
 
-int	check_exit_args(t_cmd *cmd)
+int	check_exit_args(t_cmd *cmd, t_env **env)
 {
 	if (cmd->args[2])
 	{
-		g_signal = 1;
+		set_stat(env, 1);
 		error("exit", "too many arguments");
 		return (EXIT_FAILURE);
 	}

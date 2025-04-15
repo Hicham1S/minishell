@@ -21,7 +21,7 @@ static	int	check_builtin_first(t_cmd *cmd, t_env **envs)
 	else if (cmd->infile == -2)
 		return (set_stat(envs, 1), 1);
 	else if (cmd->outfile == -2)
-		return (set_stat(envs, 126), 1);
+		return (set_stat(envs, 1), 1);
 	len = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp(cmd->args[0], "pwd", len) && len == 3)
 		return (builtin_pwd(cmd, envs));

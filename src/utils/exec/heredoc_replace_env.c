@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_replace_env.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dawwad <dawwad@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 14:51:43 by dawwad            #+#    #+#             */
+/*   Updated: 2025/03/10 14:51:43 by dawwad           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 static char	*hd_get_next_key(char *str, int start)
@@ -76,15 +88,11 @@ static char	*hd_process_env_string(t_env *env, char *str)
 char	*hd_replace_env(t_env *env, char *str)
 {
 	char	*new_str;
-	char	*old_str;
 
 	if (!str)
 		return (NULL);
 	new_str = hd_process_env_string(env, str);
 	if (!new_str)
 		return (NULL);
-	old_str = str;
-	str = new_str;
-	free(old_str);
 	return (new_str);
 }
